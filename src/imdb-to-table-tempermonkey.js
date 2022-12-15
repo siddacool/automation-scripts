@@ -69,14 +69,17 @@
 
     // const plot = document.querySelector(`[data-testid="plot"]`)?.textContent?.trim() || '';
 
+    const ogType =
+      document.querySelector('meta[property="og:type"]')?.getAttribute('content') || '';
+
     const cellName = `${title}`;
     const cellYear = `${basicInfo?.date || ''}`;
-    const cellType = ` ${basicInfo?.type || ''}`;
+    const cellType = ` ${ogType.includes('tv') ? 'TV' : ''}`;
     const cellGenre = ` ${genres.join(', ')}`;
     const cellPG = ` ${basicInfo?.ageRating || ''}`;
     const cellRating = `⭐${raing}`;
     const cellLink = `[🔗](https://www.imdb.com${window.location.pathname})`;
-    const formattedData = `| ${cellName} | ${cellYear} | ${cellType} | ${cellGenre} | ${cellRating} | ${cellPG} | ${cellLink} |`;
+    const formattedData = `| | ${cellName} | ${cellYear} | ${cellType} | ${cellGenre} | ${cellRating} | ${cellPG} | ${cellLink} |`;
 
     console.log('Copied', formattedData);
 
@@ -115,5 +118,5 @@
   copyButton.addEventListener('click', copyData);
 
   titleHtml.append(copyButton);
-  // | Name | Year | Type | Genre | Rating | PG  | Link |
+  // | | Name | Year | Type | Genre | Rating | PG  | Link |
 })();
