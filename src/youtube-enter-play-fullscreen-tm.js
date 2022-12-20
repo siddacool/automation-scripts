@@ -18,14 +18,13 @@
     document.dispatchEvent(e);
   };
 
-  const buttoonAssigner = (event) => {
+  const btnAssigner = (event) => {
     if (event.key === 'Enter' && document.fullscreenElement !== null) {
       event.preventDefault();
-      console.log('Enter');
 
       triggerSpace();
     }
   };
 
-  window.addEventListener('keypress', buttoonAssigner);
+  window.addEventListener('keypress', btnAssigner);
 })();
