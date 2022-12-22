@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         imdb-to-table
 // @namespace    http://tampermonkey.net/
-// @version      0.1
+// @version      1.0
 // @description  convert IMDB data to markdown table
 // @author       Sid
 // @match        https://www.imdb.com/title/*
@@ -67,11 +67,12 @@
       });
     }
 
-    // const plot = document.querySelector(`[data-testid="plot"]`)?.textContent?.trim() || '';
-
     const ogType =
       document.querySelector('meta[property="og:type"]')?.getAttribute('content') || '';
 
+    const imageTag = document.querySelector('.ipc-image')?.getAttribute('src') || '';
+
+    const cellImage = `![](${imageTag})`;
     const cellName = `${title}`;
     const cellYear = `${basicInfo?.date || ''}`;
     const cellType = ` ${ogType.includes('tv') ? 'TV' : ''}`;
@@ -79,9 +80,7 @@
     const cellPG = ` ${basicInfo?.ageRating || ''}`;
     const cellRating = `⭐${raing}`;
     const cellLink = `[🔗](https://www.imdb.com${window.location.pathname})`;
-    const formattedData = `| | ${cellName} | ${cellYear} | ${cellType} | ${cellGenre} | ${cellRating} | ${cellPG} | ${cellLink} |`;
-
-    console.log('Copied', formattedData);
+    const formattedData = `| | ${cellImage} | ${cellName} | ${cellYear} | ${cellType} | ${cellGenre} | ${cellRating} | ${cellPG} | ${cellLink} |`;
 
     copyContent(formattedData);
 
