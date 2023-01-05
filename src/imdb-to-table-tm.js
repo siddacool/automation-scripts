@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         imdb-to-table
 // @namespace    http://tampermonkey.net/
-// @version      1.0
+// @version      1.1
 // @description  convert IMDB data to markdown table
 // @author       Sid
 // @match        https://www.imdb.com/title/*
@@ -80,7 +80,7 @@
     const cellPG = ` ${basicInfo?.ageRating || ''}`;
     const cellRating = `⭐${raing}`;
     const cellLink = `[🔗](https://www.imdb.com${window.location.pathname})`;
-    const formattedData = `| | ${cellImage} | ${cellName} | ${cellYear} | ${cellType} | ${cellGenre} | ${cellRating} | ${cellPG} | ${cellLink} |`;
+    const formattedData = `| ${cellImage} | ${cellName} | ${cellYear} | ${cellType} | ${cellGenre} | ${cellRating} | ${cellPG} | ${cellLink} |`;
 
     copyContent(formattedData);
 
@@ -117,5 +117,5 @@
   copyButton.addEventListener('click', copyData);
 
   titleHtml.append(copyButton);
-  // | | Name | Year | Type | Genre | Rating | PG  | Link |
+  // | Name | Year | Type | Genre | Rating | PG  | Link |
 })();
