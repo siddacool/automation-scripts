@@ -10,3 +10,9 @@ A copy to clipboard icon is placed right next to movie name which can you clicke
 
 `src/youtube-enter-play-fullscreen-tm.js`
 Assign Enter as play button on full screen
+
+## 3) imdb Obsidian Note script
+
+`src/imdb-obsidian-note-tm.js`
+convert IMDB data to Obsidian note.
+A copy to clipboard icon is placed right next to movie name which can you clicked to copy info.
