@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         imdb-obsidian-note
 // @namespace    http://tampermonkey.net/
-// @version      1.0
+// @version      1.1
 // @description  convert IMDB data to Obsidian note
 // @author       Sid
 // @match        https://www.imdb.com/title/*
@@ -104,6 +104,7 @@ poster: "${cellImage}"
 dateAdded: ${dateAdded}
 watched: false
 myRating:
+dateWatched:
 ---
 
 # ${cellName} (${cellYear})
