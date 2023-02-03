@@ -111,7 +111,12 @@ dateWatched:
 #watchList
 
 ![poster](${cellImage})
-
+${
+  isTv
+    ? `
+${contentPlaceholder}`
+    : ''
+}
 ${plot} [More info](${cellLink})
 
 ---
