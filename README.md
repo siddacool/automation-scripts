@@ -16,3 +16,8 @@ Assign Enter as play button on full screen
 `src/imdb-obsidian-note-tm.js`
 convert IMDB data to Obsidian note.
 A copy to clipboard icon is placed right next to movie name which can you clicked to copy info.
+
+## 4) Hotstar subtitle fix
+
+`src/imdb-obsidian-note-tm.js`
+Better subtitles for Disney+ Hotstar
