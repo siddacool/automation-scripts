@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         hotstar-subtitle-customizer
 // @namespace    http://tampermonkey.net/
-// @version      1.0
+// @version      1.1
 // @description  Change subtitles properties on hotstar
 // @author       Sid
 // @match        https://www.hotstar.com/*
@@ -29,7 +29,7 @@
 
     const backdrop = IS_BACKDROP ? 'rgba(0, 0, 0, 0.8)' : 'transparent';
 
-    let style = `.subtitle-container .shaka-text-container > span { font-size: ${FONT_SIZE}; background-color: ${backdrop} !important; font-weight: 600 !important; -webkit-text-stroke: 2px black; }`;
+    let style = `.subtitle-container .shaka-text-container > span { font-size: ${FONT_SIZE}; background-color: ${backdrop} !important; font-weight: 600 !important; -webkit-text-stroke: 2px black; } .watermark-content { display: none !important }`;
 
     styleElm.innerText = style;
 
