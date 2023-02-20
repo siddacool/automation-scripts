@@ -21,3 +21,8 @@ A copy to clipboard icon is placed right next to movie name which can you clicke
 
 `src/imdb-obsidian-note-tm.js`
 Better subtitles for Disney+ Hotstar
+
+## 5) Hotstar enhancements
+
+`src/hotstar-enhancements-tm.js`
+All the features of "Hotstar subtitle fix" i.e. Better subtitles for Disney+ Hotstar. Plus Assign Enter as play button on full screen
