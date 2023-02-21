@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         imdb-obsidian-note
 // @namespace    http://tampermonkey.net/
-// @version      1.1.1
+// @version      1.2
 // @description  convert IMDB data to Obsidian note
 // @author       Sid
 // @match        https://www.imdb.com/title/*
@@ -89,13 +89,18 @@
     const dateTimeFormat = new Intl.DateTimeFormat('en-US');
     const dateParts = dateTimeFormat.formatToParts(date);
     const datePartValues = dateParts.map((p) => p.value).filter((p) => p !== '/');
-    const [month, day, year] = datePartValues;
+    let [month, day, year] = datePartValues;
+
+    month = Number(month) < 10 ? `0${month}` : month;
+    day = Number(day) < 10 ? `0${day}` : day;
+
     const dateAdded = `${year}-${month}-${day}`;
 
     const formattedData = `---
 alias: ${cellName}
 year: ${cellYear}
 genre: ${cellGenre}
+tags:
 pg: ${cellPG}
 rating: ${cellRating}
 tv: ${isTv}
