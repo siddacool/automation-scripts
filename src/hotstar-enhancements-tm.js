@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         hotstar-enhancements
 // @namespace    http://tampermonkey.net/
-// @version      1.0
+// @version      1.1
 // @description  better subtitles for Disney+ Hotstar. Plus Assign Enter as play button on full screen and more
 // @author       Sid
 // @match        https://www.hotstar.com/*
@@ -18,9 +18,6 @@
 
   // Remove channel logo
   const HIDE_CHANNEL_LOGO = true;
-
-  // Enter button play/pause
-  const ENTER_PLAY = true;
 
   const timeoutPromise = (timeInMs) => new Promise((resolve) => setTimeout(resolve, timeInMs));
 
@@ -42,16 +39,28 @@
 
   setSubtitlesOptions();
 
-  if (ENTER_PLAY) {
-    window.addEventListener('keypress', (event) => {
-      if (event.key === 'Enter' && document.fullscreenElement !== null) {
-        const player = document.querySelector('.skin-container');
-        event.preventDefault();
+  window.addEventListener('keypress', (event) => {
+    if (event.key === 'Enter' && document.fullscreenElement !== null) {
+      const player = document.querySelector('.skin-container');
+      event.preventDefault();
 
-        if (player) {
-          player.click();
+      if (player) {
+        player.click();
+      }
+    } else if (event.key === 's' && document.fullscreenElement !== null) {
+      const skipVideo = document.querySelector('.skip-video');
+
+      if (skipVideo) {
+        const bingeButton = skipVideo.querySelector('.binge-btn');
+
+        if (bingeButton) {
+          const parent = bingeButton.parentElement;
+
+          if (parent && parent.classList.contains('show-btn')) {
+            bingeButton.click();
+          }
         }
       }
-    });
-  }
+    }
+  });
 })();
