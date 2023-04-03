@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         imdb-obsidian-note
 // @namespace    http://tampermonkey.net/
-// @version      1.2
+// @version      1.3
 // @description  convert IMDB data to Obsidian note
 // @author       Sid
 // @match        https://www.imdb.com/title/*
@@ -75,11 +75,11 @@
     const imageTag = document.querySelector('.ipc-image')?.getAttribute('src') || '';
 
     const cellImage = `${imageTag}`;
-    const cellName = `${title.trim()}`;
-    const cellYear = `${basicInfo?.date.trim() || ''}`;
-    const cellType = `${ogType.includes('tv') ? 'TV' : ''}`;
-    const cellGenre = `${genres.join(', ')}`;
-    const cellPG = `${basicInfo?.ageRating.trim() || ''}`;
+    const cellName = `${title?.trim()}`;
+    const cellYear = `${basicInfo?.date?.trim() || ''}`;
+    const cellType = `${ogType?.includes('tv') ? 'TV' : ''}`;
+    const cellGenre = `${genres?.join(', ')}`;
+    const cellPG = `${basicInfo?.ageRating?.trim() || ''}`;
     const cellRating = raing;
     const cellLink = `https://www.imdb.com${window.location.pathname}`;
     const isTv = cellType === 'TV' ? true : false;
