@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         hotstar-enhancements
 // @namespace    http://tampermonkey.net/
-// @version      1.2
+// @version      1.3
 // @description  better subtitles for Disney+ Hotstar. Plus Assign Enter as play button on full screen and more
 // @author       Sid
 // @match        https://www.hotstar.com/*
@@ -14,7 +14,7 @@
 
   // font size
   // Default 5em. Hotstar default 28px
-  const FONT_SIZE = '3.1rem';
+  const FONT_SIZE = '3.3rem';
 
   // Remove channel logo
   const HIDE_CHANNEL_LOGO = true;
@@ -26,15 +26,11 @@
 
     const styleElm = document.createElement('style');
 
-    let style = `
-      @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&display=swap');
-    `;
-
-    style = `.shaka-text-container > span {
+    let style = `.shaka-text-container > span {
           font-family: 'Roboto', sans-serif !important;
-          font-size: ${FONT_SIZE}!important;
+          font-size: ${FONT_SIZE} !important;
           background-color: transparent !important;
-          font-weight: 700 !important;
+          font-weight: 400 !important;
           text-shadow: 2px 2px 0 #000, -2px -2px 0 #000, 2px -2px 0 #000, -2px 2px 0 #000, 2px 2px 0 #000;
        }`;
 
