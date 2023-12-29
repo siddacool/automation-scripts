@@ -1,13 +1,14 @@
 // ==UserScript==
 // @name         youtube-enhancements-tm
 // @namespace    https://github.com/siddacool/automation-scripts/tree/main/src/youtube-enhancements-tm
-// @version      1.2
+// @version      1.2.1
 // @description  Enter as play/pause button for Youtube.
 // @author       Sid
 // @match        https://www.youtube.com/*
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=www.youtube.com/
 // @grant        none
 // @downloadURL  https://raw.githubusercontent.com/siddacool/automation-scripts/main/src/youtube-enhancements-tm/youtube-enhancements-tm.js
+// @updateURL    https://raw.githubusercontent.com/siddacool/automation-scripts/main/src/youtube-enhancements-tm/youtube-enhancements-tm.js
 // ==/UserScript==
 
 // @ts-check
