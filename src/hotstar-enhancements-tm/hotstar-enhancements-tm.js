@@ -1,12 +1,13 @@
 // ==UserScript==
 // @name         hotstar-enhancements-tm
 // @namespace    https://github.com/siddacool/automation-scripts/tree/main/src/hotstar-enhancements-tm
-// @version      1.45
-// @description  Better subtitles, Enter as play button and more enhamcements for Disney+ Hotstar.
+// @version      1.46
+// @description  Better subtitles, Enter as play button and more enhancements for Disney+ Hotstar.
 // @author       Sid
 // @match        https://www.hotstar.com/*
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=https://www.hotstar.com/in/
 // @grant        none
+// @downloadURL  https://raw.githubusercontent.com/siddacool/automation-scripts/main/src/hotstar-enhancements-tm/hotstar-enhancements-tm.js
 // ==/UserScript==
 
 // @ts-check
