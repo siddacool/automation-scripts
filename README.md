@@ -1,6 +1,6 @@
 # Automation Scripts
 
-- [Hotstar enhancements tampermonkey script](src/hotstar-enhancements-tm/)
+- Hotstar enhancements tampermonkey script [🔽 Get](src/hotstar-enhancements-tm/)
 
 ## 1) imdb to table tempermonkey script
 
