@@ -6,6 +6,6 @@
   "author": "siddacool",
   "license": "ISC",
   "devDependencies": {
-    "prettier": "^2.8.1"
+    "prettier": "^3.1.1"
   }
 }
