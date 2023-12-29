@@ -1,5 +1,7 @@
 # Automation Scripts
 
+- [Hotstar enhancements tampermonkey script](src/hotstar-enhancements-tm/)
+
 ## 1) imdb to table tempermonkey script
 
 `src/imdb-to-table-tm.js`
