@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         hotstar-enhancements-tm
 // @namespace    http://tampermonkey.net/
-// @version      1.3
+// @version      1.4
 // @description  Better subtitles, Enter as play button and more enhamcements for Disney+ Hotstar.
 // @author       Sid
 // @match        https://www.hotstar.com/*
@@ -13,7 +13,7 @@
 (function () {
   // CSUTOMIZATIONS
   // font size
-  const FONT_SIZE = '3.1rem';
+  const FONT_SIZE = '3.3rem';
   // show/hide logo
   const SHOW_CHANNEL_LOGO = false;
 
@@ -41,7 +41,7 @@
         font-family: 'Roboto', sans-serif !important;
         font-size: ${FONT_SIZE}!important;
         background-color: transparent !important;
-        font-weight: 700 !important;
+        font-weight: 400 !important;
         text-shadow: 2px 2px 0 #000, -2px -2px 0 #000, 2px -2px 0 #000, -2px 2px 0 #000, 2px 2px 0 #000;
      }
     `;
