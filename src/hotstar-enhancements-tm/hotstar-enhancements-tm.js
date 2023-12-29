@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         hotstar-enhancements-tm
 // @namespace    https://github.com/siddacool/automation-scripts/tree/main/src/hotstar-enhancements-tm
-// @version      1.46
+// @version      1.47.1
 // @description  Better subtitles, Enter as play button and more enhancements for Disney+ Hotstar.
 // @author       Sid
 // @match        https://www.hotstar.com/*
