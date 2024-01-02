@@ -5,7 +5,13 @@
   "keywords": [],
   "author": "siddacool",
   "license": "ISC",
+  "scripts": {
+    "lint": "prettier --check . && eslint .",
+    "format": "prettier --write ."
+  },
   "devDependencies": {
+    "eslint": "^8.56.0",
+    "eslint-config-prettier": "^9.1.0",
     "prettier": "^3.1.1"
   }
 }
