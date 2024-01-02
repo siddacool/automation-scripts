@@ -1,8 +1,8 @@
 // ==UserScript==
-// @name         Youtube enhancements
+// @name         Youtube Enhancements
 // @namespace    https://github.com/siddacool/automation-scripts/tree/main/src/youtube-enhancements-tm
-// @version      1.2.2
-// @description  Enter as play/pause button for Youtube.
+// @version      1.0.0
+// @description  Enhance your Youtube viewing experience with features like Enter as play/pause button and more.
 // @author       Sid
 // @match        https://www.youtube.com/*
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=www.youtube.com/

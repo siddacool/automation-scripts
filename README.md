@@ -4,5 +4,5 @@ Make your life easy with automation scripts (currently available for Tampermonke
 
 ## Tampermonkey scripts
 
-- Hotstar enhancements [🔽 Get](src/hotstar-enhancements-tm/)
-- Youtube enhancements [🔽 Get](src/youtube-enhancements-tm/)
+- Disney+ Hotstar Enhancements [🔽 Get](src/hotstar-enhancements-tm/)
+- Youtube Enhancements [🔽 Get](src/youtube-enhancements-tm/)
