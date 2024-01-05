@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         IMDB Copy Markdown Link
 // @namespace    https://github.com/siddacool/automation-scripts/tree/main/src/imdb-copy-link-tm
-// @version      1.0.1
+// @version      1.1.0
 // @description  Copy imdb link in markdown format.
 // @author       Sid
 // @match        https://www.imdb.com/title/*
@@ -58,7 +58,7 @@
     const openGraphUrlTag = document.querySelector('meta[property="og:url"]');
     const url = openGraphUrlTag?.getAttribute('content') || '';
 
-    copyToClipboard(`[${title} ${formatedYear}](${url})`);
+    copyToClipboard(`${title} ${formatedYear} [🔗](${url})`);
   }
 
   /**

@@ -1,6 +1,6 @@
 {
   "name": "imdb-copy-link-tm",
-  "version": "1.0.1",
+  "version": "1.1.0",
   "description": "Copy imdb link in markdown format",
   "keywords": [
     "Tampermonkey",
