@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         IMDB Copy Markdown Link
 // @namespace    https://github.com/siddacool/automation-scripts/tree/main/src/imdb-copy-link-tm
-// @version      1.0.0
+// @version      1.0.1
 // @description  Copy imdb link in markdown format.
 // @author       Sid
 // @match        https://www.imdb.com/title/*
@@ -67,30 +67,62 @@
    * @returns {void}
    */
   function createCopyButton() {
-    // Create Copy Button Element
-    const copyButtonElement = document.createElement('button');
-    const copyButtonElementStyles = `
-      font-size: 1rem;
-      padding: 5px;
+    const styleElm = document.createElement('style');
+
+    const globalStyles = `
+      .MarkdownLinkCopyButton {
+        font-size: 1rem;
+        padding: 5px;
+        display: inline-flex;
+        background: transparent;
+        border: 0;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        border-radius: 3px;
+        transition: all 100ms;
+        transform: scale(1.0);
+     }
+
+    .MarkdownLinkCopyButton img {
       display: inline-flex;
-      background: transparent;
-      border: 0;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
+      width: 20px;
+      height: 20px;
+      transition: all 100ms;
+   }
+
+     .MarkdownLinkCopyButton:hover {
+        background: #f5c518;
+        transform: scale(1.1);
+     }
+
+     .MarkdownLinkCopyButton:active {
+        background: #f5c518;
+        transform: scale(0.9);
+     }
+
+    .MarkdownLinkCopyButton:hover img {
+      filter: invert(1);
+    }
+
+    .MarkdownLinkCopyButton:active img {
+      filter: invert(1);
+    }
     `;
 
-    copyButtonElement.setAttribute('style', copyButtonElementStyles);
+    styleElm.innerText = globalStyles;
+
+    document.getElementsByTagName('head')[0].appendChild(styleElm);
+
+    // Create Copy Button Element
+    const copyButtonElement = document.createElement('button');
+
+    copyButtonElement.classList.add('MarkdownLinkCopyButton');
 
     copyButtonElement.addEventListener('click', createMarkdownLink);
 
     // Create image Element
     const imageElement = document.createElement('img');
-    const imageElementStyles = `
-      display: inline-flex;
-      width: 20px;
-      height: 20px;
-    `;
 
     imageElement.setAttribute(
       'src',
@@ -98,8 +130,6 @@
     );
 
     imageElement.setAttribute('alt', 'Copy');
-
-    imageElement.setAttribute('style', imageElementStyles);
 
     copyButtonElement.appendChild(imageElement);
 
