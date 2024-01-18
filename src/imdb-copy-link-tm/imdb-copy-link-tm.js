@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         IMDB Copy Markdown Link
 // @namespace    https://github.com/siddacool/automation-scripts/tree/main/src/imdb-copy-link-tm
-// @version      1.1.0
+// @version      1.2.0
 // @description  Copy imdb link in markdown format.
 // @author       Sid
 // @match        https://www.imdb.com/title/*
@@ -16,50 +16,159 @@
   'use strict';
 
   /**
-   * Remove everything except numbers and '-' symbol from the input string.
-   *
-   * @param {string} inputString - The input string containing numbers and '-' symbol.
-   * @returns {string} - The string with only numbers and '-' symbol.
+   * MarkdownLinkCopyButton
+   * @extends {HTMLElement}
    */
-  function removeNonNumeric(inputString) {
-    return inputString.replace(/[^\d–-]/g, '');
-  }
+  class MarkdownLinkCopyButton extends HTMLElement {
+    /**
+     * Creates an instance of CustomButton.
+     * @constructor
+     */
+    constructor() {
+      super();
+      /**
+       * The Shadow DOM of the component.
+       * @type {ShadowRoot}
+       * @private
+       */
+      this._shadowRoot = this.attachShadow({ mode: 'open' });
 
-  /**
-   * Copy text to the clipboard.
-   *
-   * @param {string} text - The text to be copied.
-   * @returns {Promise<void>} - A Promise that resolves when the text is copied successfully.
-   */
-  async function copyToClipboard(text) {
-    try {
-      await navigator.clipboard.writeText(text);
-      console.log('Text copied to clipboard:', text);
-    } catch (err) {
-      console.error('Unable to copy text to clipboard.', err);
+      // Attach a click event listener to the internal button
+      this._handleOnClick = this._handleOnClick.bind(this);
+    }
+
+    connectedCallback() {
+      this._shadowRoot.innerHTML = `
+      <style>
+        :host {
+          display: inline-flex;
+          position: relative;
+        }
+
+        button {
+          width: 35px;
+          height: 35px;
+          display: flex;
+          background: transparent;
+          border: 0;
+          align-items: center;
+          justify-content: center;
+          cursor: pointer;
+          border-radius: 50%;
+          transition: all 100ms;
+          color: #fff;
+          position: relative;
+          top: 3px;
+        }
+
+        button:hover {
+          color: #f5c518;
+          background: rgb(0 0 0 / 25%);
+        }
+
+        button:active {
+          color: #f5c518;
+          background: rgb(0 0 0 / 35%);
+        }
+
+        svg {
+          display: inline-flex;
+          width: 20px;
+          height: 20px;
+          transition: all 100ms;
+          fill: currentColor;
+        }
+
+        .text-copied-message {
+          position: absolute;
+          transition: all 600ms;
+          top: 36px;
+          left: -7px;
+          font-size: 0.8rem;
+          width: 55px;
+          background-color: #000;
+          height: 30px;
+          display: none;
+          align-items: center;
+          justify-content: center;
+          border-radius: 4px;
+        }
+
+        .text-copied-message.show {
+          display: flex;
+        }
+      </style>
+
+      <button id="internalButton" title="Copy title">
+        <svg clip-rule="evenodd" fill-rule="evenodd" stroke-linejoin="round" stroke-miterlimit="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M6 18v3c0 .621.52 1 1 1h14c.478 0 1-.379 1-1V7c0-.478-.379-1-1-1h-3V3c0-.478-.379-1-1-1H3c-.62 0-1 .519-1 1v14c0 .621.52 1 1 1zM16.5 6H7c-.62 0-1 .519-1 1v9.5H3.5v-13h13z" fill-rule="nonzero"/>
+        </svg>
+      </button>
+
+      <span class="text-copied-message">Copied</span>
+    `;
+
+      // Select the internal button and attach the click event listener
+      this._internalButton = this._shadowRoot.getElementById('internalButton');
+
+      // Click event
+      this._internalButton?.addEventListener('click', this._handleOnClick);
+    }
+
+    /**
+     * Remove everything except numbers and '-' symbol from the input string.
+     * @private
+     * @param {string} inputString - The input string containing numbers and '-' symbol.
+     * @returns {string} - The string with only numbers and '-' symbol.
+     */
+    _removeNonNumeric(inputString) {
+      return inputString.replace(/[^\d–-]/g, '');
+    }
+
+    /**
+     * Copy text to the clipboard.
+     * @private
+     * @param {string} text - The text to be copied.
+     * @returns {Promise<void>} - A Promise that resolves when the text is copied successfully.
+     */
+    async _copyToClipboard(text) {
+      try {
+        await navigator.clipboard.writeText(text);
+        console.log('Text copied to clipboard:', text);
+      } catch (err) {
+        console.error('Unable to copy text to clipboard.', err);
+      }
+    }
+
+    /**
+     * Handles the click event of the internal button.
+     * @private
+     */
+    _handleOnClick() {
+      const titleElement = document.querySelector('[data-testid="hero__pageTitle"]');
+      const title = titleElement?.textContent?.trim();
+
+      const titleTagRaw = document.querySelector('title');
+      const filterMainTitle =
+        titleTagRaw?.textContent?.trim().replace(`${title} `, '').replace(' - IMDb', '') || '';
+      const year = this._removeNonNumeric(filterMainTitle) || '';
+      const formatedYear = year ? `(${year})` : '';
+
+      const openGraphUrlTag = document.querySelector('meta[property="og:url"]');
+      const url = openGraphUrlTag?.getAttribute('content') || '';
+
+      this._copyToClipboard(`${title} ${formatedYear} [🔗](${url})`);
+
+      const textCopiedMessage = this._shadowRoot.querySelector('.text-copied-message');
+
+      textCopiedMessage?.classList.add('show');
+
+      setTimeout(() => {
+        textCopiedMessage?.classList.remove('show');
+      }, 1500);
     }
   }
 
-  /**
-   * Create Markdown Link
-   *
-   * @returns {void}
-   */
-  function createMarkdownLink() {
-    const titleElement = document.querySelector('[data-testid="hero__pageTitle"]');
-    const title = titleElement?.textContent?.trim();
-
-    const titleTagRaw = document.querySelector('title');
-    const filterMainTitle =
-      titleTagRaw?.textContent?.trim().replace(`${title} `, '').replace(' - IMDb', '') || '';
-    const year = removeNonNumeric(filterMainTitle) || '';
-    const formatedYear = year ? `(${year})` : '';
-
-    const openGraphUrlTag = document.querySelector('meta[property="og:url"]');
-    const url = openGraphUrlTag?.getAttribute('content') || '';
-
-    copyToClipboard(`${title} ${formatedYear} [🔗](${url})`);
-  }
+  customElements.define('markdown-link-copy-button', MarkdownLinkCopyButton);
 
   /**
    * Create Copy Button
@@ -67,71 +176,8 @@
    * @returns {void}
    */
   function createCopyButton() {
-    const styleElm = document.createElement('style');
-
-    const globalStyles = `
-      .MarkdownLinkCopyButton {
-        font-size: 1rem;
-        padding: 5px;
-        display: inline-flex;
-        background: transparent;
-        border: 0;
-        align-items: center;
-        justify-content: center;
-        cursor: pointer;
-        border-radius: 3px;
-        transition: all 100ms;
-        transform: scale(1.0);
-     }
-
-    .MarkdownLinkCopyButton img {
-      display: inline-flex;
-      width: 20px;
-      height: 20px;
-      transition: all 100ms;
-   }
-
-     .MarkdownLinkCopyButton:hover {
-        background: #f5c518;
-        transform: scale(1.1);
-     }
-
-     .MarkdownLinkCopyButton:active {
-        background: #f5c518;
-        transform: scale(0.9);
-     }
-
-    .MarkdownLinkCopyButton:hover img {
-      filter: invert(1);
-    }
-
-    .MarkdownLinkCopyButton:active img {
-      filter: invert(1);
-    }
-    `;
-
-    styleElm.innerText = globalStyles;
-
-    document.getElementsByTagName('head')[0].appendChild(styleElm);
-
     // Create Copy Button Element
-    const copyButtonElement = document.createElement('button');
-
-    copyButtonElement.classList.add('MarkdownLinkCopyButton');
-
-    copyButtonElement.addEventListener('click', createMarkdownLink);
-
-    // Create image Element
-    const imageElement = document.createElement('img');
-
-    imageElement.setAttribute(
-      'src',
-      'https://raw.githubusercontent.com/siddacool/automation-scripts/main/src/imdb-copy-link-tm/resources/copy-icon.svg',
-    );
-
-    imageElement.setAttribute('alt', 'Copy');
-
-    copyButtonElement.appendChild(imageElement);
+    const markdownLinkCopyButton = document.createElement('markdown-link-copy-button');
 
     const titleElement = document.querySelector('[data-testid="hero__pageTitle"]');
 
@@ -144,7 +190,7 @@
     );
 
     // Add Copy Button Element
-    titleElement?.appendChild(copyButtonElement);
+    titleElement?.appendChild(markdownLinkCopyButton);
   }
 
   /**
