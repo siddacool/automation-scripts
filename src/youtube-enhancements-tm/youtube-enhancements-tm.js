@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Youtube Enhancements
 // @namespace    https://github.com/siddacool/automation-scripts/tree/main/src/youtube-enhancements-tm
-// @version      1.0.2
+// @version      1.0.3
 // @description  Enhance your Youtube viewing experience with features like Enter as play/pause button and more.
 // @author       Sid
 // @match        https://www.youtube.com/*
@@ -31,20 +31,18 @@
     }
 
     if (event.key === 'Enter') {
-      /**
-       * Player window.
-       * @type {HTMLElement | null}
-       */
-      const player = document.querySelector('video.video-stream.html5-main-video');
+      event.preventDefault();
 
-      console.log(player);
+      // "k" is play/pause shortcut
+      const simulatedKeybaordKeyK = new KeyboardEvent('keydown', {
+        key: 'k',
+        code: 'KeyK',
+        keyCode: 75,
+        which: 75,
+        charCode: 75,
+      });
 
-      if (!player) {
-        console.error('Player not found');
-        return;
-      }
-
-      player.click();
+      document.dispatchEvent(simulatedKeybaordKeyK);
     }
   }
 

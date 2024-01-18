@@ -1,6 +1,6 @@
 {
   "name": "youtube-enhancements-tm",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "a Tampermonkey script to enhance your Youtube viewing experience with features like Enter as play/pause button and more.",
   "keywords": [
     "Tampermonkey",
