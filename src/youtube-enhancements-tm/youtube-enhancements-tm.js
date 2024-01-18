@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Youtube Enhancements
 // @namespace    https://github.com/siddacool/automation-scripts/tree/main/src/youtube-enhancements-tm
-// @version      1.0.1
+// @version      1.0.2
 // @description  Enhance your Youtube viewing experience with features like Enter as play/pause button and more.
 // @author       Sid
 // @match        https://www.youtube.com/*
@@ -31,14 +31,13 @@
     }
 
     if (event.key === 'Enter') {
-      // Assiagn Enter button for play/pause
-      event.preventDefault();
-
       /**
        * Player window.
        * @type {HTMLElement | null}
        */
       const player = document.querySelector('video.video-stream.html5-main-video');
+
+      console.log(player);
 
       if (!player) {
         console.error('Player not found');
