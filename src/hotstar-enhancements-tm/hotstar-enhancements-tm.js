@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Disney+ Hotstar Enhancements
 // @namespace    https://github.com/siddacool/automation-scripts/tree/main/src/hotstar-enhancements-tm
-// @version      1.0.1
+// @version      1.0.2
 // @description  Enhance your Disney+ Hotstar viewing experience with features like better subtitles, Enter as play/pause button and more.
 // @author       Sid
 // @match        https://www.hotstar.com/*
@@ -41,7 +41,7 @@
     const suntitleStyles = `
       @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&display=swap');
 
-      .shaka-text-container > span {
+      .shaka-text-container span {
         font-family: 'Roboto', sans-serif !important;
         font-size: ${FONT_SIZE}!important;
         background-color: transparent !important;
