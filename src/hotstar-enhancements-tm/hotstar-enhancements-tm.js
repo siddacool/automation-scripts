@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Disney+ Hotstar Enhancements
 // @namespace    https://github.com/siddacool/automation-scripts/tree/main/src/hotstar-enhancements-tm
-// @version      1.0.3
+// @version      1.0.4
 // @description  Enhance your Disney+ Hotstar viewing experience with features like better subtitles, Enter as play/pause button and more.
 // @author       Sid
 // @match        https://www.hotstar.com/*
@@ -78,22 +78,20 @@
    * @returns {void}
    */
   function keybaordShortcutEnhance(event) {
-    // ignore if not fullscreen
-    if (document.fullscreenElement === null) {
-      return;
-    }
-
     if (event.key === 'Enter') {
       // Assiagn Enter button for play/pause
       event.preventDefault();
 
       /**
        * Player window.
-       * @type {HTMLButtonElement | null}
+       * @type {HTMLElement | null}
        */
       const player =
         document.querySelector('button[aria-label="Play"]') ||
-        document.querySelector('button[aria-label="Pause"]');
+        document.querySelector('button[aria-label="Pause"]') ||
+        document.querySelector('.skin-container');
+
+      console.log('keybaordShortcutEnhance', player);
 
       player?.click();
     } else if (event.key === 's') {

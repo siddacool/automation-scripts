@@ -1,6 +1,6 @@
 {
   "name": "hotstar-enhancements-tm",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "a Tampermonkey script to enhance your Disney+ Hotstar viewing experience with features like better subtitles, Enter as play/pause button and more.",
   "keywords": [
     "Tampermonkey",
