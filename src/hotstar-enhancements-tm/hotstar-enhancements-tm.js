@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Disney+ Hotstar Enhancements
 // @namespace    https://github.com/siddacool/automation-scripts/tree/main/src/hotstar-enhancements-tm
-// @version      1.0.2
+// @version      1.0.3
 // @description  Enhance your Disney+ Hotstar viewing experience with features like better subtitles, Enter as play/pause button and more.
 // @author       Sid
 // @match        https://www.hotstar.com/*
@@ -89,9 +89,11 @@
 
       /**
        * Player window.
-       * @type {HTMLElement | null}
+       * @type {HTMLButtonElement | null}
        */
-      const player = document.querySelector('.skin-container');
+      const player =
+        document.querySelector('button[aria-label="Play"]') ||
+        document.querySelector('button[aria-label="Pause"]');
 
       player?.click();
     } else if (event.key === 's') {
