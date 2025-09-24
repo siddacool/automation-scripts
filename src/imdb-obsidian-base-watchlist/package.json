@@ -1,0 +1,12 @@
+{
+  "name": "imdb-obsidian-base-watchlist",
+  "version": "1.0.0",
+  "description": "Copy IMDB data to Markdown for Obsidian base",
+  "keywords": [
+    "Tampermonkey",
+    "imdb",
+    "imdb copy data"
+  ],
+  "author": "siddacool",
+  "license": "ISC"
+}
