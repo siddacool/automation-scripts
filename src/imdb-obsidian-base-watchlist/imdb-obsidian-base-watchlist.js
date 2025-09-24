@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name        Imdb Obsidian Base Watchlist
 // @namespace    https://github.com/siddacool/automation-scripts/tree/main/src/imdb-obsidian-base-watchlist
-// @version      1.2.0
+// @version      1.2.1
 // @description  Copy IMDB data to Markdown for Obsidian base.
 // @author       Sid
 // @match        https://www.imdb.com/title/*
@@ -507,7 +507,7 @@ window.imdbDatabase = undefined;
     _getImdbInfo() {
       /** @type {ImdbDatabase | undefined} */
       // @ts-ignore
-      const data = window.imdbDataBase;
+      const data = window.imdbDatabase;
 
       const {
         name = '',
@@ -609,7 +609,7 @@ ${description}
    */
   function main() {
     // @ts-ignore
-    window.imdbDataBase = getDatabase();
+    window.imdbDatabase = getDatabase();
 
     createCopyButton();
   }
