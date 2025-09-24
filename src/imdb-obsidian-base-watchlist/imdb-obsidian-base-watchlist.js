@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name        Imdb Obsidian Base Watchlist
 // @namespace    https://github.com/siddacool/automation-scripts/tree/main/src/imdb-obsidian-base-watchlist
-// @version      1.0.0
+// @version      1.1.0
 // @description  Copy IMDB data to Markdown for Obsidian base.
 // @author       Sid
 // @match        https://www.imdb.com/title/*
@@ -162,20 +162,44 @@
     }
 
     /**
-     * Extract runtime and rating/certification from a string like "1h | TV-MA".
+     * Get the current local date-time string in `YYYY-MM-DDTHH:MM:SS` format.
      *
      * @private
-     * @param {string} inputString - The input string containing runtime and certification.
-     * @returns {{runtime: string, certification: string}|null} - Extracted data or null if parsing fails.
+     * @returns {string} - Current local date-time in `YYYY-MM-DDTHH:MM:SS` format.
+     */
+    _getCurrentLocalDateTime() {
+      const dateObj = new Date();
+
+      const pad = (/** @type {number} */ n) => n.toString().padStart(2, '0');
+
+      const year = dateObj.getFullYear();
+      const month = pad(dateObj.getMonth() + 1); // Months are 0-based
+      const day = pad(dateObj.getDate());
+      const hours = pad(dateObj.getHours());
+      const minutes = pad(dateObj.getMinutes());
+      const seconds = pad(dateObj.getSeconds());
+
+      return `${year}-${month}-${day}T${hours}:${minutes}:${seconds}`;
+    }
+
+    /**
+     * Extract runtime and rating/certification from a string like "1h | TV-MA".
+     * Can handle cases where only runtime is provided, e.g., "1h".
+     *
+     * @private
+     * @param {string} inputString - The input string containing runtime and/or certification.
+     * @returns {{runtime: string, certification: string}} - Extracted data, null if missing.
      */
     _extractRuntimeAndCertification(inputString) {
-      if (!inputString.includes('|')) return null;
+      if (!inputString) {
+        return { runtime: '', certification: '' };
+      }
 
-      const [runtime, certification] = inputString.split('|').map((s) => s.trim());
+      const parts = inputString.split('|').map((s) => s.trim());
 
       return {
-        runtime,
-        certification,
+        runtime: parts[0] || '',
+        certification: parts[1] || '',
       };
     }
 
@@ -188,6 +212,71 @@
      */
     _replaceAmazonImageSize(url) {
       return url.replace(/_UX\d+_/, '_UX200_');
+    }
+
+    /**
+     * Convert a content type string to a human-readable category.
+     * Example: "video.tv_show" -> "TV Series", default -> "Movie".
+     *
+     * @private
+     * @param {string} contentType - The content type identifier.
+     * @returns {string} - Human-readable category.
+     */
+    _getContentCategory(contentType) {
+      switch (contentType) {
+        case 'video.tv_show':
+        case 'video.tv_episode':
+        case 'video.miniseries':
+          return 'TV Series';
+        case 'video.movie':
+        default:
+          return 'Movie';
+      }
+    }
+
+    /**
+     * get Country Of Origin
+     *
+     * @private
+     * @returns {string} - Human-readable category.
+     */
+    _getCountryOfOrigin() {
+      const countryOfOriginTag = document
+        .querySelector('[data-testid="title-details-origin"]')
+        ?.querySelector('ul')
+        ?.querySelectorAll('li');
+
+      if (countryOfOriginTag && countryOfOriginTag[0]) {
+        switch (countryOfOriginTag[0].innerText.trim()) {
+          case 'United States':
+            return 'US';
+          case 'United Kingdom':
+            return 'UK';
+          default:
+            return countryOfOriginTag[0].innerText.trim();
+        }
+      }
+
+      return 'US';
+    }
+
+    /**
+     * get Main Language
+     *
+     * @private
+     * @returns {string} - Human-readable category.
+     */
+    _getMainLanguage() {
+      const languageTag = document
+        .querySelector('[data-testid="title-details-languages"]')
+        ?.querySelector('ul')
+        ?.querySelectorAll('li');
+
+      if (languageTag && languageTag[0]) {
+        return languageTag[0].innerText.trim();
+      }
+
+      return 'English';
     }
 
     /**
@@ -221,13 +310,28 @@
 
       const smallPoster = this._replaceAmazonImageSize(poster);
 
+      const createdAt = this._getCurrentLocalDateTime();
+
+      const description = document
+        .querySelector('[name="description"]')
+        ?.getAttribute('content')
+        ?.replace(`${name}: `, '');
+
+      const categoryTag =
+        document.querySelector('[property="og:type"]')?.getAttribute('content') || '';
+      const category = this._getContentCategory(categoryTag);
+
+      const country = this._getCountryOfOrigin();
+      const language = this._getMainLanguage();
+
       return `---
+Name: ${name}
 Year: ${year}
 pg: ${certification}
 Symbol:
-Category: Movie
-Language: English
-Country: US
+Category: ${category}
+Language: ${language}
+Country: ${country}
 IMDB: ${rating}
 Runtime: ${runtime}
 Rotten:
@@ -237,12 +341,15 @@ ${tagLines}
 Poster: ${poster}
 Saved: true
 Watched on:
+Created on: ${createdAt}
 ---
 #watchList
 
 # ${name} (${year})
 
 ![poster](${smallPoster})
+
+${description}
 `;
     }
 
