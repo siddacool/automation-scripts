@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name        Imdb Obsidian Base Watchlist
 // @namespace    https://github.com/siddacool/automation-scripts/tree/main/src/imdb-obsidian-base-watchlist
-// @version      1.2.1
+// @version      1.2.2
 // @description  Copy IMDB data to Markdown for Obsidian base.
 // @author       Sid
 // @match        https://www.imdb.com/title/*
@@ -40,7 +40,7 @@
  * @property {string[]} [languages] - Movie languages
  * @property {string} description - A brief description or synopsis of the movie.
  * @property {ImdbDatabasePosters} posters - The URL for the movie's poster image.
- * @property {string} [createdOn] - created On date and time
+ * @property {string} [createdAt] - created At date and time
  */
 
 /**
@@ -350,6 +350,7 @@ window.imdbDatabase = undefined;
     const genre = imdbSchema.genre || [];
     const name = cleanText(imdbSchema.alternateName || imdbSchema.name || '');
     const originalName = cleanText(imdbSchema.name || '');
+    // @ts-ignore
     const category = getContentCategory(imdbSchema['@type'] || '', genre);
     const rating = imdbSchema.aggregateRating?.ratingValue?.toString();
     const certification = imdbSchema.contentRating;
@@ -361,7 +362,7 @@ window.imdbDatabase = undefined;
       normal: imdbSchema.image || '',
       small: imdbSchema.image?.replace('.jpg', '_UX200_.jpg') || '',
     };
-    const createdOn = getCurrentLocalDateTime();
+    const createdAt = getCurrentLocalDateTime();
     const runtime = convertIsoDurationToReadable(imdbSchema.duration || '');
     const countries = getCountryOfOrigin();
     const languages = getLanguages();
@@ -377,7 +378,7 @@ window.imdbDatabase = undefined;
       imdbLink,
       description,
       posters,
-      createdOn,
+      createdAt,
       runtime,
       countries,
       languages,
@@ -521,7 +522,7 @@ window.imdbDatabase = undefined;
         imdbLink = '',
         description = '',
         posters,
-        createdOn = '',
+        createdAt = '',
         genre = [],
         years,
       } = data || {};
@@ -546,7 +547,7 @@ ${genreLines}
 Poster: ${posters?.normal || ''}
 In Watchlist: true
 Watched on:
-Created on: ${createdOn}
+Created at: ${createdAt}
 ---
 #watchList
 
