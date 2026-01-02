@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name        Imdb Obsidian Base Watchlist
 // @namespace    https://github.com/siddacool/automation-scripts/tree/main/src/imdb-obsidian-base-watchlist
-// @version      1.2.2
+// @version      1.3.0
 // @description  Copy IMDB data to Markdown for Obsidian base.
 // @author       Sid
 // @match        https://www.imdb.com/title/*
@@ -41,6 +41,7 @@
  * @property {string} description - A brief description or synopsis of the movie.
  * @property {ImdbDatabasePosters} posters - The URL for the movie's poster image.
  * @property {string} [createdAt] - created At date and time
+ * @property {string} [zettelId] - A Zettelkasten ID
  */
 
 /**
@@ -182,24 +183,50 @@ window.imdbDatabase = undefined;
   }
 
   /**
-   * Generates a string representing the current local date and time in a specific format.
-   * The format is 'YYYY-MM-DDTHH:mm:ss', which is a common format for representing local date and time without a timezone offset.
+   * Pads a number to two digits using leading zeros.
    *
-   * @returns {string} The formatted local date and time string.
+   * @param {number} value
+   * @returns {string}
    */
-  function getCurrentLocalDateTime() {
-    const dateObj = new Date();
+  function pad2(value) {
+    return value.toString().padStart(2, '0');
+  }
 
-    const pad = (/** @type {number} */ n) => n.toString().padStart(2, '0');
-
-    const year = dateObj.getFullYear();
-    const month = pad(dateObj.getMonth() + 1); // Months are 0-based, so add 1
-    const day = pad(dateObj.getDate());
-    const hours = pad(dateObj.getHours());
-    const minutes = pad(dateObj.getMinutes());
-    const seconds = pad(dateObj.getSeconds());
+  /**
+   * Formats a Date object as a local ISO-like datetime string.
+   * Format: YYYY-MM-DDTHH:mm:ss
+   *
+   * @param {Date} date
+   * @returns {string}
+   */
+  function formatLocalDateTime(date) {
+    const year = date.getFullYear();
+    const month = pad2(date.getMonth() + 1);
+    const day = pad2(date.getDate());
+    const hours = pad2(date.getHours());
+    const minutes = pad2(date.getMinutes());
+    const seconds = pad2(date.getSeconds());
 
     return `${year}-${month}-${day}T${hours}:${minutes}:${seconds}`;
+  }
+
+  /**
+   * Generates a Zettelkasten-style ID from a Date object.
+   * Uses minute precision (no seconds).
+   *
+   * Format: YYYYMMDDHHmm
+   *
+   * @param {Date} date
+   * @returns {string}
+   */
+  function generateZettelIdFromDate(date) {
+    return (
+      date.getFullYear().toString() +
+      pad2(date.getMonth() + 1) +
+      pad2(date.getDate()) +
+      pad2(date.getHours()) +
+      pad2(date.getMinutes())
+    );
   }
 
   /**
@@ -336,6 +363,21 @@ window.imdbDatabase = undefined;
   }
 
   /**
+   * Decodes HTML entities and unicode escapes in a string.
+   *
+   * @param {string} text
+   * @returns {string}
+   */
+  function decodeHtmlEntities(text) {
+    if (!text) return '';
+
+    // 1️⃣ Create a temporary DOM element
+    const textarea = document.createElement('textarea');
+    textarea.innerHTML = text;
+    return textarea.value;
+  }
+
+  /**
    * getDatabase
    *
    * @returns {ImdbDatabase}
@@ -355,18 +397,22 @@ window.imdbDatabase = undefined;
     const rating = imdbSchema.aggregateRating?.ratingValue?.toString();
     const certification = imdbSchema.contentRating;
     const imdbLink = imdbSchema.url || '';
-    const description = imdbSchema.description || '';
+    const description = decodeHtmlEntities(imdbSchema.description || '');
+
+    /** @type {Date} */
+    const now = new Date();
 
     /** @type {ImdbDatabasePosters} */
     const posters = {
       normal: imdbSchema.image || '',
       small: imdbSchema.image?.replace('.jpg', '_UX200_.jpg') || '',
     };
-    const createdAt = getCurrentLocalDateTime();
+    const createdAt = formatLocalDateTime(now);
     const runtime = convertIsoDurationToReadable(imdbSchema.duration || '');
     const countries = getCountryOfOrigin();
     const languages = getLanguages();
     const years = extractYears(document.querySelector('title')?.innerText.trim() || '');
+    const zettelId = generateZettelIdFromDate(now);
 
     return {
       genre,
@@ -383,6 +429,7 @@ window.imdbDatabase = undefined;
       countries,
       languages,
       years,
+      zettelId,
     };
   }
 
@@ -525,6 +572,7 @@ window.imdbDatabase = undefined;
         createdAt = '',
         genre = [],
         years,
+        zettelId = '',
       } = data || {};
 
       const genreLines = genre.map((/** @type {string} */ item) => `  - ${item}`).join('\n');
@@ -556,6 +604,8 @@ Created at: ${createdAt}
 ![poster](${posters?.small || ''})
 
 ${description}
+
+${zettelId}
 `;
     }
 
