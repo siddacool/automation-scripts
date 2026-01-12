@@ -2,6 +2,8 @@ name: Build & Publish Userscripts
 
 on:
   push:
+    branches:
+      - main
     tags:
       - 'v*.*.*' # Run only on version tags
 
