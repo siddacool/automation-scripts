@@ -4,14 +4,11 @@ on:
   push:
     branches:
       - main
-    tags:
-      - 'v*.*.*' # Trigger on version tags
   workflow_dispatch:
 
 permissions:
   contents: write
   pages: write
-  id-token: write
 
 jobs:
   build-and-publish:
@@ -21,54 +18,27 @@ jobs:
       # 1️⃣ Checkout repository
       - name: Checkout repository
         uses: actions/checkout@v4
-        with:
-          fetch-depth: 0 # fetch all history including tags
 
-      # 2️⃣ Setup Node.js and pnpm
+      # 2️⃣ Set up Node.js and pnpm
       - uses: pnpm/action-setup@v4
         with:
           version: latest
 
+      # 3️⃣ Install dependencies
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
-      # 3️⃣ Build all userscript packages
-      - name: Build all userscripts
+      # 4️⃣ Build all packages
+      - name: Build all packages
         run: pnpm -r run build
 
-      # 4️⃣ Prepare dist files for publishing
-      - name: Collect dist files
-        run: |
-          mkdir -p dist_publish
-          for pkg in packages/*; do
-            if [ -d "$pkg/dist" ]; then
-              cp "$pkg"/dist/*.user.js dist_publish/ || true
-            fi
-          done
-          echo "Files ready to publish:"
-          ls -l dist_publish
-
-      # 5️⃣ Publish to gh-pages branch (safe, preserves existing branch)
+      # 5️⃣ Publish all dist folders to GH-Pages
       - name: Publish to GitHub Pages
         uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: dist_publish
+          publish_dir: packages
           destination_dir: packages
-          # Do NOT use orphan, this preserves branch history
           keep_files: false
           user_name: github-actions
           user_email: github-actions@github.com
-
-      # 6️⃣ Ensure the tag exists for jsDelivr
-      - name: Push tag if not exists
-        if: startsWith(github.ref, 'refs/tags/')
-        run: |
-          TAG_NAME=${GITHUB_REF#refs/tags/}
-          git config user.name "github-actions"
-          git config user.email "github-actions@github.com"
-          git fetch --tags
-          if ! git rev-parse "$TAG_NAME" >/dev/null 2>&1; then
-            git tag $TAG_NAME
-            git push origin $TAG_NAME
-          fi
