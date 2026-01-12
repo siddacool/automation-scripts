@@ -5,6 +5,8 @@ const app = mount(App, {
   target: (() => {
     const app = document.createElement('div');
 
+    app.style.display = 'inline-flex';
+
     const titleElement = document.querySelector('[data-testid="hero__pageTitle"]');
 
     titleElement?.append(app);

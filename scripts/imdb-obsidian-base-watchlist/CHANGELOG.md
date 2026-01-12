@@ -1,5 +1,11 @@
 # Changelog
 
+## 2.0.4
+
+### Patch Changes
+
+- app inline styles added
+
 ## 2.0.3
 
 ### Patch Changes
