@@ -27,6 +27,10 @@ Make your life easy with automation scripts (currently available for Tampermonke
 
 `pnpm --filter <SCRIPT_NAME> dev`
 
+### Build a script
+
+`pnpm --filter <SCRIPT_NAME> build`
+
 ### Version bump
 
 We are using [changesets](https://github.com/changesets/changesets) to manage script versions and changelog.
