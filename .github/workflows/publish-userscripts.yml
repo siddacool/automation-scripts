@@ -17,23 +17,10 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # 1️⃣ Checkout repository
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      # 2️⃣ Setup Node.js 24
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
         with:
-          node-version: 24
-          cache: 'pnpm'
-
-      # 3️⃣ Setup pnpm v10
-      - name: Setup pnpm
-        uses: pnpm/action-setup@v4
-        with:
-          version: 10
-          cache: true
+          version: latest
 
       # 4️⃣ Install dependencies (monorepo)
       - name: Install dependencies
