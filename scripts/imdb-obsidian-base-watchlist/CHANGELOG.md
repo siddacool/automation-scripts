@@ -1,5 +1,11 @@
 # Changelog
 
+## 2.0.3
+
+### Patch Changes
+
+- Fix install link
+
 ## 2.0.2
 
 ### Patch Changes
