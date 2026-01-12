@@ -19,6 +19,8 @@ export function createMonkeyPlugin(options: {
   const suffix = isBeta ? '.beta' : '';
   const baseName = `${packageName}${suffix}`;
 
+  // https://github.com/siddacool/automation-scripts/tree/main/scripts/youtube-enhancements
+
   return monkey({
     entry: 'src/main.ts',
     userscript: {
@@ -27,7 +29,7 @@ export function createMonkeyPlugin(options: {
       version,
       author,
       icon,
-      namespace: `https://github.com/${REPO_SLUG}/tree/main/packages/${packageName}`,
+      namespace: `https://github.com/${REPO_SLUG}/tree/main/scripts/${packageName}`,
       match,
       grant: 'none',
       updateURL: `https://cdn.jsdelivr.net/gh/${REPO_SLUG}@gh-pages/packages/${packageName}/${baseName}.meta.js`,

@@ -1,5 +1,13 @@
 # Changelog
 
+## 3.0.1
+
+### Patch Changes
+
+- Icon added
+- Updated dependencies
+  - @repo/shared@1.0.1
+
 ## 3.0.0
 
 ### Major Changes

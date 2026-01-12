@@ -2,7 +2,7 @@
 
 [Tampermonkey](https://www.tampermonkey.net/) script to enhance your Youtube viewing experience with features like Enter as play/pause button and more.
 
-[raw script](https://raw.githubusercontent.com/siddacool/automation-scripts/main/src/youtube-enhancements-tm/youtube-enhancements-tm.js)
+[Script](https://cdn.jsdelivr.net/gh/siddacool/automation-scripts@gh-pages/packages/youtube-enhancements/youtube-enhancements.user.js)
 
 ## Features
 
@@ -22,12 +22,10 @@ Along with 'spacebar' now enter button can also be used for play/pause function.
 
 5. Click install
 
+---
+
 ## Develop
 
 ### Run
 
 `pnpm --filter youtube-enhancements dev`
-
-### Version
-
-`pnpm --filter youtube-enhancements version patch`
