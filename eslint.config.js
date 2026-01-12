@@ -1,28 +1,59 @@
 import js from '@eslint/js';
-import globals from 'globals';
-import prettierPlugin from 'eslint-plugin-prettier';
-import prettierConfig from 'eslint-config-prettier';
-import { includeIgnoreFile } from '@eslint/compat';
+import ts from '@typescript-eslint/eslint-plugin';
+import tsParser from '@typescript-eslint/parser';
+import svelte from 'eslint-plugin-svelte';
+import prettier from 'eslint-config-prettier';
+import { includeIgnoreFile } from 'eslint-compat-utils';
+import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
-const gitignorePath = fileURLToPath(new URL('./.gitignore', import.meta.url));
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+const isCI = process.env.CI === 'true';
 
 export default [
-  includeIgnoreFile(gitignorePath),
-  js.configs.recommended,
-  prettierConfig,
+  // 1️⃣ Gitignore as base
+  includeIgnoreFile(path.resolve(__dirname, '.gitignore')),
+
+  // 2️⃣ Extra safety ignores
   {
-    files: ['**/*.js'],
+    ignores: ['**/node_modules/**', '**/.svelte-kit/**', '**/dist/**'],
+  },
+
+  // 3️⃣ CI-only ignores
+  {
+    ignores: isCI ? ['build/**'] : [],
+  },
+
+  js.configs.recommended,
+
+  {
+    files: ['**/*.ts'],
+    languageOptions: {
+      parser: tsParser,
+      parserOptions: {
+        project: './tsconfig.json',
+      },
+    },
     plugins: {
-      prettier: prettierPlugin,
+      '@typescript-eslint': ts,
     },
     rules: {
-      'prettier/prettier': 'warn',
-      'no-unused-vars': 'off',
-    },
-    languageOptions: {
-      ecmaVersion: 2020,
-      globals: globals.browser,
+      ...ts.configs.recommended.rules,
+      '@typescript-eslint/no-unused-vars': ['warn'],
     },
   },
+
+  {
+    files: ['**/*.svelte'],
+    plugins: { svelte },
+    languageOptions: {
+      parserOptions: { parser: tsParser },
+    },
+    rules: {
+      ...svelte.configs.recommended.rules,
+    },
+  },
+
+  prettier,
 ];
