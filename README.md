@@ -5,7 +5,7 @@ Make your life easy with automation scripts (currently available for Tampermonke
 ## Tampermonkey scripts
 
 - Disney+ Hotstar Enhancements [🔽 Get](src/hotstar-enhancements-tm/)
-- Youtube Enhancements [🔽 Get](src/youtube-enhancements-tm/)
+- Youtube Enhancements [🔽 Get](scripts/youtube-enhancements/)
 - IMDB Copy Markdown Link [🔽 Get](src/imdb-copy-link-tm/)
 - Imdb Obsidian Base Watchlist [🔽 Get](src/imdb-obsidian-base-watchlist/)
 

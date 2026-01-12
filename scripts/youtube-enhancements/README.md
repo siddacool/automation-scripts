@@ -18,7 +18,7 @@ Along with 'spacebar' now enter button can also be used for play/pause function.
 
 3. Click on "Utilities" tab, scroll down to "Import from URL" textbox.
 
-4. copy [raw script](https://raw.githubusercontent.com/siddacool/automation-scripts/main/src/youtube-enhancements-tm/youtube-enhancements-tm.js) and paste it in "Import from URL" textbox.
+4. copy [Script](https://cdn.jsdelivr.net/gh/siddacool/automation-scripts@gh-pages/packages/youtube-enhancements/youtube-enhancements.user.js) and paste it in "Import from URL" textbox.
 
 5. Click install
 
