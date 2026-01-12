@@ -22,7 +22,7 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
-          fetch-depth: 0 # Needed for tags
+          fetch-depth: 0 # fetch all history including tags
 
       # 2️⃣ Setup Node.js and pnpm
       - uses: pnpm/action-setup@v4
@@ -36,34 +36,39 @@ jobs:
       - name: Build all userscripts
         run: pnpm -r run build
 
-      # 4️⃣ Collect all .user.js files into a temp folder
+      # 4️⃣ Prepare dist files for publishing
       - name: Collect dist files
         run: |
-          mkdir temp
+          mkdir -p dist_publish
           for pkg in packages/*; do
             if [ -d "$pkg/dist" ]; then
-              cp "$pkg"/dist/*.user.js temp/ || true
+              cp "$pkg"/dist/*.user.js dist_publish/ || true
             fi
           done
-          echo "Files to publish:"
-          ls -l temp
+          echo "Files ready to publish:"
+          ls -l dist_publish
 
-      # 5️⃣ Commit temp folder to gh-pages
+      # 5️⃣ Publish to gh-pages branch (safe, preserves existing branch)
       - name: Publish to GitHub Pages
         uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: temp
+          publish_dir: dist_publish
           destination_dir: packages
-          # Force push in case branch is empty
-          force_orphan: true
+          # Do NOT use orphan, this preserves branch history
+          keep_files: false
+          user_name: github-actions
+          user_email: github-actions@github.com
 
-      # 6️⃣ Push the version tag (if triggered by a tag push)
-      - name: Push Git Tag
+      # 6️⃣ Ensure the tag exists for jsDelivr
+      - name: Push tag if not exists
         if: startsWith(github.ref, 'refs/tags/')
         run: |
-          echo "Pushing tag ${GITHUB_REF#refs/tags/}"
-          git config --global user.name "github-actions"
-          git config --global user.email "github-actions@github.com"
-          git tag -f ${GITHUB_REF#refs/tags/}
-          git push origin ${GITHUB_REF#refs/tags/} --force
+          TAG_NAME=${GITHUB_REF#refs/tags/}
+          git config user.name "github-actions"
+          git config user.email "github-actions@github.com"
+          git fetch --tags
+          if ! git rev-parse "$TAG_NAME" >/dev/null 2>&1; then
+            git tag $TAG_NAME
+            git push origin $TAG_NAME
+          fi
