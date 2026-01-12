@@ -1,4 +1,4 @@
-import monkey from 'vite-plugin-monkey';
+import monkey, { type MonkeyUserScript } from 'vite-plugin-monkey';
 import type { Plugin } from 'vite';
 import { REPO_SLUG } from './constants.ts';
 
@@ -10,8 +10,10 @@ export function createMonkeyPlugin(options: {
   description?: string;
   author?: string;
   icon?: string;
+  userscriptProps?: Partial<MonkeyUserScript>;
 }): Plugin[] {
-  const { packageName, displayName, version, match, description, author, icon } = options;
+  const { packageName, displayName, version, match, description, author, icon, userscriptProps } =
+    options;
 
   const isBeta = version.includes('beta');
   const suffix = isBeta ? '.beta' : '';
@@ -30,6 +32,7 @@ export function createMonkeyPlugin(options: {
       grant: 'none',
       updateURL: `https://cdn.jsdelivr.net/gh/${REPO_SLUG}@${version}/packages/${packageName}/dist/${baseName}.meta.js`,
       downloadURL: `https://cdn.jsdelivr.net/gh/${REPO_SLUG}@${version}/packages/${packageName}/dist/${baseName}.user.js`,
+      ...userscriptProps,
     },
     build: {
       fileName: `${baseName}.user.js`,

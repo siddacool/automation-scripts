@@ -22,11 +22,12 @@ Along with 'spacebar' now enter button can also be used for play/pause function.
 
 5. Click install
 
-
 ## Develop
 
 ### Run
+
 `pnpm --filter youtube-enhancements dev`
 
 ### Version
+
 `pnpm --filter youtube-enhancements version patch`

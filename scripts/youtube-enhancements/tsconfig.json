@@ -3,7 +3,7 @@
   "compilerOptions": {
     "composite": true, // required for project references if you want incremental builds
     "allowJs": true,
-    "checkJs": true,
+    "checkJs": true
   },
-  "include": ["src/**/*.ts", "src/**/*.js", "src/**/*.svelte"],
+  "include": ["src/**/*.ts", "src/**/*.js", "src/**/*.svelte"]
 }

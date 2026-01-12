@@ -2,8 +2,8 @@
 
 Edit files and run build scripts to use it.
 
-1) pnpm --filter shared build
-2) pnpm install
+1. pnpm --filter shared build
+2. pnpm install
 
 ### Usage
 
