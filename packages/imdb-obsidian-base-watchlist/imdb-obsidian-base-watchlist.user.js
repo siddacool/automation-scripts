@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Imdb Obsidian Base Watchlist
 // @namespace    https://github.com/siddacool/automation-scripts/tree/main/scripts/imdb-obsidian-base-watchlist
-// @version      2.0.3
+// @version      2.0.4
 // @author       siddacool
 // @description  Copy IMDB data to Markdown for Obsidian base
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=https://www.imdb.com/
@@ -4902,6 +4902,7 @@ destroyed: false
   mount(App, {
     target: (() => {
       const app2 = document.createElement("div");
+      app2.style.display = "inline-flex";
       const titleElement = document.querySelector('[data-testid="hero__pageTitle"]');
       titleElement?.append(app2);
       return app2;
