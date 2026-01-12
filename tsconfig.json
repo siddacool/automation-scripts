@@ -1,0 +1,21 @@
+{
+  "compilerOptions": {
+    "target": "ESNext",
+    "module": "ESNext", // Use ESNext for Vite
+    "moduleResolution": "Node", // Node module resolution
+    "strict": true,
+    "resolveJsonModule": true,
+    "esModuleInterop": true,
+    "baseUrl": ".", // Root for paths
+    "types": ["node"] // For Buffer, etc.
+  },
+  "include": [
+    "packages/*/src/**/*.ts",
+    "packages/*/src/**/*.svelte",
+    "packages/*/vite.config.ts",
+    "scripts/*/src/**/*.ts",
+    "scripts/*/src/**/*.svelte",
+    "scripts/*/vite.config.ts"
+  ],
+  "exclude": ["node_modules", "dist"]
+}

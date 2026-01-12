@@ -21,3 +21,13 @@ Along with 'spacebar' now enter button can also be used for play/pause function.
 4. copy [raw script](https://raw.githubusercontent.com/siddacool/automation-scripts/main/src/youtube-enhancements-tm/youtube-enhancements-tm.js) and paste it in "Import from URL" textbox.
 
 5. Click install
+
+## Develop
+
+### Run
+
+`pnpm --filter youtube-enhancements dev`
+
+### Version
+
+`pnpm --filter youtube-enhancements version patch`
