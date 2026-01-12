@@ -15,8 +15,8 @@ Make your life easy with automation scripts (currently available for Tampermonke
 
 ### Setup
 
-* setup/install IDE extensions for svelte, eslint, prettier, editorconfig etc. 
-* Install relevant [pnpm](https://pnpm.io/) version.
+- setup/install IDE extensions for svelte, eslint, prettier, editorconfig etc.
+- Install relevant [pnpm](https://pnpm.io/) version.
 
 ### Install
 
