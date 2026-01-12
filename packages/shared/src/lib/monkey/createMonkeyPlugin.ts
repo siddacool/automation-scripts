@@ -30,8 +30,8 @@ export function createMonkeyPlugin(options: {
       namespace: `https://github.com/${REPO_SLUG}/tree/main/packages/${packageName}`,
       match,
       grant: 'none',
-      updateURL: `https://cdn.jsdelivr.net/gh/${REPO_SLUG}@${version}/packages/${packageName}/dist/${baseName}.meta.js`,
-      downloadURL: `https://cdn.jsdelivr.net/gh/${REPO_SLUG}@${version}/packages/${packageName}/dist/${baseName}.user.js`,
+      updateURL: `https://cdn.jsdelivr.net/gh/${REPO_SLUG}@gh-pages/packages/${packageName}/${baseName}.meta.js`,
+      downloadURL: `https://cdn.jsdelivr.net/gh/${REPO_SLUG}@gh-pages/packages/${packageName}/${baseName}.user.js`,
       ...userscriptProps,
     },
     build: {
