@@ -6,6 +6,7 @@ on:
       - main
     tags:
       - 'v*.*.*' # Run only on version tags
+  workflow_dispatch:
 
 permissions:
   contents: write
@@ -17,24 +18,37 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v4
+      # 1️⃣ Checkout repository
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # 2️⃣ Set up Node.js and pnpm
       - uses: pnpm/action-setup@v4
         with:
           version: latest
 
-      # 4️⃣ Install dependencies (monorepo)
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
-      # 5️⃣ Build all userscript packages
+      # 3️⃣ Build all userscript packages
       - name: Build all userscripts
         run: pnpm -r run build
 
-      # 6️⃣ Publish dist folders to gh-pages
+      # 4️⃣ Collect all .user.js files into a temporary folder
+      - name: Collect dist files
+        run: |
+          mkdir temp
+          for pkg in packages/*; do
+            if [ -d "$pkg/dist" ]; then
+              cp "$pkg"/dist/*.user.js temp/ || true
+            fi
+          done
+          ls -l temp
+
+      # 5️⃣ Publish to GitHub Pages
       - name: Publish to GitHub Pages
         uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_branch: gh-pages
-          publish_dir: packages
+          publish_dir: temp
           destination_dir: packages
