@@ -1,5 +1,16 @@
 # Changelog
 
+## 3.0.0
+
+### Major Changes
+
+- monkey plugin improved
+
+### Patch Changes
+
+- Updated dependencies
+  - @repo/shared@1.0.0
+
 ## 2.0.0
 
 ### Major Changes
