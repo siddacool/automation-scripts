@@ -1,5 +1,19 @@
 # Changelog
 
+## 2.0.0
+
+### Major Changes
+
+- 19099c7: Converter to Svelte UI
+
+### Patch Changes
+
+- Updated dependencies [19099c7]
+- Updated dependencies
+- Updated dependencies [19099c7]
+  - @repo/shared-browser@1.0.0
+  - @repo/shared@1.0.2
+
 All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
