@@ -1,5 +1,12 @@
 # @repo/shared-browser
 
+## 1.0.1
+
+### Patch Changes
+
+- Fix: Build
+- cd77654: Fix: Build script
+
 ## 1.0.0
 
 ### Major Changes

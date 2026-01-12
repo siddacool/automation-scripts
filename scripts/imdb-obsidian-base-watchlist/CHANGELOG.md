@@ -1,5 +1,14 @@
 # Changelog
 
+## 2.0.2
+
+### Patch Changes
+
+- Updated dependencies
+- Updated dependencies [cd77654]
+  - @repo/shared-browser@1.0.1
+  - @repo/shared@1.0.4
+
 ## 2.0.1
 
 ### Patch Changes

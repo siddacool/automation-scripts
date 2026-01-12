@@ -1,5 +1,11 @@
 # @repo/shared
 
+## 1.0.4
+
+### Patch Changes
+
+- Fix: Build
+
 ## 1.0.3
 
 ### Patch Changes
