@@ -1,26 +1,28 @@
 // ==UserScript==
 // @name         YouTube Enhancements
 // @namespace    https://github.com/siddacool/automation-scripts/tree/main/scripts/youtube-enhancements
-// @version      3.0.6
+// @version      3.2.0
 // @author       siddacool
 // @description  a Tampermonkey script to enhance your Youtube viewing experience with features like Enter as play/pause button and more.
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=www.youtube.com/
 // @downloadURL  https://raw.githubusercontent.com/siddacool/automation-scripts/gh-pages/packages/youtube-enhancements/youtube-enhancements.user.js
 // @updateURL    https://raw.githubusercontent.com/siddacool/automation-scripts/gh-pages/packages/youtube-enhancements/youtube-enhancements.meta.js
 // @match        https://www.youtube.com/*
-// @grant        none
+// @grant        GM_getValue
+// @grant        GM_setValue
 // ==/UserScript==
 
 (function () {
   'use strict';
 
-  function togglePlayPause() {
+  function simulateKeyPress(key) {
+    const keyCode = key.length === 1 ? key.toUpperCase().charCodeAt(0) : 0;
     const event = new KeyboardEvent("keydown", {
-      key: "k",
-      code: "KeyK",
-      keyCode: 75,
-      which: 75,
-      charCode: 75,
+      key,
+      code: `Key${key.toUpperCase()}`,
+      keyCode,
+      which: keyCode,
+      charCode: keyCode,
       bubbles: true,
       cancelable: true
     });
@@ -31,7 +33,7 @@
     if (!window.location.href.includes("watch")) return;
     if (event.key === "Enter") {
       event.preventDefault();
-      togglePlayPause();
+      simulateKeyPress("k");
     }
   }
   function setupGlobalKeyboardEvents() {
