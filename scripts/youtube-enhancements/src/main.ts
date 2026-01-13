@@ -1,4 +1,4 @@
-import { keyboardShortcutHandler } from './keyboardShortcutHandler/keyboardShortcutHandler';
+import { keyboardShortcutHandler } from './keyboardShortcutHandler';
 
 /**
  * Sets up global keyboard event listeners with cleanup on page unload.

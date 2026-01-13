@@ -1,4 +1,4 @@
-import togglePlayPause from '../helpers/togglePlayPause/togglePlayPause';
+import simulateKeyPress from './helpers/simulateKeyPress/simulateKeyPress';
 
 /**
  * Handles a YouTube keyboard shortcut in fullscreen watch mode.
@@ -22,6 +22,7 @@ export function keyboardShortcutHandler(event: KeyboardEvent): void {
     event.preventDefault();
 
     // Trigger play/pause
-    togglePlayPause();
+    // K key is used to play/pause
+    simulateKeyPress('k');
   }
 }

@@ -1,5 +1,11 @@
 # Changelog
 
+## 3.2.0
+
+### Minor Changes
+
+- simulate key function
+
 ## 3.1.0
 
 ### Minor Changes
