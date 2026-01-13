@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Imdb Obsidian Base Watchlist
 // @namespace    https://github.com/siddacool/automation-scripts/tree/main/scripts/imdb-obsidian-base-watchlist
-// @version      2.0.7
+// @version      2.1.0
 // @author       siddacool
 // @description  Copy IMDB data to Markdown for Obsidian base
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=https://www.imdb.com/
@@ -2657,12 +2657,11 @@ props[key]
   }
   enable_legacy_mode_flag();
   async function copyToClipboard(text) {
-    if (typeof navigator === "undefined") {
-      throw new Error("copyToClipboard can only be used in the browser");
+    if (typeof navigator === "undefined" || !navigator.clipboard) {
+      throw new Error("copyToClipboard can only be used in the browser with clipboard support");
     }
     try {
       await navigator.clipboard.writeText(text);
-      console.log("Text copied to clipboard:", text);
     } catch (err) {
       console.error("Unable to copy text to clipboard.", err);
       throw err;
@@ -2721,23 +2720,30 @@ props[key]
     append($$anchor, button);
   }
   delegate(["click"]);
+  var root$1 = from_svg(`<svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" focusable="false" class="svelte-1nzdrgw"><path d="M22 6v16h-16v-16h16zm2-2h-20v20h20v-20zm-24 17v-21h21v2h-19v19h-2zm18-8h-3v-3h-2v3h-3v2h3v3h2v-3h3v-2z"></path></svg>`);
+  function CopyIcon($$anchor) {
+    var svg = root$1();
+    append($$anchor, svg);
+  }
   function extractYears(title) {
     const match = title.match(/(\d{4})(?:[–-](\d{4})?)?/);
     return {
       yearStart: match ? Number(match[1]) : void 0,
-      yearEnd: match && match[2] ? Number(match[2]) : void 0
+      yearEnd: match?.[2] ? Number(match[2]) : void 0
     };
   }
   function generateZettelIdFromDate(date) {
-    const pad2 = (n) => n.toString().padStart(2, "0");
-    return date.getFullYear().toString() + pad2(date.getMonth() + 1) + pad2(date.getDate()) + pad2(date.getHours()) + pad2(date.getMinutes());
+    const pad22 = (n) => n.toString().padStart(2, "0");
+    return date.getFullYear().toString() + pad22(date.getMonth() + 1) + pad22(date.getDate()) + pad22(date.getHours()) + pad22(date.getMinutes());
   }
   function getContentCategory(contentType, genre) {
     if (genre.includes("Documentary")) return "Documentary";
     const genresDirect = document.querySelector('[data-testid="interests"]')?.querySelectorAll("a");
     if (genresDirect) {
       for (let i = 0; i < genresDirect.length; i++) {
-        if (genresDirect[i].textContent?.trim() === "Anime") return "Anime";
+        if (genresDirect[i].textContent?.trim() === "Anime") {
+          return "Anime";
+        }
       }
     }
     switch (contentType) {
@@ -2786,11 +2792,20 @@ props[key]
     textarea.innerHTML = text;
     return textarea.value;
   }
+  function pad2(value) {
+    return String(value).padStart(2, "0");
+  }
   function formatLocalDateTime(date) {
-    const pad2 = (n) => n.toString().padStart(2, "0");
-    return `${date.getFullYear()}-${pad2(date.getMonth() + 1)}-${pad2(
-    date.getDate()
-  )}T${pad2(date.getHours())}:${pad2(date.getMinutes())}:${pad2(date.getSeconds())}`;
+    const year = date.getFullYear();
+    const month = pad2(date.getMonth() + 1);
+    const day = pad2(date.getDate());
+    const hours = pad2(date.getHours());
+    const minutes = pad2(date.getMinutes());
+    const seconds = pad2(date.getSeconds());
+    return `${year}-${month}-${day}T${hours}:${minutes}:${seconds}`;
+  }
+  function cleanText(text) {
+    return text.replace(/:/g, "");
   }
   function convertIsoDurationToReadable(iso) {
     if (!iso?.startsWith("PT")) return void 0;
@@ -2801,9 +2816,6 @@ props[key]
     if (hoursMatch) parts.push(`${hoursMatch[1]}h`);
     if (minutesMatch) parts.push(`${minutesMatch[1]}m`);
     return parts.join(" ");
-  }
-  function cleanText(text) {
-    return text.replace(/:/g, "");
   }
   function getDatabase() {
     const schema = getImdbSchema();
@@ -2842,10 +2854,55 @@ props[key]
       zettelId
     };
   }
-  var root$1 = from_svg(`<svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" focusable="false" class="svelte-1nzdrgw"><path d="M22 6v16h-16v-16h16zm2-2h-20v20h20v-20zm-24 17v-21h21v2h-19v19h-2zm18-8h-3v-3h-2v3h-3v2h3v3h2v-3h3v-2z"></path></svg>`);
-  function CopyIcon($$anchor) {
-    var svg = root$1();
-    append($$anchor, svg);
+  function convertToMarkdown(data) {
+    const {
+      name = "",
+      originalName = "",
+      category = "",
+      rating = "",
+      runtime = "",
+      certification = "",
+      countries = [],
+      languages = [],
+      imdbLink = "",
+      description = "",
+      posters,
+      createdAt = "",
+      genre = [],
+      years,
+      zettelId = ""
+    } = data || {};
+    const genreLines = genre.map((item) => `  - ${item}`).join("\n");
+    return `---
+Name: ${name}
+Year: ${years?.yearStart || ""}
+pg: ${certification}
+Symbol:
+Original Name: ${originalName}
+Category: ${category}
+Language: ${languages[0] || ""}
+Country: ${countries[0] || ""}
+IMDB: ${rating}
+Runtime: ${runtime}
+Rotten:
+Details: ${imdbLink}
+tags:
+${genreLines}
+Poster: ${posters?.normal || ""}
+In Watchlist: true
+Watched on:
+Created at: ${createdAt}
+---
+#watchList
+
+# ${name} (${years?.yearStart || ""})
+
+![poster](${posters?.small || ""})
+
+${description}
+
+${zettelId}
+`;
   }
   var root = from_html(`<div class="GrabIMBDDetails svelte-1oywuru"><!> <!></div>`);
   function GrabIMBDDetails($$anchor, $$props) {
@@ -2855,7 +2912,8 @@ props[key]
       try {
         update(tooltipTrigger);
         const data = getDatabase();
-        await copyToClipboard(JSON.stringify(data));
+        const markdown = convertToMarkdown(data);
+        await copyToClipboard(markdown);
       } catch (e) {
         console.log("debug:", e);
       }
