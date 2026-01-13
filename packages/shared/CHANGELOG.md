@@ -1,5 +1,11 @@
 # @repo/shared
 
+## 1.1.0
+
+### Minor Changes
+
+- Type support added, monkeyPlugin fixed
+
 ## 1.0.5
 
 ### Patch Changes

@@ -2,8 +2,9 @@
   import { copyToClipboard } from '@repo/shared-browser';
   import ActionTooltip from '../ActionTooltip.svelte';
   import IconButton from '../IconButton.svelte';
-  import { getDatabase } from './data';
   import CopyIcon from '../Icons/CopyIcon.svelte';
+  import { getDatabase } from '../helpers/getDatabase';
+  import { convertToMarkdown } from '../helpers/convertToMarkdown/convertToMarkdown';
 
   let tooltipTrigger = $state(0);
 
@@ -12,7 +13,9 @@
       tooltipTrigger++;
       const data = getDatabase();
 
-      await copyToClipboard(JSON.stringify(data));
+      const markdown = convertToMarkdown(data);
+
+      await copyToClipboard(markdown);
     } catch (e) {
       console.log('debug:', e);
     }

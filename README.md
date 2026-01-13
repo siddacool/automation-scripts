@@ -36,3 +36,7 @@ We are using [changesets](https://github.com/changesets/changesets) to manage sc
 
 1. Bump the version with `pnpm changeset`.
 2. Commit changes `pnpm changeset version`.
+
+### Test all scripts
+
+`pnpm -r run test`

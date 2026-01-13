@@ -1,5 +1,11 @@
 # @repo/shared-browser
 
+## 1.1.0
+
+### Minor Changes
+
+- Test cases added
+
 ## 1.0.1
 
 ### Patch Changes

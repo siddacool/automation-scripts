@@ -1,5 +1,18 @@
 # Changelog
 
+## 2.1.0
+
+### Minor Changes
+
+- Fix: Markdown copy added
+
+### Patch Changes
+
+- Updated dependencies
+- Updated dependencies
+  - @repo/shared-browser@1.1.0
+  - @repo/shared@1.1.0
+
 ## 2.0.7
 
 ### Patch Changes

@@ -1,16 +1,14 @@
-import { extractYears } from './extractYears';
-import { generateZettelIdFromDate } from './generateZettelIdFromDate';
-import { getContentCategory } from './getContentCategory';
-import { getCountryOfOrigin } from './getCountryOfOrigin';
-import { getImdbSchema } from './getImdbSchema';
-import { getLanguages } from './getLanguages';
-import type { ImdbDatabase } from './types';
-import {
-  cleanText,
-  convertIsoDurationToReadable,
-  decodeHtmlEntities,
-  formatLocalDateTime,
-} from './utils';
+import { extractYears } from './extractYears/extractYears';
+import { generateZettelIdFromDate } from './generateZettelIdFromDate/generateZettelIdFromDate';
+import { getContentCategory } from './getContentCategory/getContentCategory';
+import { getCountryOfOrigin } from './getCountryOfOrigin/getCountryOfOrigin';
+import { getImdbSchema } from './getImdbSchema/getImdbSchema';
+import { getLanguages } from './getLanguages/getLanguages';
+import type { ImdbDatabase } from '../../types';
+import { decodeHtmlEntities } from '../decodeHtmlEntities/decodeHtmlEntities';
+import { formatLocalDateTime } from '../formatLocalDateTime/formatLocalDateTime';
+import { cleanText } from '../cleanText/cleanText';
+import { convertIsoDurationToReadable } from '../convertIsoDurationToReadable/convertIsoDurationToReadable';
 
 export function getDatabase(): ImdbDatabase {
   const schema = getImdbSchema();

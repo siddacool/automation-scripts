@@ -27,3 +27,7 @@ Copy IMDB data to Markdown for Obsidian base.
 ### Run
 
 `pnpm --filter imdb-obsidian-base-watchlist dev`
+
+### Test
+
+`pnpm --filter imdb-obsidian-base-watchlist test:run`

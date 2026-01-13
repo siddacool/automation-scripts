@@ -1,10 +1,9 @@
-import { defineConfig } from 'vite';
+import { defineConfig } from 'vitest/config';
 import { svelte } from '@sveltejs/vite-plugin-svelte';
 import { createMonkeyPlugin } from '@repo/shared';
 
 import pkg from './package.json';
 
-// https://vitejs.dev/config/
 export default defineConfig({
   plugins: [
     svelte(),
@@ -16,4 +15,13 @@ export default defineConfig({
       icon: 'https://www.google.com/s2/favicons?sz=64&domain=https://www.imdb.com/',
     }),
   ],
+
+  test: {
+    environment: 'node',
+    globals: true,
+    coverage: {
+      provider: 'v8',
+      reporter: ['text', 'html'],
+    },
+  },
 });

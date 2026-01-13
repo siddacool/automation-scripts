@@ -1,5 +1,12 @@
 # Changelog
 
+## 3.0.6
+
+### Patch Changes
+
+- Updated dependencies
+  - @repo/shared@1.1.0
+
 ## 3.0.5
 
 ### Patch Changes
