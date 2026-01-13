@@ -2,7 +2,7 @@
 
 [Tampermonkey](https://www.tampermonkey.net/) script to Copy IMDB data to Markdown for Obsidian base.
 
-[Script](https://cdn.jsdelivr.net/gh/siddacool/automation-scripts@gh-pages/packages/imdb-obsidian-base-watchlist/imdb-obsidian-base-watchlist.user.js)
+[Script](https://raw.githubusercontent.com/siddacool/automation-scripts/gh-pages/packages/imdb-obsidian-base-watchlist/imdb-obsidian-base-watchlist.user.js)
 
 ## Features
 
@@ -16,7 +16,7 @@ Copy IMDB data to Markdown for Obsidian base.
 
 3. Click on "Utilities" tab, scroll down to "Import from URL" textbox.
 
-4. copy [Script](https://cdn.jsdelivr.net/gh/siddacool/automation-scripts@gh-pages/packages/imdb-obsidian-base-watchlist/imdb-obsidian-base-watchlist.user.js) and paste it in "Import from URL" textbox.
+4. copy [Script](https://raw.githubusercontent.com/siddacool/automation-scripts/gh-pages/packages/imdb-obsidian-base-watchlist/imdb-obsidian-base-watchlist.user.js) and paste it in "Import from URL" textbox.
 
 5. Click install
 
