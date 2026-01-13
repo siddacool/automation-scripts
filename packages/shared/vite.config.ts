@@ -1,14 +1,29 @@
-import { sveltekit } from '@sveltejs/kit/vite';
-import { defineConfig } from 'vitest/config';
+import { defineConfig } from 'vite';
 
 export default defineConfig({
-  plugins: [sveltekit()],
-  test: {
-    environment: 'node',
-    globals: true,
-    coverage: {
-      provider: 'v8',
-      reporter: ['text', 'html'],
+  build: {
+    lib: {
+      entry: 'src/index.ts',
+      formats: ['es'],
+      fileName: 'index',
+    },
+
+    // 🔴 REQUIRED for Node libraries
+    target: 'node18',
+    ssr: true,
+
+    rollupOptions: {
+      // 🔴 REQUIRED in pnpm monorepos
+      external: [
+        // Node builtins (including node:fs etc)
+        /^node:/,
+
+        // Native optional deps
+        'fsevents',
+
+        // Workspace deps
+        /^@repo\//,
+      ],
     },
   },
 });

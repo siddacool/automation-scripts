@@ -1,5 +1,12 @@
 # Changelog
 
+## 2.1.3
+
+### Patch Changes
+
+- Updated dependencies
+  - @repo/shared@2.0.0
+
 ## 2.1.2
 
 ### Patch Changes

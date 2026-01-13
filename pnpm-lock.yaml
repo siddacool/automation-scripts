@@ -112,11 +112,7 @@ importers:
         specifier: ^4.0.17
         version: 4.0.17(@types/node@25.0.3)(jsdom@27.4.0)(sass@1.97.2)
 
-  packages/shared:
-    dependencies:
-      svelte:
-        specifier: ^5.0.0
-        version: 5.46.1
+  packages/shared: {}
 
   packages/shared-browser:
     dependencies:

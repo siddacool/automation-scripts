@@ -1,11 +1,9 @@
 {
   "name": "@repo/shared",
-  "version": "1.1.0",
+  "version": "2.0.0",
   "scripts": {
-    "dev": "vite dev",
-    "build": "vite build && npm run prepack",
-    "prepare": "svelte-kit sync || echo ''",
-    "prepack": "svelte-kit sync && svelte-package && publint"
+    "types": "tsc -p tsconfig.types.json",
+    "build": "vite build && pnpm run types"
   },
   "files": [
     "dist",
@@ -24,8 +22,5 @@
       "types": "./dist/index.d.ts",
       "import": "./dist/index.js"
     }
-  },
-  "peerDependencies": {
-    "svelte": "^5.0.0"
   }
 }

@@ -1,5 +1,11 @@
 # @repo/shared
 
+## 2.0.0
+
+### Major Changes
+
+- Svelte removed and reconfigured
+
 ## 1.1.0
 
 ### Minor Changes
