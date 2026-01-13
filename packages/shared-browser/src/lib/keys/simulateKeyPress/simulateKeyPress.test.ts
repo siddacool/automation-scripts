@@ -1,7 +1,7 @@
 // @vitest-environment jsdom
 
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
-import simulateKeyPress from './simulateKeyPress';
+import simulateKeyPress from './simulateKeyPress.ts';
 
 describe('simulateKeyPress', () => {
   let dispatchEventSpy: ReturnType<typeof vi.spyOn>;

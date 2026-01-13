@@ -1,7 +1,7 @@
 {
   "name": "youtube-enhancements",
   "private": false,
-  "version": "3.2.0",
+  "version": "3.3.1",
   "type": "module",
   "author": "siddacool",
   "description": "a Tampermonkey script to enhance your Youtube viewing experience with features like Enter as play/pause button and more.",
@@ -13,11 +13,10 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "preview": "vite preview",
-    "test": "vitest",
-    "test:run": "vitest run"
+    "preview": "vite preview"
   },
   "dependencies": {
-    "@repo/shared": "workspace:*"
+    "@repo/shared": "workspace:*",
+    "@repo/shared-browser": "workspace:*"
   }
 }

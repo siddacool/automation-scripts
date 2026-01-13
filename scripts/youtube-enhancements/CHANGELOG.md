@@ -1,5 +1,22 @@
 # Changelog
 
+## 3.3.1
+
+### Patch Changes
+
+- Test removed
+
+## 3.3.0
+
+### Minor Changes
+
+- Simulate key function added from shared
+
+### Patch Changes
+
+- Updated dependencies
+  - @repo/shared-browser@1.2.0
+
 ## 3.2.0
 
 ### Minor Changes

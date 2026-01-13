@@ -1,4 +1,4 @@
-import simulateKeyPress from './helpers/simulateKeyPress/simulateKeyPress';
+import { simulateKeyPress } from '@repo/shared-browser';
 
 /**
  * Handles a YouTube keyboard shortcut in fullscreen watch mode.

@@ -1,5 +1,11 @@
 # @repo/shared-browser
 
+## 1.2.0
+
+### Minor Changes
+
+- Simulate key function added
+
 ## 1.1.0
 
 ### Minor Changes

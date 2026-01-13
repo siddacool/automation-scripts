@@ -138,6 +138,9 @@ importers:
       '@repo/shared':
         specifier: workspace:*
         version: link:../../packages/shared
+      '@repo/shared-browser':
+        specifier: workspace:*
+        version: link:../../packages/shared-browser
 
 packages:
 
