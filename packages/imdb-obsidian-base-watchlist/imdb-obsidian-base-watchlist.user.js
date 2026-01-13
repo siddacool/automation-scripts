@@ -1,12 +1,12 @@
 // ==UserScript==
 // @name         Imdb Obsidian Base Watchlist
 // @namespace    https://github.com/siddacool/automation-scripts/tree/main/scripts/imdb-obsidian-base-watchlist
-// @version      2.0.5
+// @version      2.0.6
 // @author       siddacool
 // @description  Copy IMDB data to Markdown for Obsidian base
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=https://www.imdb.com/
-// @downloadURL  https://cdn.jsdelivr.net/gh/siddacool/automation-scripts@gh-pages/packages/imdb-obsidian-base-watchlist/imdb-obsidian-base-watchlist.user.js
-// @updateURL    https://cdn.jsdelivr.net/gh/siddacool/automation-scripts@gh-pages/packages/imdb-obsidian-base-watchlist/imdb-obsidian-base-watchlist.meta.js
+// @downloadURL  https://raw.githubusercontent.com/siddacool/automation-scripts/gh-pages/packages/imdb-obsidian-base-watchlist/imdb-obsidian-base-watchlist.user.js
+// @updateURL    https://raw.githubusercontent.com/siddacool/automation-scripts/gh-pages/packages/imdb-obsidian-base-watchlist/imdb-obsidian-base-watchlist.meta.js
 // @match        https://www.imdb.com/title/*
 // @grant        none
 // ==/UserScript==
@@ -16,7 +16,7 @@
 
   const d=new Set;const t = async e=>{d.has(e)||(d.add(e),(t=>{typeof GM_addStyle=="function"?GM_addStyle(t):(document.head||document.documentElement).appendChild(document.createElement("style")).append(t);})(e));};
 
-  t(' @charset "UTF-8";.ActionTooltip.svelte-8g2rx8{position:absolute;top:36px;left:-7px;font-size:.8rem;width:55px;height:30px;background-color:#000;border-radius:4px;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .2s ease}.ActionTooltip.show.svelte-8g2rx8{opacity:1;pointer-events:auto}button.svelte-118lylz{width:35px;height:35px;display:flex;background:transparent;border:0;align-items:center;justify-content:center;cursor:pointer;border-radius:50%;transition:all .1s;color:#fff}button.svelte-118lylz:focus-visible{outline:2px solid #f5c518;outline-offset:2px;background:#00000040}button.svelte-118lylz:hover{color:#f5c518;background:#00000040}.GrabIMBDDetails.svelte-1oywuru{position:relative;top:3px} ');
+  t(' @charset "UTF-8";.ActionTooltip.svelte-8g2rx8{position:absolute;top:36px;left:-7px;font-size:.8rem;width:55px;height:30px;background-color:#000;border-radius:4px;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .2s ease}.ActionTooltip.show.svelte-8g2rx8{opacity:1;pointer-events:auto}button.svelte-1z0r1g6{width:35px;height:35px;display:flex;background:transparent;border:0;align-items:center;justify-content:center;cursor:pointer;border-radius:50%;transition:all .1s;color:#fff}button.svelte-1z0r1g6:focus-visible{outline:2px solid #f5c518;outline-offset:2px;background:#00000040}button.svelte-1z0r1g6:hover{color:#f5c518;background:#00000040}.GrabIMBDDetails.svelte-1oywuru{position:relative;display:inline-flex} ');
 
   const DEV = false;
   var is_array = Array.isArray;
@@ -29,6 +29,8 @@
   var array_prototype = Array.prototype;
   var get_prototype_of = Object.getPrototypeOf;
   var is_extensible = Object.isExtensible;
+  const noop = () => {
+  };
   function run_all(arr) {
     for (var i = 0; i < arr.length; i++) {
       arr[i]();
@@ -2707,6 +2709,13 @@ get_first_child(node2)
       }
     });
   }
+  function snippet(node, get_snippet, ...args) {
+    var branches = new BranchManager(node);
+    block(() => {
+      const snippet2 = get_snippet() ?? null;
+      branches.ensure(snippet2, snippet2 && ((anchor) => snippet2(anchor, ...args)));
+    }, EFFECT_TRANSPARENT);
+  }
   function attach(node, get_fn) {
     var fn = void 0;
     var e;
@@ -3352,6 +3361,142 @@ context.l
     });
     append($$anchor, span);
     pop();
+  }
+  var root$1 = from_html(`<button type="button" class="IconButton svelte-1z0r1g6"><!></button>`);
+  function IconButton($$anchor, $$props) {
+    var button = root$1();
+    button.__click = function(...$$args) {
+      $$props.onclick?.apply(this, $$args);
+    };
+    var node = child(button);
+    snippet(node, () => $$props.children ?? noop);
+    template_effect(() => {
+      set_attribute(button, "title", $$props.title);
+      set_attribute(button, "aria-label", $$props.title);
+    });
+    append($$anchor, button);
+  }
+  delegate(["click"]);
+  function extractYears(title) {
+    const match = title.match(/(\d{4})(?:[–-](\d{4})?)?/);
+    return {
+      yearStart: match ? Number(match[1]) : void 0,
+      yearEnd: match && match[2] ? Number(match[2]) : void 0
+    };
+  }
+  function generateZettelIdFromDate(date) {
+    const pad2 = (n) => n.toString().padStart(2, "0");
+    return date.getFullYear().toString() + pad2(date.getMonth() + 1) + pad2(date.getDate()) + pad2(date.getHours()) + pad2(date.getMinutes());
+  }
+  function getContentCategory(contentType, genre) {
+    if (genre.includes("Documentary")) return "Documentary";
+    const genresDirect = document.querySelector('[data-testid="interests"]')?.querySelectorAll("a");
+    if (genresDirect) {
+      for (let i = 0; i < genresDirect.length; i++) {
+        if (genresDirect[i].textContent?.trim() === "Anime") return "Anime";
+      }
+    }
+    switch (contentType) {
+      case "TVSeries":
+        return "TV Series";
+      case "Movie":
+      default:
+        return "Movie";
+    }
+  }
+  function getCountryOfOrigin() {
+    const nodes = document.querySelector('[data-testid="title-details-origin"]')?.querySelectorAll("ul li");
+    if (!nodes || !nodes.length) return ["US"];
+    const countries = [];
+    nodes.forEach((el) => {
+      const txt = el.textContent?.trim();
+      if (!txt) return;
+      if (txt === "United States") countries.push("US");
+      else if (txt === "United Kingdom") countries.push("UK");
+      else countries.push(txt);
+    });
+    return countries.length ? countries : ["US"];
+  }
+  function getImdbSchema() {
+    const script = document.querySelector('[type="application/ld+json"]');
+    if (!script) return {};
+    try {
+      return JSON.parse(script.innerHTML);
+    } catch {
+      return {};
+    }
+  }
+  function getLanguages() {
+    const nodes = document.querySelector('[data-testid="title-details-languages"]')?.querySelectorAll("ul li");
+    if (!nodes || !nodes.length) return ["English"];
+    const langs = [];
+    nodes.forEach((el) => {
+      const txt = el.textContent?.trim();
+      if (txt) langs.push(txt);
+    });
+    return langs.length ? langs : ["English"];
+  }
+  function decodeHtmlEntities(text) {
+    if (!text) return "";
+    const textarea = document.createElement("textarea");
+    textarea.innerHTML = text;
+    return textarea.value;
+  }
+  function formatLocalDateTime(date) {
+    const pad2 = (n) => n.toString().padStart(2, "0");
+    return `${date.getFullYear()}-${pad2(date.getMonth() + 1)}-${pad2(
+    date.getDate()
+  )}T${pad2(date.getHours())}:${pad2(date.getMinutes())}:${pad2(date.getSeconds())}`;
+  }
+  function convertIsoDurationToReadable(iso) {
+    if (!iso?.startsWith("PT")) return void 0;
+    const duration = iso.substring(2);
+    const hoursMatch = duration.match(/(\d+)H/);
+    const minutesMatch = duration.match(/(\d+)M/);
+    const parts = [];
+    if (hoursMatch) parts.push(`${hoursMatch[1]}h`);
+    if (minutesMatch) parts.push(`${minutesMatch[1]}m`);
+    return parts.join(" ");
+  }
+  function cleanText(text) {
+    return text.replace(/:/g, "");
+  }
+  function getDatabase() {
+    const schema = getImdbSchema();
+    const name = cleanText(schema.alternateName || schema.name || "");
+    const originalName = cleanText(schema.name || "");
+    const category = getContentCategory(schema["@type"] || "", schema.genre || []);
+    const rating = schema.aggregateRating?.ratingValue?.toString();
+    const certification = schema.contentRating;
+    const imdbLink = schema.url || "";
+    const description = decodeHtmlEntities(schema.description);
+    const posters = {
+      normal: schema.image || "",
+      small: schema.image ? schema.image.replace(".jpg", "_UX200_.jpg") : ""
+    };
+    const runtime = convertIsoDurationToReadable(schema.duration);
+    const countries = getCountryOfOrigin();
+    const languages = getLanguages();
+    const years = extractYears(document.title || "");
+    const createdAt = formatLocalDateTime( new Date());
+    const zettelId = generateZettelIdFromDate( new Date());
+    return {
+      name,
+      originalName,
+      category,
+      rating,
+      certification,
+      genre: schema.genre || [],
+      years,
+      runtime,
+      imdbLink,
+      countries,
+      languages,
+      description,
+      posters,
+      createdAt,
+      zettelId
+    };
   }
   const matchIconName = /^[a-z0-9]+(-[a-z0-9]+)*$/;
   const stringToIcon = (value, validate, allowSimpleName, provider = "") => {
@@ -4728,148 +4873,6 @@ destroyed: false
     append($$anchor, fragment);
     pop();
   }
-  var root$1 = from_html(`<button type="button" class="svelte-118lylz"><!></button>`);
-  function Button($$anchor, $$props) {
-    var button = root$1();
-    button.__click = function(...$$args) {
-      $$props.onclick?.apply(this, $$args);
-    };
-    var node = child(button);
-    Icon(node, {
-      icon: "material-symbols:file-copy-rounded",
-      width: "24",
-      height: "24",
-      "aria-hidden": "true",
-      focusable: "false"
-    });
-    template_effect(() => {
-      set_attribute(button, "title", $$props.title);
-      set_attribute(button, "aria-label", $$props.title);
-    });
-    append($$anchor, button);
-  }
-  delegate(["click"]);
-  function extractYears(title) {
-    const match = title.match(/(\d{4})(?:[–-](\d{4})?)?/);
-    return {
-      yearStart: match ? Number(match[1]) : void 0,
-      yearEnd: match && match[2] ? Number(match[2]) : void 0
-    };
-  }
-  function generateZettelIdFromDate(date) {
-    const pad2 = (n) => n.toString().padStart(2, "0");
-    return date.getFullYear().toString() + pad2(date.getMonth() + 1) + pad2(date.getDate()) + pad2(date.getHours()) + pad2(date.getMinutes());
-  }
-  function getContentCategory(contentType, genre) {
-    if (genre.includes("Documentary")) return "Documentary";
-    const genresDirect = document.querySelector('[data-testid="interests"]')?.querySelectorAll("a");
-    if (genresDirect) {
-      for (let i = 0; i < genresDirect.length; i++) {
-        if (genresDirect[i].textContent?.trim() === "Anime") return "Anime";
-      }
-    }
-    switch (contentType) {
-      case "TVSeries":
-        return "TV Series";
-      case "Movie":
-      default:
-        return "Movie";
-    }
-  }
-  function getCountryOfOrigin() {
-    const nodes = document.querySelector('[data-testid="title-details-origin"]')?.querySelectorAll("ul li");
-    if (!nodes || !nodes.length) return ["US"];
-    const countries = [];
-    nodes.forEach((el) => {
-      const txt = el.textContent?.trim();
-      if (!txt) return;
-      if (txt === "United States") countries.push("US");
-      else if (txt === "United Kingdom") countries.push("UK");
-      else countries.push(txt);
-    });
-    return countries.length ? countries : ["US"];
-  }
-  function getImdbSchema() {
-    const script = document.querySelector('[type="application/ld+json"]');
-    if (!script) return {};
-    try {
-      return JSON.parse(script.innerHTML);
-    } catch {
-      return {};
-    }
-  }
-  function getLanguages() {
-    const nodes = document.querySelector('[data-testid="title-details-languages"]')?.querySelectorAll("ul li");
-    if (!nodes || !nodes.length) return ["English"];
-    const langs = [];
-    nodes.forEach((el) => {
-      const txt = el.textContent?.trim();
-      if (txt) langs.push(txt);
-    });
-    return langs.length ? langs : ["English"];
-  }
-  function decodeHtmlEntities(text) {
-    if (!text) return "";
-    const textarea = document.createElement("textarea");
-    textarea.innerHTML = text;
-    return textarea.value;
-  }
-  function formatLocalDateTime(date) {
-    const pad2 = (n) => n.toString().padStart(2, "0");
-    return `${date.getFullYear()}-${pad2(date.getMonth() + 1)}-${pad2(
-    date.getDate()
-  )}T${pad2(date.getHours())}:${pad2(date.getMinutes())}:${pad2(date.getSeconds())}`;
-  }
-  function convertIsoDurationToReadable(iso) {
-    if (!iso?.startsWith("PT")) return void 0;
-    const duration = iso.substring(2);
-    const hoursMatch = duration.match(/(\d+)H/);
-    const minutesMatch = duration.match(/(\d+)M/);
-    const parts = [];
-    if (hoursMatch) parts.push(`${hoursMatch[1]}h`);
-    if (minutesMatch) parts.push(`${minutesMatch[1]}m`);
-    return parts.join(" ");
-  }
-  function cleanText(text) {
-    return text.replace(/:/g, "");
-  }
-  function getDatabase() {
-    const schema = getImdbSchema();
-    const name = cleanText(schema.alternateName || schema.name || "");
-    const originalName = cleanText(schema.name || "");
-    const category = getContentCategory(schema["@type"] || "", schema.genre || []);
-    const rating = schema.aggregateRating?.ratingValue?.toString();
-    const certification = schema.contentRating;
-    const imdbLink = schema.url || "";
-    const description = decodeHtmlEntities(schema.description);
-    const posters = {
-      normal: schema.image || "",
-      small: schema.image ? schema.image.replace(".jpg", "_UX200_.jpg") : ""
-    };
-    const runtime = convertIsoDurationToReadable(schema.duration);
-    const countries = getCountryOfOrigin();
-    const languages = getLanguages();
-    const years = extractYears(document.title || "");
-    const createdAt = formatLocalDateTime( new Date());
-    const zettelId = generateZettelIdFromDate( new Date());
-    return {
-      name,
-      originalName,
-      category,
-      rating,
-      certification,
-      genre: schema.genre || [],
-      years,
-      runtime,
-      imdbLink,
-      countries,
-      languages,
-      description,
-      posters,
-      createdAt,
-      zettelId
-    };
-  }
   var root = from_html(`<div class="GrabIMBDDetails svelte-1oywuru"><!> <!></div>`);
   function GrabIMBDDetails($$anchor, $$props) {
     push($$props, true);
@@ -4885,7 +4888,19 @@ destroyed: false
     }
     var div = root();
     var node = child(div);
-    Button(node, { title: "Grab IMDB details", onclick });
+    IconButton(node, {
+      title: "Grab IMDB details",
+      onclick,
+      children: ($$anchor2, $$slotProps) => {
+        Icon($$anchor2, {
+          icon: "iconamoon:copy-bold",
+          width: "24",
+          height: "24",
+          "aria-hidden": "true",
+          focusable: "false"
+        });
+      }
+    });
     var node_1 = sibling(node, 2);
     ActionTooltip(node_1, {
       description: "Copied!",
@@ -4901,7 +4916,8 @@ destroyed: false
   }
   mount(App, {
     target: (() => {
-      const app2 = document.createElement("span");
+      const app2 = document.createElement("div");
+      app2.style.display = "inline-flex";
       const titleElement = document.querySelector('[data-testid="hero__pageTitle"]');
       titleElement?.append(app2);
       return app2;
