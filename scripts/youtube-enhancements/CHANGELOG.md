@@ -1,5 +1,11 @@
 # Changelog
 
+## 3.1.0
+
+### Minor Changes
+
+- Test cases added
+
 ## 3.0.6
 
 ### Patch Changes

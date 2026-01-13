@@ -1,24 +1,4 @@
-import togglePlayPause from './helpers/togglePlayPause';
-
-/**
- * Handles a YouTube keyboard shortcut in fullscreen watch mode.
- * Pressing Enter triggers play/pause.
- * @param event - The native keyboard event
- */
-function keyboardShortcutHandler(event: KeyboardEvent): void {
-  // Ignore if not in fullscreen
-  if (document.fullscreenElement === null) return;
-
-  // Ignore if not on a YouTube watch page
-  if (!window.location.href.includes('watch')) return;
-
-  if (event.key === 'Enter') {
-    event.preventDefault();
-
-    // Trigger play/pause
-    togglePlayPause();
-  }
-}
+import { keyboardShortcutHandler } from './keyboardShortcutHandler/keyboardShortcutHandler';
 
 /**
  * Sets up global keyboard event listeners with cleanup on page unload.
