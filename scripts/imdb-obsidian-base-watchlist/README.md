@@ -6,8 +6,6 @@
 
 ## Features
 
-**Copy markdown link**
-
 Copy IMDB data to Markdown for Obsidian base.
 
 ## How to install (Chrome)
