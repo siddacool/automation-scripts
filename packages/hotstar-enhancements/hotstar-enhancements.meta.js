@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Disney+ Hotstar Enhancements
 // @namespace    https://github.com/siddacool/automation-scripts/tree/main/scripts/hotstar-enhancements
-// @version      2.0.1
+// @version      2.0.2
 // @author       siddacool
 // @description  a Tampermonkey script to enhance your Disney+ Hotstar viewing experience with features like better subtitles, Enter as play/pause button and more.
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=https://www.hotstar.com/in/
