@@ -29,7 +29,3 @@ Along with 'spacebar' now enter button can also be used for play/pause function.
 ### Run
 
 `pnpm --filter youtube-enhancements dev`
-
-### Test
-
-`pnpm --filter youtube-enhancements test:run`
