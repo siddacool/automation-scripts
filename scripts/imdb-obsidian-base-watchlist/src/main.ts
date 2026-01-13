@@ -3,7 +3,9 @@ import App from './App.svelte';
 
 const app = mount(App, {
   target: (() => {
-    const app = document.createElement('span');
+    const app = document.createElement('div');
+
+    app.style.display = 'inline-flex';
 
     const titleElement = document.querySelector('[data-testid="hero__pageTitle"]');
 

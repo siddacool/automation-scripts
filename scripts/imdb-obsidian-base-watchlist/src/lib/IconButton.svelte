@@ -1,23 +1,18 @@
 <script lang="ts">
-  import Icon from '@iconify/svelte';
+  import type { Snippet } from 'svelte';
   import type { MouseEventHandler } from 'svelte/elements';
 
   type Props = {
     title: string;
     onclick?: MouseEventHandler<HTMLButtonElement> | null | undefined;
+    children?: Snippet;
   };
 
-  const { title, onclick }: Props = $props();
+  const { title, onclick, children }: Props = $props();
 </script>
 
-<button {title} type="button" {onclick} aria-label={title}>
-  <Icon
-    icon="material-symbols:file-copy-rounded"
-    width="24"
-    height="24"
-    aria-hidden="true"
-    focusable="false"
-  />
+<button {title} type="button" {onclick} aria-label={title} class="IconButton">
+  {@render children?.()}
 </button>
 
 <style lang="scss">
