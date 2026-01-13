@@ -1,5 +1,11 @@
 # @repo/shared
 
+## 1.0.5
+
+### Patch Changes
+
+- Fix download path monkey plugin
+
 ## 1.0.4
 
 ### Patch Changes
