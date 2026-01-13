@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Imdb Obsidian Base Watchlist
 // @namespace    https://github.com/siddacool/automation-scripts/tree/main/scripts/imdb-obsidian-base-watchlist
-// @version      2.0.6
+// @version      2.0.7
 // @author       siddacool
 // @description  Copy IMDB data to Markdown for Obsidian base
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=https://www.imdb.com/
@@ -16,7 +16,7 @@
 
   const d=new Set;const t = async e=>{d.has(e)||(d.add(e),(t=>{typeof GM_addStyle=="function"?GM_addStyle(t):(document.head||document.documentElement).appendChild(document.createElement("style")).append(t);})(e));};
 
-  t(' @charset "UTF-8";.ActionTooltip.svelte-8g2rx8{position:absolute;top:36px;left:-7px;font-size:.8rem;width:55px;height:30px;background-color:#000;border-radius:4px;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .2s ease}.ActionTooltip.show.svelte-8g2rx8{opacity:1;pointer-events:auto}button.svelte-1z0r1g6{width:35px;height:35px;display:flex;background:transparent;border:0;align-items:center;justify-content:center;cursor:pointer;border-radius:50%;transition:all .1s;color:#fff}button.svelte-1z0r1g6:focus-visible{outline:2px solid #f5c518;outline-offset:2px;background:#00000040}button.svelte-1z0r1g6:hover{color:#f5c518;background:#00000040}.GrabIMBDDetails.svelte-1oywuru{position:relative;display:inline-flex} ');
+  t(' @charset "UTF-8";.ActionTooltip.svelte-8g2rx8{position:absolute;top:40px;left:-7px;font-size:.8rem;width:55px;height:30px;background-color:#000;border-radius:4px;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .2s ease}.ActionTooltip.show.svelte-8g2rx8{opacity:1;pointer-events:auto}button.svelte-1z0r1g6{width:40px;height:40px;display:flex;background:transparent;border:0;align-items:center;justify-content:center;cursor:pointer;border-radius:50%;transition:all .1s;color:#fff;font-size:1.2rem;padding:0}button.svelte-1z0r1g6:focus-visible{outline:2px solid #f5c518;outline-offset:2px;background:#00000040}button.svelte-1z0r1g6:hover{color:#f5c518;background:#00000040}svg.svelte-1nzdrgw{position:relative;left:1px}.GrabIMBDDetails.svelte-1oywuru{position:relative;display:inline-flex;top:-3px} ');
 
   const DEV = false;
   var is_array = Array.isArray;
@@ -75,11 +75,6 @@
     name = "StaleReactionError";
     message = "The reaction that called `getAbortSignal()` was re-run or destroyed";
   }();
-  function lifecycle_outside_component(name) {
-    {
-      throw new Error(`https://svelte.dev/e/lifecycle_outside_component`);
-    }
-  }
   function async_derived_orphan() {
     {
       throw new Error(`https://svelte.dev/e/async_derived_orphan`);
@@ -127,12 +122,6 @@
   }
   const UNINITIALIZED = Symbol();
   const NAMESPACE_HTML = "http://www.w3.org/1999/xhtml";
-  const ATTACHMENT_KEY = "@attach";
-  function select_multiple_invalid_value() {
-    {
-      console.warn(`https://svelte.dev/e/select_multiple_invalid_value`);
-    }
-  }
   function svelte_boundary_reset_noop() {
     {
       console.warn(`https://svelte.dev/e/svelte_boundary_reset_noop`);
@@ -203,31 +192,31 @@ component_context
     micro_tasks.push(fn);
   }
   function handle_error(error) {
-    var effect2 = active_effect;
-    if (effect2 === null) {
+    var effect = active_effect;
+    if (effect === null) {
       active_reaction.f |= ERROR_VALUE;
       return error;
     }
-    if ((effect2.f & EFFECT_RAN) === 0) {
-      if ((effect2.f & BOUNDARY_EFFECT) === 0) {
+    if ((effect.f & EFFECT_RAN) === 0) {
+      if ((effect.f & BOUNDARY_EFFECT) === 0) {
         throw error;
       }
-      effect2.b.error(error);
+      effect.b.error(error);
     } else {
-      invoke_error_boundary(error, effect2);
+      invoke_error_boundary(error, effect);
     }
   }
-  function invoke_error_boundary(error, effect2) {
-    while (effect2 !== null) {
-      if ((effect2.f & BOUNDARY_EFFECT) !== 0) {
+  function invoke_error_boundary(error, effect) {
+    while (effect !== null) {
+      if ((effect.f & BOUNDARY_EFFECT) !== 0) {
         try {
-          effect2.b.error(error);
+          effect.b.error(error);
           return;
         } catch (e) {
           error = e;
         }
       }
-      effect2 = effect2.parent;
+      effect = effect.parent;
     }
     throw error;
   }
@@ -281,45 +270,45 @@ process(root_effects) {
     }
 #traverse_effect_tree(root2, target) {
       root2.f ^= CLEAN;
-      var effect2 = root2.first;
-      while (effect2 !== null) {
-        var flags2 = effect2.f;
+      var effect = root2.first;
+      while (effect !== null) {
+        var flags2 = effect.f;
         var is_branch = (flags2 & (BRANCH_EFFECT | ROOT_EFFECT)) !== 0;
         var is_skippable_branch = is_branch && (flags2 & CLEAN) !== 0;
-        var skip = is_skippable_branch || (flags2 & INERT) !== 0 || this.skipped_effects.has(effect2);
-        if ((effect2.f & BOUNDARY_EFFECT) !== 0 && effect2.b?.is_pending()) {
+        var skip = is_skippable_branch || (flags2 & INERT) !== 0 || this.skipped_effects.has(effect);
+        if ((effect.f & BOUNDARY_EFFECT) !== 0 && effect.b?.is_pending()) {
           target = {
             parent: target,
-            effect: effect2,
+            effect,
             effects: [],
             render_effects: []
           };
         }
-        if (!skip && effect2.fn !== null) {
+        if (!skip && effect.fn !== null) {
           if (is_branch) {
-            effect2.f ^= CLEAN;
+            effect.f ^= CLEAN;
           } else if ((flags2 & EFFECT) !== 0) {
-            target.effects.push(effect2);
-          } else if (is_dirty(effect2)) {
-            if ((effect2.f & BLOCK_EFFECT) !== 0) this.#dirty_effects.add(effect2);
-            update_effect(effect2);
+            target.effects.push(effect);
+          } else if (is_dirty(effect)) {
+            if ((effect.f & BLOCK_EFFECT) !== 0) this.#dirty_effects.add(effect);
+            update_effect(effect);
           }
-          var child2 = effect2.first;
+          var child2 = effect.first;
           if (child2 !== null) {
-            effect2 = child2;
+            effect = child2;
             continue;
           }
         }
-        var parent = effect2.parent;
-        effect2 = effect2.next;
-        while (effect2 === null && parent !== null) {
+        var parent = effect.parent;
+        effect = effect.next;
+        while (effect === null && parent !== null) {
           if (parent === target.effect) {
             this.#defer_effects(target.effects);
             this.#defer_effects(target.render_effects);
             target =
 target.parent;
           }
-          effect2 = parent.next;
+          effect = parent.next;
           parent = parent.parent;
         }
       }
@@ -534,15 +523,15 @@ static enqueue(task) {
     if (length === 0) return;
     var i = 0;
     while (i < length) {
-      var effect2 = effects[i++];
-      if ((effect2.f & (DESTROYED | INERT)) === 0 && is_dirty(effect2)) {
+      var effect = effects[i++];
+      if ((effect.f & (DESTROYED | INERT)) === 0 && is_dirty(effect)) {
         eager_block_effects = new Set();
-        update_effect(effect2);
-        if (effect2.deps === null && effect2.first === null && effect2.nodes === null) {
-          if (effect2.teardown === null && effect2.ac === null) {
-            unlink_effect(effect2);
+        update_effect(effect);
+        if (effect.deps === null && effect.first === null && effect.nodes === null) {
+          if (effect.teardown === null && effect.ac === null) {
+            unlink_effect(effect);
           } else {
-            effect2.fn = null;
+            effect.fn = null;
           }
         }
         if (eager_block_effects?.size > 0) {
@@ -617,19 +606,19 @@ dep,
     return false;
   }
   function schedule_effect(signal) {
-    var effect2 = last_scheduled_effect = signal;
-    while (effect2.parent !== null) {
-      effect2 = effect2.parent;
-      var flags2 = effect2.f;
-      if (is_flushing && effect2 === active_effect && (flags2 & BLOCK_EFFECT) !== 0 && (flags2 & HEAD_EFFECT) === 0) {
+    var effect = last_scheduled_effect = signal;
+    while (effect.parent !== null) {
+      effect = effect.parent;
+      var flags2 = effect.f;
+      if (is_flushing && effect === active_effect && (flags2 & BLOCK_EFFECT) !== 0 && (flags2 & HEAD_EFFECT) === 0) {
         return;
       }
       if ((flags2 & (ROOT_EFFECT | BRANCH_EFFECT)) !== 0) {
         if ((flags2 & CLEAN) === 0) return;
-        effect2.f ^= CLEAN;
+        effect.f ^= CLEAN;
       }
     }
-    queued_root_effects.push(effect2);
+    queued_root_effects.push(effect);
   }
   function createSubscriber(start) {
     let subscribers = 0;
@@ -1083,11 +1072,6 @@ current_batch
       next(promise);
     });
   }
-function user_derived(fn) {
-    const d = derived(fn);
-    push_reaction_value(d);
-    return d;
-  }
 function derived_safe_equal(fn) {
     const signal = derived(fn);
     signal.equals = safe_equals;
@@ -1219,12 +1203,12 @@ source2
     set_is_updating_effect(true);
     const inspects = Array.from(eager_effects);
     try {
-      for (const effect2 of inspects) {
-        if ((effect2.f & CLEAN) !== 0) {
-          set_signal_status(effect2, MAYBE_DIRTY);
+      for (const effect of inspects) {
+        if ((effect.f & CLEAN) !== 0) {
+          set_signal_status(effect, MAYBE_DIRTY);
         }
-        if (is_dirty(effect2)) {
-          update_effect(effect2);
+        if (is_dirty(effect)) {
+          update_effect(effect);
         }
       }
     } finally {
@@ -1464,18 +1448,6 @@ sources.get("length")
       }
     );
   }
-  function get_proxied_value(value) {
-    try {
-      if (value !== null && typeof value === "object" && STATE_SYMBOL in value) {
-        return value[STATE_SYMBOL];
-      }
-    } catch {
-    }
-    return value;
-  }
-  function is(a, b) {
-    return Object.is(get_proxied_value(a), get_proxied_value(b));
-  }
   var $window;
   var is_firefox;
   var first_child_getter;
@@ -1520,13 +1492,6 @@ next_sibling_getter.call(node)
       return get_first_child(node);
     }
   }
-  function first_child(node, is_text = false) {
-    {
-      var first = get_first_child(node);
-      if (first instanceof Comment && first.data === "") return get_next_sibling(first);
-      return first;
-    }
-  }
   function sibling(node, count = 1, is_text = false) {
     let next_sibling = node;
     while (count--) {
@@ -1536,17 +1501,6 @@ get_next_sibling(next_sibling);
     }
     {
       return next_sibling;
-    }
-  }
-  function autofocus(dom, value) {
-    if (value) {
-      const body = document.body;
-      dom.autofocus = true;
-      queue_micro_task(() => {
-        if (document.activeElement === body) {
-          dom.focus();
-        }
-      });
     }
   }
   function without_reactive_context(fn) {
@@ -1572,14 +1526,14 @@ get_next_sibling(next_sibling);
       effect_in_teardown();
     }
   }
-  function push_effect(effect2, parent_effect) {
+  function push_effect(effect, parent_effect) {
     var parent_last = parent_effect.last;
     if (parent_last === null) {
-      parent_effect.last = parent_effect.first = effect2;
+      parent_effect.last = parent_effect.first = effect;
     } else {
-      parent_last.next = effect2;
-      effect2.prev = parent_last;
-      parent_effect.last = effect2;
+      parent_last.next = effect;
+      effect.prev = parent_last;
+      parent_effect.last = effect;
     }
   }
   function create_effect(type, fn, sync) {
@@ -1587,7 +1541,7 @@ get_next_sibling(next_sibling);
     if (parent !== null && (parent.f & INERT) !== 0) {
       type |= INERT;
     }
-    var effect2 = {
+    var effect = {
       ctx: component_context,
       deps: null,
       nodes: null,
@@ -1605,16 +1559,16 @@ get_next_sibling(next_sibling);
     };
     if (sync) {
       try {
-        update_effect(effect2);
-        effect2.f |= EFFECT_RAN;
+        update_effect(effect);
+        effect.f |= EFFECT_RAN;
       } catch (e2) {
-        destroy_effect(effect2);
+        destroy_effect(effect);
         throw e2;
       }
     } else if (fn !== null) {
-      schedule_effect(effect2);
+      schedule_effect(effect);
     }
-    var e = effect2;
+    var e = effect;
     if (sync && e.deps === null && e.teardown === null && e.nodes === null && e.first === e.last &&
 (e.f & EFFECT_PRESERVED) === 0) {
       e = e.first;
@@ -1634,16 +1588,16 @@ active_reaction
         (derived2.effects ??= []).push(e);
       }
     }
-    return effect2;
+    return effect;
   }
   function effect_tracking() {
     return active_reaction !== null && !untracking;
   }
   function teardown(fn) {
-    const effect2 = create_effect(RENDER_EFFECT, null, false);
-    set_signal_status(effect2, CLEAN);
-    effect2.teardown = fn;
-    return effect2;
+    const effect = create_effect(RENDER_EFFECT, null, false);
+    set_signal_status(effect, CLEAN);
+    effect.teardown = fn;
+    return effect;
   }
   function user_effect(fn) {
     validate_effect();
@@ -1665,23 +1619,20 @@ component_context
   }
   function component_root(fn) {
     Batch.ensure();
-    const effect2 = create_effect(ROOT_EFFECT | EFFECT_PRESERVED, fn, true);
+    const effect = create_effect(ROOT_EFFECT | EFFECT_PRESERVED, fn, true);
     return (options = {}) => {
       return new Promise((fulfil) => {
         if (options.outro) {
-          pause_effect(effect2, () => {
-            destroy_effect(effect2);
+          pause_effect(effect, () => {
+            destroy_effect(effect);
             fulfil(void 0);
           });
         } else {
-          destroy_effect(effect2);
+          destroy_effect(effect);
           fulfil(void 0);
         }
       });
     };
-  }
-  function effect(fn) {
-    return create_effect(EFFECT, fn, false);
   }
   function async_effect(fn) {
     return create_effect(ASYNC | EFFECT_PRESERVED, fn, true);
@@ -1695,18 +1646,14 @@ component_context
     });
   }
   function block(fn, flags2 = 0) {
-    var effect2 = create_effect(BLOCK_EFFECT | flags2, fn, true);
-    return effect2;
-  }
-  function managed(fn, flags2 = 0) {
-    var effect2 = create_effect(MANAGED_EFFECT | flags2, fn, true);
-    return effect2;
+    var effect = create_effect(BLOCK_EFFECT | flags2, fn, true);
+    return effect;
   }
   function branch(fn) {
     return create_effect(BRANCH_EFFECT | EFFECT_PRESERVED, fn, true);
   }
-  function execute_effect_teardown(effect2) {
-    var teardown2 = effect2.teardown;
+  function execute_effect_teardown(effect) {
+    var teardown2 = effect.teardown;
     if (teardown2 !== null) {
       const previously_destroying_effect = is_destroying_effect;
       const previous_reaction = active_reaction;
@@ -1721,58 +1668,58 @@ component_context
     }
   }
   function destroy_effect_children(signal, remove_dom = false) {
-    var effect2 = signal.first;
+    var effect = signal.first;
     signal.first = signal.last = null;
-    while (effect2 !== null) {
-      const controller = effect2.ac;
+    while (effect !== null) {
+      const controller = effect.ac;
       if (controller !== null) {
         without_reactive_context(() => {
           controller.abort(STALE_REACTION);
         });
       }
-      var next = effect2.next;
-      if ((effect2.f & ROOT_EFFECT) !== 0) {
-        effect2.parent = null;
+      var next = effect.next;
+      if ((effect.f & ROOT_EFFECT) !== 0) {
+        effect.parent = null;
       } else {
-        destroy_effect(effect2, remove_dom);
+        destroy_effect(effect, remove_dom);
       }
-      effect2 = next;
+      effect = next;
     }
   }
   function destroy_block_effect_children(signal) {
-    var effect2 = signal.first;
-    while (effect2 !== null) {
-      var next = effect2.next;
-      if ((effect2.f & BRANCH_EFFECT) === 0) {
-        destroy_effect(effect2);
+    var effect = signal.first;
+    while (effect !== null) {
+      var next = effect.next;
+      if ((effect.f & BRANCH_EFFECT) === 0) {
+        destroy_effect(effect);
       }
-      effect2 = next;
+      effect = next;
     }
   }
-  function destroy_effect(effect2, remove_dom = true) {
+  function destroy_effect(effect, remove_dom = true) {
     var removed = false;
-    if ((remove_dom || (effect2.f & HEAD_EFFECT) !== 0) && effect2.nodes !== null && effect2.nodes.end !== null) {
+    if ((remove_dom || (effect.f & HEAD_EFFECT) !== 0) && effect.nodes !== null && effect.nodes.end !== null) {
       remove_effect_dom(
-        effect2.nodes.start,
-effect2.nodes.end
+        effect.nodes.start,
+effect.nodes.end
       );
       removed = true;
     }
-    destroy_effect_children(effect2, remove_dom && !removed);
-    remove_reactions(effect2, 0);
-    set_signal_status(effect2, DESTROYED);
-    var transitions = effect2.nodes && effect2.nodes.t;
+    destroy_effect_children(effect, remove_dom && !removed);
+    remove_reactions(effect, 0);
+    set_signal_status(effect, DESTROYED);
+    var transitions = effect.nodes && effect.nodes.t;
     if (transitions !== null) {
       for (const transition of transitions) {
         transition.stop();
       }
     }
-    execute_effect_teardown(effect2);
-    var parent = effect2.parent;
+    execute_effect_teardown(effect);
+    var parent = effect.parent;
     if (parent !== null && parent.first !== null) {
-      unlink_effect(effect2);
+      unlink_effect(effect);
     }
-    effect2.next = effect2.prev = effect2.teardown = effect2.ctx = effect2.deps = effect2.fn = effect2.nodes = effect2.ac = null;
+    effect.next = effect.prev = effect.teardown = effect.ctx = effect.deps = effect.fn = effect.nodes = effect.ac = null;
   }
   function remove_effect_dom(node, end) {
     while (node !== null) {
@@ -1781,22 +1728,22 @@ effect2.nodes.end
       node = next;
     }
   }
-  function unlink_effect(effect2) {
-    var parent = effect2.parent;
-    var prev = effect2.prev;
-    var next = effect2.next;
+  function unlink_effect(effect) {
+    var parent = effect.parent;
+    var prev = effect.prev;
+    var next = effect.next;
     if (prev !== null) prev.next = next;
     if (next !== null) next.prev = prev;
     if (parent !== null) {
-      if (parent.first === effect2) parent.first = next;
-      if (parent.last === effect2) parent.last = prev;
+      if (parent.first === effect) parent.first = next;
+      if (parent.last === effect) parent.last = prev;
     }
   }
-  function pause_effect(effect2, callback, destroy = true) {
+  function pause_effect(effect, callback, destroy = true) {
     var transitions = [];
-    pause_children(effect2, transitions, true);
+    pause_children(effect, transitions, true);
     var fn = () => {
-      if (destroy) destroy_effect(effect2);
+      if (destroy) destroy_effect(effect);
       if (callback) callback();
     };
     var remaining = transitions.length;
@@ -1809,10 +1756,10 @@ effect2.nodes.end
       fn();
     }
   }
-  function pause_children(effect2, transitions, local) {
-    if ((effect2.f & INERT) !== 0) return;
-    effect2.f ^= INERT;
-    var t = effect2.nodes && effect2.nodes.t;
+  function pause_children(effect, transitions, local) {
+    if ((effect.f & INERT) !== 0) return;
+    effect.f ^= INERT;
+    var t = effect.nodes && effect.nodes.t;
     if (t !== null) {
       for (const transition of t) {
         if (transition.is_global || local) {
@@ -1820,35 +1767,35 @@ effect2.nodes.end
         }
       }
     }
-    var child2 = effect2.first;
+    var child2 = effect.first;
     while (child2 !== null) {
       var sibling2 = child2.next;
       var transparent = (child2.f & EFFECT_TRANSPARENT) !== 0 ||
 
 
-(child2.f & BRANCH_EFFECT) !== 0 && (effect2.f & BLOCK_EFFECT) !== 0;
+(child2.f & BRANCH_EFFECT) !== 0 && (effect.f & BLOCK_EFFECT) !== 0;
       pause_children(child2, transitions, transparent ? local : false);
       child2 = sibling2;
     }
   }
-  function resume_effect(effect2) {
-    resume_children(effect2, true);
+  function resume_effect(effect) {
+    resume_children(effect, true);
   }
-  function resume_children(effect2, local) {
-    if ((effect2.f & INERT) === 0) return;
-    effect2.f ^= INERT;
-    if ((effect2.f & CLEAN) === 0) {
-      set_signal_status(effect2, DIRTY);
-      schedule_effect(effect2);
+  function resume_children(effect, local) {
+    if ((effect.f & INERT) === 0) return;
+    effect.f ^= INERT;
+    if ((effect.f & CLEAN) === 0) {
+      set_signal_status(effect, DIRTY);
+      schedule_effect(effect);
     }
-    var child2 = effect2.first;
+    var child2 = effect.first;
     while (child2 !== null) {
       var sibling2 = child2.next;
       var transparent = (child2.f & EFFECT_TRANSPARENT) !== 0 || (child2.f & BRANCH_EFFECT) !== 0;
       resume_children(child2, transparent ? local : false);
       child2 = sibling2;
     }
-    var t = effect2.nodes && effect2.nodes.t;
+    var t = effect.nodes && effect.nodes.t;
     if (t !== null) {
       for (const transition of t) {
         if (transition.is_global || local) {
@@ -1857,10 +1804,10 @@ effect2.nodes.end
       }
     }
   }
-  function move_effect(effect2, fragment) {
-    if (!effect2.nodes) return;
-    var node = effect2.nodes.start;
-    var end = effect2.nodes.end;
+  function move_effect(effect, fragment) {
+    if (!effect.nodes) return;
+    var node = effect.nodes.start;
+    var end = effect.nodes.end;
     while (node !== null) {
       var next = node === end ? null : get_next_sibling(node);
       fragment.append(node);
@@ -1881,8 +1828,8 @@ effect2.nodes.end
     active_reaction = reaction;
   }
   let active_effect = null;
-  function set_active_effect(effect2) {
-    active_effect = effect2;
+  function set_active_effect(effect) {
+    active_effect = effect;
   }
   let current_sources = null;
   function push_reaction_value(value) {
@@ -1943,7 +1890,7 @@ batch_values === null) {
     }
     return false;
   }
-  function schedule_possible_effect_self_invalidation(signal, effect2, root2 = true) {
+  function schedule_possible_effect_self_invalidation(signal, effect, root2 = true) {
     var reactions = signal.reactions;
     if (reactions === null) return;
     if (current_sources?.includes(signal)) {
@@ -1954,10 +1901,10 @@ batch_values === null) {
       if ((reaction.f & DERIVED) !== 0) {
         schedule_possible_effect_self_invalidation(
 reaction,
-          effect2,
+          effect,
           false
         );
-      } else if (effect2 === reaction) {
+      } else if (effect === reaction) {
         if (root2) {
           set_signal_status(reaction, DIRTY);
         } else if ((reaction.f & CLEAN) !== 0) {
@@ -2098,28 +2045,28 @@ dependency,
       remove_reaction(signal, dependencies[i]);
     }
   }
-  function update_effect(effect2) {
-    var flags2 = effect2.f;
+  function update_effect(effect) {
+    var flags2 = effect.f;
     if ((flags2 & DESTROYED) !== 0) {
       return;
     }
-    set_signal_status(effect2, CLEAN);
+    set_signal_status(effect, CLEAN);
     var previous_effect = active_effect;
     var was_updating_effect = is_updating_effect;
-    active_effect = effect2;
+    active_effect = effect;
     is_updating_effect = true;
     try {
       if ((flags2 & (BLOCK_EFFECT | MANAGED_EFFECT)) !== 0) {
-        destroy_block_effect_children(effect2);
+        destroy_block_effect_children(effect);
       } else {
-        destroy_effect_children(effect2);
+        destroy_effect_children(effect);
       }
-      execute_effect_teardown(effect2);
-      var teardown2 = update_reaction(effect2);
-      effect2.teardown = typeof teardown2 === "function" ? teardown2 : null;
-      effect2.wv = write_version;
+      execute_effect_teardown(effect);
+      var teardown2 = update_reaction(effect);
+      effect.teardown = typeof teardown2 === "function" ? teardown2 : null;
+      effect.wv = write_version;
       var dep;
-      if (DEV && tracing_mode_flag && (effect2.f & DIRTY) !== 0 && effect2.deps !== null) ;
+      if (DEV && tracing_mode_flag && (effect.f & DIRTY) !== 0 && effect.deps !== null) ;
     } finally {
       is_updating_effect = was_updating_effect;
       active_effect = previous_effect;
@@ -2227,81 +2174,12 @@ dep
   function set_signal_status(signal, status) {
     signal.f = signal.f & STATUS_MASK | status;
   }
-  function is_capture_event(name) {
-    return name.endsWith("capture") && name !== "gotpointercapture" && name !== "lostpointercapture";
-  }
-  const DELEGATED_EVENTS = [
-    "beforeinput",
-    "click",
-    "change",
-    "dblclick",
-    "contextmenu",
-    "focusin",
-    "focusout",
-    "input",
-    "keydown",
-    "keyup",
-    "mousedown",
-    "mousemove",
-    "mouseout",
-    "mouseover",
-    "mouseup",
-    "pointerdown",
-    "pointermove",
-    "pointerout",
-    "pointerover",
-    "pointerup",
-    "touchend",
-    "touchmove",
-    "touchstart"
-  ];
-  function can_delegate_event(event_name) {
-    return DELEGATED_EVENTS.includes(event_name);
-  }
-  const ATTRIBUTE_ALIASES = {
-formnovalidate: "formNoValidate",
-    ismap: "isMap",
-    nomodule: "noModule",
-    playsinline: "playsInline",
-    readonly: "readOnly",
-    defaultvalue: "defaultValue",
-    defaultchecked: "defaultChecked",
-    srcobject: "srcObject",
-    novalidate: "noValidate",
-    allowfullscreen: "allowFullscreen",
-    disablepictureinpicture: "disablePictureInPicture",
-    disableremoteplayback: "disableRemotePlayback"
-  };
-  function normalize_attribute(name) {
-    name = name.toLowerCase();
-    return ATTRIBUTE_ALIASES[name] ?? name;
-  }
   const PASSIVE_EVENTS = ["touchstart", "touchmove"];
   function is_passive_event(name) {
     return PASSIVE_EVENTS.includes(name);
   }
   const all_registered_events = new Set();
   const root_event_handles = new Set();
-  function create_event(event_name, dom, handler, options = {}) {
-    function target_handler(event) {
-      if (!options.capture) {
-        handle_event_propagation.call(dom, event);
-      }
-      if (!event.cancelBubble) {
-        return without_reactive_context(() => {
-          return handler?.call(this, event);
-        });
-      }
-    }
-    if (event_name.startsWith("pointer") || event_name.startsWith("touch") || event_name === "wheel") {
-      queue_micro_task(() => {
-        dom.addEventListener(event_name, target_handler, options);
-      });
-    } else {
-      dom.addEventListener(event_name, target_handler, options);
-    }
-    return target_handler;
-  }
   function delegate(events) {
     for (var i = 0; i < events.length; i++) {
       all_registered_events.add(events[i]);
@@ -2393,17 +2271,17 @@ event.target === current_target)) {
       set_active_effect(previous_effect);
     }
   }
-  function create_fragment_from_html(html2) {
+  function create_fragment_from_html(html) {
     var elem = document.createElement("template");
-    elem.innerHTML = html2.replaceAll("<!>", "<!---->");
+    elem.innerHTML = html.replaceAll("<!>", "<!---->");
     return elem.content;
   }
   function assign_nodes(start, end) {
-    var effect2 = (
+    var effect = (
 active_effect
     );
-    if (effect2.nodes === null) {
-      effect2.nodes = { start, end, a: null, t: null };
+    if (effect.nodes === null) {
+      effect.nodes = { start, end, a: null, t: null };
     }
   }
 function from_html(content, flags2) {
@@ -2455,14 +2333,6 @@ node.cloneNode(true)
   }
 function from_svg(content, flags2) {
     return from_namespace(content, flags2, "svg");
-  }
-  function comment() {
-    var frag = document.createDocumentFragment();
-    var start = document.createComment("");
-    var anchor = create_text();
-    frag.append(start, anchor);
-    assign_nodes(start, anchor);
-    return frag;
   }
   function append(anchor, dom) {
     if (anchor === null) {
@@ -2597,24 +2467,24 @@ this.#batches.get(batch)
           this.#offscreen.delete(k);
         }
       }
-      for (const [k, effect2] of this.#onscreen) {
+      for (const [k, effect] of this.#onscreen) {
         if (k === key || this.#outroing.has(k)) continue;
         const on_destroy = () => {
           const keys = Array.from(this.#batches.values());
           if (keys.includes(k)) {
             var fragment = document.createDocumentFragment();
-            move_effect(effect2, fragment);
+            move_effect(effect, fragment);
             fragment.append(create_text());
-            this.#offscreen.set(k, { effect: effect2, fragment });
+            this.#offscreen.set(k, { effect, fragment });
           } else {
-            destroy_effect(effect2);
+            destroy_effect(effect);
           }
           this.#outroing.delete(k);
           this.#onscreen.delete(k);
         };
         if (this.#transition || !onscreen) {
           this.#outroing.add(k);
-          pause_effect(effect2, on_destroy, false);
+          pause_effect(effect, on_destroy, false);
         } else {
           on_destroy();
         }
@@ -2648,67 +2518,6 @@ current_batch
       }
     }
   }
-  function if_block(node, fn, elseif = false) {
-    var branches = new BranchManager(node);
-    var flags2 = elseif ? EFFECT_TRANSPARENT : 0;
-    function update_branch(condition, fn2) {
-      branches.ensure(condition, fn2);
-    }
-    block(() => {
-      var has_branch = false;
-      fn((fn2, flag = true) => {
-        has_branch = true;
-        update_branch(flag, fn2);
-      });
-      if (!has_branch) {
-        update_branch(false, null);
-      }
-    }, flags2);
-  }
-  function html(node, get_value, svg = false, mathml = false, skip_warning = false) {
-    var anchor = node;
-    var value = "";
-    template_effect(() => {
-      var effect2 = (
-active_effect
-      );
-      if (value === (value = get_value() ?? "")) {
-        return;
-      }
-      if (effect2.nodes !== null) {
-        remove_effect_dom(
-          effect2.nodes.start,
-effect2.nodes.end
-        );
-        effect2.nodes = null;
-      }
-      if (value === "") return;
-      var html2 = value + "";
-      if (svg) html2 = `<svg>${html2}</svg>`;
-      else if (mathml) html2 = `<math>${html2}</math>`;
-      var node2 = create_fragment_from_html(html2);
-      if (svg || mathml) {
-        node2 =
-
-get_first_child(node2);
-      }
-      assign_nodes(
-
-get_first_child(node2),
-node2.lastChild
-      );
-      if (svg || mathml) {
-        while ( get_first_child(node2)) {
-          anchor.before(
-
-get_first_child(node2)
-          );
-        }
-      } else {
-        anchor.before(node2);
-      }
-    });
-  }
   function snippet(node, get_snippet, ...args) {
     var branches = new BranchManager(node);
     block(() => {
@@ -2716,51 +2525,9 @@ get_first_child(node2)
       branches.ensure(snippet2, snippet2 && ((anchor) => snippet2(anchor, ...args)));
     }, EFFECT_TRANSPARENT);
   }
-  function attach(node, get_fn) {
-    var fn = void 0;
-    var e;
-    managed(() => {
-      if (fn !== (fn = get_fn())) {
-        if (e) {
-          destroy_effect(e);
-          e = null;
-        }
-        if (fn) {
-          e = branch(() => {
-            effect(() => (
-fn(node)
-            ));
-          });
-        }
-      }
-    });
-  }
-  function r(e) {
-    var t, f, n = "";
-    if ("string" == typeof e || "number" == typeof e) n += e;
-    else if ("object" == typeof e) if (Array.isArray(e)) {
-      var o = e.length;
-      for (t = 0; t < o; t++) e[t] && (f = r(e[t])) && (n && (n += " "), n += f);
-    } else for (f in e) e[f] && (n && (n += " "), n += f);
-    return n;
-  }
-  function clsx$1() {
-    for (var e, t, f = 0, n = "", o = arguments.length; f < o; f++) (e = arguments[f]) && (t = r(e)) && (n && (n += " "), n += t);
-    return n;
-  }
-  function clsx(value) {
-    if (typeof value === "object") {
-      return clsx$1(value);
-    } else {
-      return value ?? "";
-    }
-  }
   const whitespace = [..." 	\n\r\f \v\uFEFF"];
   function to_class(value, hash, directives) {
-    var classname = value == null ? "" : "" + value;
-    if (hash) {
-      classname = classname ? classname + " " + hash : hash;
-    }
+    var classname = "" + value;
     if (directives) {
       for (var key in directives) {
         if (directives[key]) {
@@ -2781,99 +2548,6 @@ fn(node)
     }
     return classname === "" ? null : classname;
   }
-  function append_styles(styles, important = false) {
-    var separator2 = important ? " !important;" : ";";
-    var css = "";
-    for (var key in styles) {
-      var value = styles[key];
-      if (value != null && value !== "") {
-        css += " " + key + ": " + value + separator2;
-      }
-    }
-    return css;
-  }
-  function to_css_name(name) {
-    if (name[0] !== "-" || name[1] !== "-") {
-      return name.toLowerCase();
-    }
-    return name;
-  }
-  function to_style(value, styles) {
-    if (styles) {
-      var new_style = "";
-      var normal_styles;
-      var important_styles;
-      if (Array.isArray(styles)) {
-        normal_styles = styles[0];
-        important_styles = styles[1];
-      } else {
-        normal_styles = styles;
-      }
-      if (value) {
-        value = String(value).replaceAll(/\s*\/\*.*?\*\/\s*/g, "").trim();
-        var in_str = false;
-        var in_apo = 0;
-        var in_comment = false;
-        var reserved_names = [];
-        if (normal_styles) {
-          reserved_names.push(...Object.keys(normal_styles).map(to_css_name));
-        }
-        if (important_styles) {
-          reserved_names.push(...Object.keys(important_styles).map(to_css_name));
-        }
-        var start_index = 0;
-        var name_index = -1;
-        const len = value.length;
-        for (var i = 0; i < len; i++) {
-          var c = value[i];
-          if (in_comment) {
-            if (c === "/" && value[i - 1] === "*") {
-              in_comment = false;
-            }
-          } else if (in_str) {
-            if (in_str === c) {
-              in_str = false;
-            }
-          } else if (c === "/" && value[i + 1] === "*") {
-            in_comment = true;
-          } else if (c === '"' || c === "'") {
-            in_str = c;
-          } else if (c === "(") {
-            in_apo++;
-          } else if (c === ")") {
-            in_apo--;
-          }
-          if (!in_comment && in_str === false && in_apo === 0) {
-            if (c === ":" && name_index === -1) {
-              name_index = i;
-            } else if (c === ";" || i === len - 1) {
-              if (name_index !== -1) {
-                var name = to_css_name(value.substring(start_index, name_index).trim());
-                if (!reserved_names.includes(name)) {
-                  if (c !== ";") {
-                    i++;
-                  }
-                  var property = value.substring(start_index, i).trim();
-                  new_style += " " + property + ";";
-                }
-              }
-              start_index = i + 1;
-              name_index = -1;
-            }
-          }
-        }
-      }
-      if (normal_styles) {
-        new_style += append_styles(normal_styles);
-      }
-      if (important_styles) {
-        new_style += append_styles(important_styles, true);
-      }
-      new_style = new_style.trim();
-      return new_style === "" ? null : new_style;
-    }
-    return value == null ? null : String(value);
-  }
   function set_class(dom, is_html, value, hash, prev_classes, next_classes) {
     var prev = dom.__className;
     if (prev !== value || prev === void 0) {
@@ -2881,10 +2555,8 @@ fn(node)
       {
         if (next_class_name == null) {
           dom.removeAttribute("class");
-        } else if (is_html) {
-          dom.className = next_class_name;
         } else {
-          dom.setAttribute("class", next_class_name);
+          dom.className = next_class_name;
         }
       }
       dom.__className = value;
@@ -2898,101 +2570,8 @@ fn(node)
     }
     return next_classes;
   }
-  function update_styles(dom, prev = {}, next, priority) {
-    for (var key in next) {
-      var value = next[key];
-      if (prev[key] !== value) {
-        if (next[key] == null) {
-          dom.style.removeProperty(key);
-        } else {
-          dom.style.setProperty(key, value, priority);
-        }
-      }
-    }
-  }
-  function set_style(dom, value, prev_styles, next_styles) {
-    var prev = dom.__style;
-    if (prev !== value) {
-      var next_style_attr = to_style(value, next_styles);
-      {
-        if (next_style_attr == null) {
-          dom.removeAttribute("style");
-        } else {
-          dom.style.cssText = next_style_attr;
-        }
-      }
-      dom.__style = value;
-    } else if (next_styles) {
-      if (Array.isArray(next_styles)) {
-        update_styles(dom, prev_styles?.[0], next_styles[0]);
-        update_styles(dom, prev_styles?.[1], next_styles[1], "important");
-      } else {
-        update_styles(dom, prev_styles, next_styles);
-      }
-    }
-    return next_styles;
-  }
-  function select_option(select, value, mounting = false) {
-    if (select.multiple) {
-      if (value == void 0) {
-        return;
-      }
-      if (!is_array(value)) {
-        return select_multiple_invalid_value();
-      }
-      for (var option of select.options) {
-        option.selected = value.includes(get_option_value(option));
-      }
-      return;
-    }
-    for (option of select.options) {
-      var option_value = get_option_value(option);
-      if (is(option_value, value)) {
-        option.selected = true;
-        return;
-      }
-    }
-    if (!mounting || value !== void 0) {
-      select.selectedIndex = -1;
-    }
-  }
-  function init_select(select) {
-    var observer = new MutationObserver(() => {
-      select_option(select, select.__value);
-    });
-    observer.observe(select, {
-childList: true,
-      subtree: true,
-
-
-
-attributes: true,
-      attributeFilter: ["value"]
-    });
-    teardown(() => {
-      observer.disconnect();
-    });
-  }
-  function get_option_value(option) {
-    if ("__value" in option) {
-      return option.__value;
-    } else {
-      return option.value;
-    }
-  }
-  const CLASS = Symbol("class");
-  const STYLE = Symbol("style");
   const IS_CUSTOM_ELEMENT = Symbol("is custom element");
   const IS_HTML = Symbol("is html");
-  function set_selected(element, selected) {
-    if (selected) {
-      if (!element.hasAttribute("selected")) {
-        element.setAttribute("selected", "");
-      }
-    } else {
-      element.removeAttribute("selected");
-    }
-  }
   function set_attribute(element, attribute, value, skip_warning) {
     var attributes = get_attributes(element);
     if (attributes[attribute] === (attributes[attribute] = value)) return;
@@ -3006,182 +2585,6 @@ attributes: true,
     } else {
       element.setAttribute(attribute, value);
     }
-  }
-  function set_attributes(element, prev, next, css_hash, should_remove_defaults = false, skip_warning = false) {
-    var attributes = get_attributes(element);
-    var is_custom_element = attributes[IS_CUSTOM_ELEMENT];
-    var preserve_attribute_case = !attributes[IS_HTML];
-    var current = prev || {};
-    var is_option_element = element.tagName === "OPTION";
-    for (var key in prev) {
-      if (!(key in next)) {
-        next[key] = null;
-      }
-    }
-    if (next.class) {
-      next.class = clsx(next.class);
-    } else if (next[CLASS]) {
-      next.class = null;
-    }
-    if (next[STYLE]) {
-      next.style ??= null;
-    }
-    var setters = get_setters(element);
-    for (const key2 in next) {
-      let value = next[key2];
-      if (is_option_element && key2 === "value" && value == null) {
-        element.value = element.__value = "";
-        current[key2] = value;
-        continue;
-      }
-      if (key2 === "class") {
-        var is_html = element.namespaceURI === "http://www.w3.org/1999/xhtml";
-        set_class(element, is_html, value, css_hash, prev?.[CLASS], next[CLASS]);
-        current[key2] = value;
-        current[CLASS] = next[CLASS];
-        continue;
-      }
-      if (key2 === "style") {
-        set_style(element, value, prev?.[STYLE], next[STYLE]);
-        current[key2] = value;
-        current[STYLE] = next[STYLE];
-        continue;
-      }
-      var prev_value = current[key2];
-      if (value === prev_value && !(value === void 0 && element.hasAttribute(key2))) {
-        continue;
-      }
-      current[key2] = value;
-      var prefix = key2[0] + key2[1];
-      if (prefix === "$$") continue;
-      if (prefix === "on") {
-        const opts = {};
-        const event_handle_key = "$$" + key2;
-        let event_name = key2.slice(2);
-        var delegated = can_delegate_event(event_name);
-        if (is_capture_event(event_name)) {
-          event_name = event_name.slice(0, -7);
-          opts.capture = true;
-        }
-        if (!delegated && prev_value) {
-          if (value != null) continue;
-          element.removeEventListener(event_name, current[event_handle_key], opts);
-          current[event_handle_key] = null;
-        }
-        if (value != null) {
-          if (!delegated) {
-            let handle2 = function(evt) {
-              current[key2].call(this, evt);
-            };
-            current[event_handle_key] = create_event(event_name, element, handle2, opts);
-          } else {
-            element[`__${event_name}`] = value;
-            delegate([event_name]);
-          }
-        } else if (delegated) {
-          element[`__${event_name}`] = void 0;
-        }
-      } else if (key2 === "style") {
-        set_attribute(element, key2, value);
-      } else if (key2 === "autofocus") {
-        autofocus(
-element,
-          Boolean(value)
-        );
-      } else if (!is_custom_element && (key2 === "__value" || key2 === "value" && value != null)) {
-        element.value = element.__value = value;
-      } else if (key2 === "selected" && is_option_element) {
-        set_selected(
-element,
-          value
-        );
-      } else {
-        var name = key2;
-        if (!preserve_attribute_case) {
-          name = normalize_attribute(name);
-        }
-        var is_default = name === "defaultValue" || name === "defaultChecked";
-        if (value == null && !is_custom_element && !is_default) {
-          attributes[key2] = null;
-          if (name === "value" || name === "checked") {
-            let input = (
-element
-            );
-            const use_default = prev === void 0;
-            if (name === "value") {
-              let previous = input.defaultValue;
-              input.removeAttribute(name);
-              input.defaultValue = previous;
-              input.value = input.__value = use_default ? previous : null;
-            } else {
-              let previous = input.defaultChecked;
-              input.removeAttribute(name);
-              input.defaultChecked = previous;
-              input.checked = use_default ? previous : false;
-            }
-          } else {
-            element.removeAttribute(key2);
-          }
-        } else if (is_default || setters.includes(name) && (is_custom_element || typeof value !== "string")) {
-          element[name] = value;
-          if (name in attributes) attributes[name] = UNINITIALIZED;
-        } else if (typeof value !== "function") {
-          set_attribute(element, name, value);
-        }
-      }
-    }
-    return current;
-  }
-  function attribute_effect(element, fn, sync = [], async = [], blockers = [], css_hash, should_remove_defaults = false, skip_warning = false) {
-    flatten(blockers, sync, async, (values) => {
-      var prev = void 0;
-      var effects = {};
-      var is_select = element.nodeName === "SELECT";
-      var inited = false;
-      managed(() => {
-        var next = fn(...values.map(get));
-        var current = set_attributes(
-          element,
-          prev,
-          next,
-          css_hash,
-          should_remove_defaults,
-          skip_warning
-        );
-        if (inited && is_select && "value" in next) {
-          select_option(
-element,
-            next.value
-          );
-        }
-        for (let symbol of Object.getOwnPropertySymbols(effects)) {
-          if (!next[symbol]) destroy_effect(effects[symbol]);
-        }
-        for (let symbol of Object.getOwnPropertySymbols(next)) {
-          var n = next[symbol];
-          if (symbol.description === ATTACHMENT_KEY && (!prev || n !== prev[symbol])) {
-            if (effects[symbol]) destroy_effect(effects[symbol]);
-            effects[symbol] = branch(() => attach(element, () => n));
-          }
-          current[symbol] = n;
-        }
-        prev = current;
-      });
-      if (is_select) {
-        var select = (
-element
-        );
-        effect(() => {
-          select_option(
-            select,
-prev.value,
-            true
-          );
-          init_select(select);
-        });
-      }
-      inited = true;
-    });
   }
   function get_attributes(element) {
     return (
@@ -3211,38 +2614,6 @@ element.__attributes ??= {
       proto = get_prototype_of(proto);
     }
     return setters;
-  }
-  const rest_props_handler = {
-    get(target, key) {
-      if (target.exclude.includes(key)) return;
-      return target.props[key];
-    },
-    set(target, key) {
-      return false;
-    },
-    getOwnPropertyDescriptor(target, key) {
-      if (target.exclude.includes(key)) return;
-      if (key in target.props) {
-        return {
-          enumerable: true,
-          configurable: true,
-          value: target.props[key]
-        };
-      }
-    },
-    has(target, key) {
-      if (target.exclude.includes(key)) return false;
-      return key in target.props;
-    },
-    ownKeys(target) {
-      return Reflect.ownKeys(target.props).filter((key) => !target.exclude.includes(key));
-    }
-  };
-function rest_props(props, exclude, name) {
-    return new Proxy(
-      { props, exclude },
-      rest_props_handler
-    );
   }
   function prop(props, key, flags2, fallback) {
     var fallback_value = (
@@ -3280,33 +2651,6 @@ props[key]
       return getter;
     }
   }
-  function onMount(fn) {
-    if (component_context === null) {
-      lifecycle_outside_component();
-    }
-    if (legacy_mode_flag && component_context.l !== null) {
-      init_update_callbacks(component_context).m.push(fn);
-    } else {
-      user_effect(() => {
-        const cleanup = untrack(fn);
-        if (typeof cleanup === "function") return (
-cleanup
-        );
-      });
-    }
-  }
-  function onDestroy(fn) {
-    if (component_context === null) {
-      lifecycle_outside_component();
-    }
-    onMount(() => () => untrack(fn));
-  }
-  function init_update_callbacks(context) {
-    var l = (
-context.l
-    );
-    return l.u ??= { a: [], b: [], m: [] };
-  }
   const PUBLIC_VERSION = "5";
   if (typeof window !== "undefined") {
     ((window.__svelte ??= {}).v ??= new Set()).add(PUBLIC_VERSION);
@@ -3324,7 +2668,7 @@ context.l
       throw err;
     }
   }
-  var root$2 = from_html(`<span> </span>`);
+  var root$3 = from_html(`<span> </span>`);
   function ActionTooltip($$anchor, $$props) {
     push($$props, true);
     const trigger = prop($$props, "trigger", 3, 0), duration = prop($$props, "duration", 3, 2e3);
@@ -3352,7 +2696,7 @@ context.l
         }
       };
     });
-    var span = root$2();
+    var span = root$3();
     let classes;
     var text = child(span);
     template_effect(() => {
@@ -3362,9 +2706,9 @@ context.l
     append($$anchor, span);
     pop();
   }
-  var root$1 = from_html(`<button type="button" class="IconButton svelte-1z0r1g6"><!></button>`);
+  var root$2 = from_html(`<button type="button" class="IconButton svelte-1z0r1g6"><!></button>`);
   function IconButton($$anchor, $$props) {
-    var button = root$1();
+    var button = root$2();
     button.__click = function(...$$args) {
       $$props.onclick?.apply(this, $$args);
     };
@@ -3498,1380 +2842,10 @@ context.l
       zettelId
     };
   }
-  const matchIconName = /^[a-z0-9]+(-[a-z0-9]+)*$/;
-  const stringToIcon = (value, validate, allowSimpleName, provider = "") => {
-    const colonSeparated = value.split(":");
-    if (value.slice(0, 1) === "@") {
-      if (colonSeparated.length < 2 || colonSeparated.length > 3) return null;
-      provider = colonSeparated.shift().slice(1);
-    }
-    if (colonSeparated.length > 3 || !colonSeparated.length) return null;
-    if (colonSeparated.length > 1) {
-      const name$1 = colonSeparated.pop();
-      const prefix = colonSeparated.pop();
-      const result = {
-        provider: colonSeparated.length > 0 ? colonSeparated[0] : provider,
-        prefix,
-        name: name$1
-      };
-      return validate && !validateIconName(result) ? null : result;
-    }
-    const name = colonSeparated[0];
-    const dashSeparated = name.split("-");
-    if (dashSeparated.length > 1) {
-      const result = {
-        provider,
-        prefix: dashSeparated.shift(),
-        name: dashSeparated.join("-")
-      };
-      return validate && !validateIconName(result) ? null : result;
-    }
-    if (allowSimpleName && provider === "") {
-      const result = {
-        provider,
-        prefix: "",
-        name
-      };
-      return validate && !validateIconName(result, allowSimpleName) ? null : result;
-    }
-    return null;
-  };
-  const validateIconName = (icon, allowSimpleName) => {
-    if (!icon) return false;
-    return !!((allowSimpleName && icon.prefix === "" || !!icon.prefix) && !!icon.name);
-  };
-  function getIconsTree(data, names) {
-    const icons = data.icons;
-    const aliases = data.aliases || Object.create(null);
-    const resolved = Object.create(null);
-    function resolve(name) {
-      if (icons[name]) return resolved[name] = [];
-      if (!(name in resolved)) {
-        resolved[name] = null;
-        const parent = aliases[name] && aliases[name].parent;
-        const value = parent && resolve(parent);
-        if (value) resolved[name] = [parent].concat(value);
-      }
-      return resolved[name];
-    }
-    Object.keys(icons).concat(Object.keys(aliases)).forEach(resolve);
-    return resolved;
-  }
-  const defaultIconDimensions = Object.freeze({
-    left: 0,
-    top: 0,
-    width: 16,
-    height: 16
-  });
-  const defaultIconTransformations = Object.freeze({
-    rotate: 0,
-    vFlip: false,
-    hFlip: false
-  });
-  const defaultIconProps = Object.freeze({
-    ...defaultIconDimensions,
-    ...defaultIconTransformations
-  });
-  const defaultExtendedIconProps = Object.freeze({
-    ...defaultIconProps,
-    body: "",
-    hidden: false
-  });
-  function mergeIconTransformations(obj1, obj2) {
-    const result = {};
-    if (!obj1.hFlip !== !obj2.hFlip) result.hFlip = true;
-    if (!obj1.vFlip !== !obj2.vFlip) result.vFlip = true;
-    const rotate = ((obj1.rotate || 0) + (obj2.rotate || 0)) % 4;
-    if (rotate) result.rotate = rotate;
-    return result;
-  }
-  function mergeIconData(parent, child2) {
-    const result = mergeIconTransformations(parent, child2);
-    for (const key in defaultExtendedIconProps) if (key in defaultIconTransformations) {
-      if (key in parent && !(key in result)) result[key] = defaultIconTransformations[key];
-    } else if (key in child2) result[key] = child2[key];
-    else if (key in parent) result[key] = parent[key];
-    return result;
-  }
-  function internalGetIconData(data, name, tree) {
-    const icons = data.icons;
-    const aliases = data.aliases || Object.create(null);
-    let currentProps = {};
-    function parse(name$1) {
-      currentProps = mergeIconData(icons[name$1] || aliases[name$1], currentProps);
-    }
-    parse(name);
-    tree.forEach(parse);
-    return mergeIconData(data, currentProps);
-  }
-  function parseIconSet(data, callback) {
-    const names = [];
-    if (typeof data !== "object" || typeof data.icons !== "object") return names;
-    if (data.not_found instanceof Array) data.not_found.forEach((name) => {
-      callback(name, null);
-      names.push(name);
-    });
-    const tree = getIconsTree(data);
-    for (const name in tree) {
-      const item = tree[name];
-      if (item) {
-        callback(name, internalGetIconData(data, name, item));
-        names.push(name);
-      }
-    }
-    return names;
-  }
-  const optionalPropertyDefaults = {
-    provider: "",
-    aliases: {},
-    not_found: {},
-    ...defaultIconDimensions
-  };
-  function checkOptionalProps(item, defaults) {
-    for (const prop2 in defaults) if (prop2 in item && typeof item[prop2] !== typeof defaults[prop2]) return false;
-    return true;
-  }
-  function quicklyValidateIconSet(obj) {
-    if (typeof obj !== "object" || obj === null) return null;
-    const data = obj;
-    if (typeof data.prefix !== "string" || !obj.icons || typeof obj.icons !== "object") return null;
-    if (!checkOptionalProps(obj, optionalPropertyDefaults)) return null;
-    const icons = data.icons;
-    for (const name in icons) {
-      const icon = icons[name];
-      if (!name || typeof icon.body !== "string" || !checkOptionalProps(icon, defaultExtendedIconProps)) return null;
-    }
-    const aliases = data.aliases || Object.create(null);
-    for (const name in aliases) {
-      const icon = aliases[name];
-      const parent = icon.parent;
-      if (!name || typeof parent !== "string" || !icons[parent] && !aliases[parent] || !checkOptionalProps(icon, defaultExtendedIconProps)) return null;
-    }
-    return data;
-  }
-  const dataStorage = Object.create(null);
-  function newStorage(provider, prefix) {
-    return {
-      provider,
-      prefix,
-      icons: Object.create(null),
-      missing: new Set()
-    };
-  }
-  function getStorage(provider, prefix) {
-    const providerStorage = dataStorage[provider] || (dataStorage[provider] = Object.create(null));
-    return providerStorage[prefix] || (providerStorage[prefix] = newStorage(provider, prefix));
-  }
-  function addIconSet(storage2, data) {
-    if (!quicklyValidateIconSet(data)) return [];
-    return parseIconSet(data, (name, icon) => {
-      if (icon) storage2.icons[name] = icon;
-      else storage2.missing.add(name);
-    });
-  }
-  function addIconToStorage(storage2, name, icon) {
-    try {
-      if (typeof icon.body === "string") {
-        storage2.icons[name] = { ...icon };
-        return true;
-      }
-    } catch (err) {
-    }
-    return false;
-  }
-  let simpleNames = false;
-  function allowSimpleNames(allow) {
-    if (typeof allow === "boolean") simpleNames = allow;
-    return simpleNames;
-  }
-  function getIconData(name) {
-    const icon = typeof name === "string" ? stringToIcon(name, true, simpleNames) : name;
-    if (icon) {
-      const storage2 = getStorage(icon.provider, icon.prefix);
-      const iconName = icon.name;
-      return storage2.icons[iconName] || (storage2.missing.has(iconName) ? null : void 0);
-    }
-  }
-  function addIcon(name, data) {
-    const icon = stringToIcon(name, true, simpleNames);
-    if (!icon) return false;
-    const storage2 = getStorage(icon.provider, icon.prefix);
-    if (data) return addIconToStorage(storage2, icon.name, data);
-    else {
-      storage2.missing.add(icon.name);
-      return true;
-    }
-  }
-  function addCollection(data, provider) {
-    if (typeof data !== "object") return false;
-    if (typeof provider !== "string") provider = data.provider || "";
-    if (simpleNames && !provider && !data.prefix) {
-      let added = false;
-      if (quicklyValidateIconSet(data)) {
-        data.prefix = "";
-        parseIconSet(data, (name, icon) => {
-          if (addIcon(name, icon)) added = true;
-        });
-      }
-      return added;
-    }
-    const prefix = data.prefix;
-    if (!validateIconName({
-      prefix,
-      name: "a"
-    })) return false;
-    return !!addIconSet(getStorage(provider, prefix), data);
-  }
-  const defaultIconSizeCustomisations = Object.freeze({
-    width: null,
-    height: null
-  });
-  const defaultIconCustomisations = Object.freeze({
-    ...defaultIconSizeCustomisations,
-    ...defaultIconTransformations
-  });
-  const unitsSplit = /(-?[0-9.]*[0-9]+[0-9.]*)/g;
-  const unitsTest = /^-?[0-9.]*[0-9]+[0-9.]*$/g;
-  function calculateSize(size, ratio, precision) {
-    if (ratio === 1) return size;
-    precision = precision || 100;
-    if (typeof size === "number") return Math.ceil(size * ratio * precision) / precision;
-    if (typeof size !== "string") return size;
-    const oldParts = size.split(unitsSplit);
-    if (oldParts === null || !oldParts.length) return size;
-    const newParts = [];
-    let code = oldParts.shift();
-    let isNumber = unitsTest.test(code);
-    while (true) {
-      if (isNumber) {
-        const num = parseFloat(code);
-        if (isNaN(num)) newParts.push(code);
-        else newParts.push(Math.ceil(num * ratio * precision) / precision);
-      } else newParts.push(code);
-      code = oldParts.shift();
-      if (code === void 0) return newParts.join("");
-      isNumber = !isNumber;
-    }
-  }
-  function splitSVGDefs(content, tag = "defs") {
-    let defs = "";
-    const index = content.indexOf("<" + tag);
-    while (index >= 0) {
-      const start = content.indexOf(">", index);
-      const end = content.indexOf("</" + tag);
-      if (start === -1 || end === -1) break;
-      const endEnd = content.indexOf(">", end);
-      if (endEnd === -1) break;
-      defs += content.slice(start + 1, end).trim();
-      content = content.slice(0, index).trim() + content.slice(endEnd + 1);
-    }
-    return {
-      defs,
-      content
-    };
-  }
-  function mergeDefsAndContent(defs, content) {
-    return defs ? "<defs>" + defs + "</defs>" + content : content;
-  }
-  function wrapSVGContent(body, start, end) {
-    const split = splitSVGDefs(body);
-    return mergeDefsAndContent(split.defs, start + split.content + end);
-  }
-  const isUnsetKeyword = (value) => value === "unset" || value === "undefined" || value === "none";
-  function iconToSVG(icon, customisations) {
-    const fullIcon = {
-      ...defaultIconProps,
-      ...icon
-    };
-    const fullCustomisations = {
-      ...defaultIconCustomisations,
-      ...customisations
-    };
-    const box = {
-      left: fullIcon.left,
-      top: fullIcon.top,
-      width: fullIcon.width,
-      height: fullIcon.height
-    };
-    let body = fullIcon.body;
-    [fullIcon, fullCustomisations].forEach((props) => {
-      const transformations = [];
-      const hFlip = props.hFlip;
-      const vFlip = props.vFlip;
-      let rotation = props.rotate;
-      if (hFlip) if (vFlip) rotation += 2;
-      else {
-        transformations.push("translate(" + (box.width + box.left).toString() + " " + (0 - box.top).toString() + ")");
-        transformations.push("scale(-1 1)");
-        box.top = box.left = 0;
-      }
-      else if (vFlip) {
-        transformations.push("translate(" + (0 - box.left).toString() + " " + (box.height + box.top).toString() + ")");
-        transformations.push("scale(1 -1)");
-        box.top = box.left = 0;
-      }
-      let tempValue;
-      if (rotation < 0) rotation -= Math.floor(rotation / 4) * 4;
-      rotation = rotation % 4;
-      switch (rotation) {
-        case 1:
-          tempValue = box.height / 2 + box.top;
-          transformations.unshift("rotate(90 " + tempValue.toString() + " " + tempValue.toString() + ")");
-          break;
-        case 2:
-          transformations.unshift("rotate(180 " + (box.width / 2 + box.left).toString() + " " + (box.height / 2 + box.top).toString() + ")");
-          break;
-        case 3:
-          tempValue = box.width / 2 + box.left;
-          transformations.unshift("rotate(-90 " + tempValue.toString() + " " + tempValue.toString() + ")");
-          break;
-      }
-      if (rotation % 2 === 1) {
-        if (box.left !== box.top) {
-          tempValue = box.left;
-          box.left = box.top;
-          box.top = tempValue;
-        }
-        if (box.width !== box.height) {
-          tempValue = box.width;
-          box.width = box.height;
-          box.height = tempValue;
-        }
-      }
-      if (transformations.length) body = wrapSVGContent(body, '<g transform="' + transformations.join(" ") + '">', "</g>");
-    });
-    const customisationsWidth = fullCustomisations.width;
-    const customisationsHeight = fullCustomisations.height;
-    const boxWidth = box.width;
-    const boxHeight = box.height;
-    let width;
-    let height;
-    if (customisationsWidth === null) {
-      height = customisationsHeight === null ? "1em" : customisationsHeight === "auto" ? boxHeight : customisationsHeight;
-      width = calculateSize(height, boxWidth / boxHeight);
-    } else {
-      width = customisationsWidth === "auto" ? boxWidth : customisationsWidth;
-      height = customisationsHeight === null ? calculateSize(width, boxHeight / boxWidth) : customisationsHeight === "auto" ? boxHeight : customisationsHeight;
-    }
-    const attributes = {};
-    const setAttr = (prop2, value) => {
-      if (!isUnsetKeyword(value)) attributes[prop2] = value.toString();
-    };
-    setAttr("width", width);
-    setAttr("height", height);
-    const viewBox = [
-      box.left,
-      box.top,
-      boxWidth,
-      boxHeight
-    ];
-    attributes.viewBox = viewBox.join(" ");
-    return {
-      attributes,
-      viewBox,
-      body
-    };
-  }
-  const regex = /\sid="(\S+)"/g;
-  const counters = new Map();
-  function nextID(id) {
-    id = id.replace(/[0-9]+$/, "") || "a";
-    const count = counters.get(id) || 0;
-    counters.set(id, count + 1);
-    return count ? `${id}${count}` : id;
-  }
-  function replaceIDs(body) {
-    const ids = [];
-    let match;
-    while (match = regex.exec(body)) ids.push(match[1]);
-    if (!ids.length) return body;
-    const suffix = "suffix" + (Math.random() * 16777216 | Date.now()).toString(16);
-    ids.forEach((id) => {
-      const newID = nextID(id);
-      const escapedID = id.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-      body = body.replace(new RegExp('([#;"])(' + escapedID + ')([")]|\\.[a-z])', "g"), "$1" + newID + suffix + "$3");
-    });
-    body = body.replace(new RegExp(suffix, "g"), "");
-    return body;
-  }
-  const storage = Object.create(null);
-  function setAPIModule(provider, item) {
-    storage[provider] = item;
-  }
-  function getAPIModule(provider) {
-    return storage[provider] || storage[""];
-  }
-  function createAPIConfig(source2) {
-    let resources;
-    if (typeof source2.resources === "string") resources = [source2.resources];
-    else {
-      resources = source2.resources;
-      if (!(resources instanceof Array) || !resources.length) return null;
-    }
-    return {
-      resources,
-      path: source2.path || "/",
-      maxURL: source2.maxURL || 500,
-      rotate: source2.rotate || 750,
-      timeout: source2.timeout || 5e3,
-      random: source2.random === true,
-      index: source2.index || 0,
-      dataAfterTimeout: source2.dataAfterTimeout !== false
-    };
-  }
-  const configStorage = Object.create(null);
-  const fallBackAPISources = ["https://api.simplesvg.com", "https://api.unisvg.com"];
-  const fallBackAPI = [];
-  while (fallBackAPISources.length > 0) if (fallBackAPISources.length === 1) fallBackAPI.push(fallBackAPISources.shift());
-  else if (Math.random() > 0.5) fallBackAPI.push(fallBackAPISources.shift());
-  else fallBackAPI.push(fallBackAPISources.pop());
-  configStorage[""] = createAPIConfig({ resources: ["https://api.iconify.design"].concat(fallBackAPI) });
-  function addAPIProvider(provider, customConfig) {
-    const config = createAPIConfig(customConfig);
-    if (config === null) return false;
-    configStorage[provider] = config;
-    return true;
-  }
-  function getAPIConfig(provider) {
-    return configStorage[provider];
-  }
-  const detectFetch = () => {
-    let callback;
-    try {
-      callback = fetch;
-      if (typeof callback === "function") return callback;
-    } catch (err) {
-    }
-  };
-  let fetchModule = detectFetch();
-  function calculateMaxLength(provider, prefix) {
-    const config = getAPIConfig(provider);
-    if (!config) return 0;
-    let result;
-    if (!config.maxURL) result = 0;
-    else {
-      let maxHostLength = 0;
-      config.resources.forEach((item) => {
-        const host = item;
-        maxHostLength = Math.max(maxHostLength, host.length);
-      });
-      const url = prefix + ".json?icons=";
-      result = config.maxURL - maxHostLength - config.path.length - url.length;
-    }
-    return result;
-  }
-  function shouldAbort(status) {
-    return status === 404;
-  }
-  const prepare = (provider, prefix, icons) => {
-    const results = [];
-    const maxLength = calculateMaxLength(provider, prefix);
-    const type = "icons";
-    let item = {
-      type,
-      provider,
-      prefix,
-      icons: []
-    };
-    let length = 0;
-    icons.forEach((name, index) => {
-      length += name.length + 1;
-      if (length >= maxLength && index > 0) {
-        results.push(item);
-        item = {
-          type,
-          provider,
-          prefix,
-          icons: []
-        };
-        length = name.length;
-      }
-      item.icons.push(name);
-    });
-    results.push(item);
-    return results;
-  };
-  function getPath(provider) {
-    if (typeof provider === "string") {
-      const config = getAPIConfig(provider);
-      if (config) return config.path;
-    }
-    return "/";
-  }
-  const send = (host, params, callback) => {
-    if (!fetchModule) {
-      callback("abort", 424);
-      return;
-    }
-    let path = getPath(params.provider);
-    switch (params.type) {
-      case "icons": {
-        const prefix = params.prefix;
-        const iconsList = params.icons.join(",");
-        const urlParams = new URLSearchParams({ icons: iconsList });
-        path += prefix + ".json?" + urlParams.toString();
-        break;
-      }
-      case "custom": {
-        const uri = params.uri;
-        path += uri.slice(0, 1) === "/" ? uri.slice(1) : uri;
-        break;
-      }
-      default:
-        callback("abort", 400);
-        return;
-    }
-    let defaultError = 503;
-    fetchModule(host + path).then((response) => {
-      const status = response.status;
-      if (status !== 200) {
-        setTimeout(() => {
-          callback(shouldAbort(status) ? "abort" : "next", status);
-        });
-        return;
-      }
-      defaultError = 501;
-      return response.json();
-    }).then((data) => {
-      if (typeof data !== "object" || data === null) {
-        setTimeout(() => {
-          if (data === 404) callback("abort", data);
-          else callback("next", defaultError);
-        });
-        return;
-      }
-      setTimeout(() => {
-        callback("success", data);
-      });
-    }).catch(() => {
-      callback("next", defaultError);
-    });
-  };
-  const fetchAPIModule = {
-    prepare,
-    send
-  };
-  function removeCallback(storages, id) {
-    storages.forEach((storage2) => {
-      const items = storage2.loaderCallbacks;
-      if (items) storage2.loaderCallbacks = items.filter((row) => row.id !== id);
-    });
-  }
-  function updateCallbacks(storage2) {
-    if (!storage2.pendingCallbacksFlag) {
-      storage2.pendingCallbacksFlag = true;
-      setTimeout(() => {
-        storage2.pendingCallbacksFlag = false;
-        const items = storage2.loaderCallbacks ? storage2.loaderCallbacks.slice(0) : [];
-        if (!items.length) return;
-        let hasPending = false;
-        const provider = storage2.provider;
-        const prefix = storage2.prefix;
-        items.forEach((item) => {
-          const icons = item.icons;
-          const oldLength = icons.pending.length;
-          icons.pending = icons.pending.filter((icon) => {
-            if (icon.prefix !== prefix) return true;
-            const name = icon.name;
-            if (storage2.icons[name]) icons.loaded.push({
-              provider,
-              prefix,
-              name
-            });
-            else if (storage2.missing.has(name)) icons.missing.push({
-              provider,
-              prefix,
-              name
-            });
-            else {
-              hasPending = true;
-              return true;
-            }
-            return false;
-          });
-          if (icons.pending.length !== oldLength) {
-            if (!hasPending) removeCallback([storage2], item.id);
-            item.callback(icons.loaded.slice(0), icons.missing.slice(0), icons.pending.slice(0), item.abort);
-          }
-        });
-      });
-    }
-  }
-  let idCounter = 0;
-  function storeCallback(callback, icons, pendingSources) {
-    const id = idCounter++;
-    const abort = removeCallback.bind(null, pendingSources, id);
-    if (!icons.pending.length) return abort;
-    const item = {
-      id,
-      icons,
-      callback,
-      abort
-    };
-    pendingSources.forEach((storage2) => {
-      (storage2.loaderCallbacks || (storage2.loaderCallbacks = [])).push(item);
-    });
-    return abort;
-  }
-  function sortIcons(icons) {
-    const result = {
-      loaded: [],
-      missing: [],
-      pending: []
-    };
-    const storage2 = Object.create(null);
-    icons.sort((a, b) => {
-      if (a.provider !== b.provider) return a.provider.localeCompare(b.provider);
-      if (a.prefix !== b.prefix) return a.prefix.localeCompare(b.prefix);
-      return a.name.localeCompare(b.name);
-    });
-    let lastIcon = {
-      provider: "",
-      prefix: "",
-      name: ""
-    };
-    icons.forEach((icon) => {
-      if (lastIcon.name === icon.name && lastIcon.prefix === icon.prefix && lastIcon.provider === icon.provider) return;
-      lastIcon = icon;
-      const provider = icon.provider;
-      const prefix = icon.prefix;
-      const name = icon.name;
-      const providerStorage = storage2[provider] || (storage2[provider] = Object.create(null));
-      const localStorage = providerStorage[prefix] || (providerStorage[prefix] = getStorage(provider, prefix));
-      let list;
-      if (name in localStorage.icons) list = result.loaded;
-      else if (prefix === "" || localStorage.missing.has(name)) list = result.missing;
-      else list = result.pending;
-      const item = {
-        provider,
-        prefix,
-        name
-      };
-      list.push(item);
-    });
-    return result;
-  }
-  function listToIcons(list, validate = true, simpleNames2 = false) {
-    const result = [];
-    list.forEach((item) => {
-      const icon = typeof item === "string" ? stringToIcon(item, validate, simpleNames2) : item;
-      if (icon) result.push(icon);
-    });
-    return result;
-  }
-  const defaultConfig = {
-    resources: [],
-    index: 0,
-    timeout: 2e3,
-    rotate: 750,
-    random: false,
-    dataAfterTimeout: false
-  };
-  function sendQuery(config, payload, query, done) {
-    const resourcesCount = config.resources.length;
-    const startIndex = config.random ? Math.floor(Math.random() * resourcesCount) : config.index;
-    let resources;
-    if (config.random) {
-      let list = config.resources.slice(0);
-      resources = [];
-      while (list.length > 1) {
-        const nextIndex = Math.floor(Math.random() * list.length);
-        resources.push(list[nextIndex]);
-        list = list.slice(0, nextIndex).concat(list.slice(nextIndex + 1));
-      }
-      resources = resources.concat(list);
-    } else resources = config.resources.slice(startIndex).concat(config.resources.slice(0, startIndex));
-    const startTime = Date.now();
-    let status = "pending";
-    let queriesSent = 0;
-    let lastError;
-    let timer = null;
-    let queue = [];
-    let doneCallbacks = [];
-    if (typeof done === "function") doneCallbacks.push(done);
-    function resetTimer() {
-      if (timer) {
-        clearTimeout(timer);
-        timer = null;
-      }
-    }
-    function abort() {
-      if (status === "pending") status = "aborted";
-      resetTimer();
-      queue.forEach((item) => {
-        if (item.status === "pending") item.status = "aborted";
-      });
-      queue = [];
-    }
-    function subscribe(callback, overwrite) {
-      if (overwrite) doneCallbacks = [];
-      if (typeof callback === "function") doneCallbacks.push(callback);
-    }
-    function getQueryStatus() {
-      return {
-        startTime,
-        payload,
-        status,
-        queriesSent,
-        queriesPending: queue.length,
-        subscribe,
-        abort
-      };
-    }
-    function failQuery() {
-      status = "failed";
-      doneCallbacks.forEach((callback) => {
-        callback(void 0, lastError);
-      });
-    }
-    function clearQueue() {
-      queue.forEach((item) => {
-        if (item.status === "pending") item.status = "aborted";
-      });
-      queue = [];
-    }
-    function moduleResponse(item, response, data) {
-      const isError = response !== "success";
-      queue = queue.filter((queued) => queued !== item);
-      switch (status) {
-        case "pending":
-          break;
-        case "failed":
-          if (isError || !config.dataAfterTimeout) return;
-          break;
-        default:
-          return;
-      }
-      if (response === "abort") {
-        lastError = data;
-        failQuery();
-        return;
-      }
-      if (isError) {
-        lastError = data;
-        if (!queue.length) if (!resources.length) failQuery();
-        else execNext();
-        return;
-      }
-      resetTimer();
-      clearQueue();
-      if (!config.random) {
-        const index = config.resources.indexOf(item.resource);
-        if (index !== -1 && index !== config.index) config.index = index;
-      }
-      status = "completed";
-      doneCallbacks.forEach((callback) => {
-        callback(data);
-      });
-    }
-    function execNext() {
-      if (status !== "pending") return;
-      resetTimer();
-      const resource = resources.shift();
-      if (resource === void 0) {
-        if (queue.length) {
-          timer = setTimeout(() => {
-            resetTimer();
-            if (status === "pending") {
-              clearQueue();
-              failQuery();
-            }
-          }, config.timeout);
-          return;
-        }
-        failQuery();
-        return;
-      }
-      const item = {
-        status: "pending",
-        resource,
-        callback: (status$1, data) => {
-          moduleResponse(item, status$1, data);
-        }
-      };
-      queue.push(item);
-      queriesSent++;
-      timer = setTimeout(execNext, config.rotate);
-      query(resource, payload, item.callback);
-    }
-    setTimeout(execNext);
-    return getQueryStatus;
-  }
-  function initRedundancy(cfg) {
-    const config = {
-      ...defaultConfig,
-      ...cfg
-    };
-    let queries = [];
-    function cleanup() {
-      queries = queries.filter((item) => item().status === "pending");
-    }
-    function query(payload, queryCallback, doneCallback) {
-      const query$1 = sendQuery(config, payload, queryCallback, (data, error) => {
-        cleanup();
-        if (doneCallback) doneCallback(data, error);
-      });
-      queries.push(query$1);
-      return query$1;
-    }
-    function find(callback) {
-      return queries.find((value) => {
-        return callback(value);
-      }) || null;
-    }
-    return {
-      query,
-      find,
-      setIndex: (index) => {
-        config.index = index;
-      },
-      getIndex: () => config.index,
-      cleanup
-    };
-  }
-  function emptyCallback$1() {
-  }
-  const redundancyCache = Object.create(null);
-  function getRedundancyCache(provider) {
-    if (!redundancyCache[provider]) {
-      const config = getAPIConfig(provider);
-      if (!config) return;
-      redundancyCache[provider] = {
-        config,
-        redundancy: initRedundancy(config)
-      };
-    }
-    return redundancyCache[provider];
-  }
-  function sendAPIQuery(target, query, callback) {
-    let redundancy;
-    let send2;
-    if (typeof target === "string") {
-      const api = getAPIModule(target);
-      if (!api) {
-        callback(void 0, 424);
-        return emptyCallback$1;
-      }
-      send2 = api.send;
-      const cached = getRedundancyCache(target);
-      if (cached) redundancy = cached.redundancy;
-    } else {
-      const config = createAPIConfig(target);
-      if (config) {
-        redundancy = initRedundancy(config);
-        const api = getAPIModule(target.resources ? target.resources[0] : "");
-        if (api) send2 = api.send;
-      }
-    }
-    if (!redundancy || !send2) {
-      callback(void 0, 424);
-      return emptyCallback$1;
-    }
-    return redundancy.query(query, send2, callback)().abort;
-  }
-  function emptyCallback() {
-  }
-  function loadedNewIcons(storage2) {
-    if (!storage2.iconsLoaderFlag) {
-      storage2.iconsLoaderFlag = true;
-      setTimeout(() => {
-        storage2.iconsLoaderFlag = false;
-        updateCallbacks(storage2);
-      });
-    }
-  }
-  function checkIconNamesForAPI(icons) {
-    const valid = [];
-    const invalid = [];
-    icons.forEach((name) => {
-      (name.match(matchIconName) ? valid : invalid).push(name);
-    });
-    return {
-      valid,
-      invalid
-    };
-  }
-  function parseLoaderResponse(storage2, icons, data) {
-    function checkMissing() {
-      const pending = storage2.pendingIcons;
-      icons.forEach((name) => {
-        if (pending) pending.delete(name);
-        if (!storage2.icons[name]) storage2.missing.add(name);
-      });
-    }
-    if (data && typeof data === "object") try {
-      if (!addIconSet(storage2, data).length) {
-        checkMissing();
-        return;
-      }
-    } catch (err) {
-      console.error(err);
-    }
-    checkMissing();
-    loadedNewIcons(storage2);
-  }
-  function parsePossiblyAsyncResponse(response, callback) {
-    if (response instanceof Promise) response.then((data) => {
-      callback(data);
-    }).catch(() => {
-      callback(null);
-    });
-    else callback(response);
-  }
-  function loadNewIcons(storage2, icons) {
-    if (!storage2.iconsToLoad) storage2.iconsToLoad = icons;
-    else storage2.iconsToLoad = storage2.iconsToLoad.concat(icons).sort();
-    if (!storage2.iconsQueueFlag) {
-      storage2.iconsQueueFlag = true;
-      setTimeout(() => {
-        storage2.iconsQueueFlag = false;
-        const { provider, prefix } = storage2;
-        const icons$1 = storage2.iconsToLoad;
-        delete storage2.iconsToLoad;
-        if (!icons$1 || !icons$1.length) return;
-        const customIconLoader = storage2.loadIcon;
-        if (storage2.loadIcons && (icons$1.length > 1 || !customIconLoader)) {
-          parsePossiblyAsyncResponse(storage2.loadIcons(icons$1, prefix, provider), (data) => {
-            parseLoaderResponse(storage2, icons$1, data);
-          });
-          return;
-        }
-        if (customIconLoader) {
-          icons$1.forEach((name) => {
-            parsePossiblyAsyncResponse(customIconLoader(name, prefix, provider), (data) => {
-              parseLoaderResponse(storage2, [name], data ? {
-                prefix,
-                icons: { [name]: data }
-              } : null);
-            });
-          });
-          return;
-        }
-        const { valid, invalid } = checkIconNamesForAPI(icons$1);
-        if (invalid.length) parseLoaderResponse(storage2, invalid, null);
-        if (!valid.length) return;
-        const api = prefix.match(matchIconName) ? getAPIModule(provider) : null;
-        if (!api) {
-          parseLoaderResponse(storage2, valid, null);
-          return;
-        }
-        api.prepare(provider, prefix, valid).forEach((item) => {
-          sendAPIQuery(provider, item, (data) => {
-            parseLoaderResponse(storage2, item.icons, data);
-          });
-        });
-      });
-    }
-  }
-  const loadIcons = (icons, callback) => {
-    const sortedIcons = sortIcons(listToIcons(icons, true, allowSimpleNames()));
-    if (!sortedIcons.pending.length) {
-      let callCallback = true;
-      if (callback) setTimeout(() => {
-        if (callCallback) callback(sortedIcons.loaded, sortedIcons.missing, sortedIcons.pending, emptyCallback);
-      });
-      return () => {
-        callCallback = false;
-      };
-    }
-    const newIcons = Object.create(null);
-    const sources = [];
-    let lastProvider, lastPrefix;
-    sortedIcons.pending.forEach((icon) => {
-      const { provider, prefix } = icon;
-      if (prefix === lastPrefix && provider === lastProvider) return;
-      lastProvider = provider;
-      lastPrefix = prefix;
-      sources.push(getStorage(provider, prefix));
-      const providerNewIcons = newIcons[provider] || (newIcons[provider] = Object.create(null));
-      if (!providerNewIcons[prefix]) providerNewIcons[prefix] = [];
-    });
-    sortedIcons.pending.forEach((icon) => {
-      const { provider, prefix, name } = icon;
-      const storage2 = getStorage(provider, prefix);
-      const pendingQueue = storage2.pendingIcons || (storage2.pendingIcons = new Set());
-      if (!pendingQueue.has(name)) {
-        pendingQueue.add(name);
-        newIcons[provider][prefix].push(name);
-      }
-    });
-    sources.forEach((storage2) => {
-      const list = newIcons[storage2.provider][storage2.prefix];
-      if (list.length) loadNewIcons(storage2, list);
-    });
-    return callback ? storeCallback(callback, sortedIcons, sources) : emptyCallback;
-  };
-  function mergeCustomisations(defaults, item) {
-    const result = { ...defaults };
-    for (const key in item) {
-      const value = item[key];
-      const valueType = typeof value;
-      if (key in defaultIconSizeCustomisations) {
-        if (value === null || value && (valueType === "string" || valueType === "number")) result[key] = value;
-      } else if (valueType === typeof result[key]) result[key] = key === "rotate" ? value % 4 : value;
-    }
-    return result;
-  }
-  const separator = /[\s,]+/;
-  function flipFromString(custom, flip) {
-    flip.split(separator).forEach((str) => {
-      switch (str.trim()) {
-        case "horizontal":
-          custom.hFlip = true;
-          break;
-        case "vertical":
-          custom.vFlip = true;
-          break;
-      }
-    });
-  }
-  function rotateFromString(value, defaultValue = 0) {
-    const units = value.replace(/^-?[0-9.]*/, "");
-    function cleanup(value$1) {
-      while (value$1 < 0) value$1 += 4;
-      return value$1 % 4;
-    }
-    if (units === "") {
-      const num = parseInt(value);
-      return isNaN(num) ? 0 : cleanup(num);
-    } else if (units !== value) {
-      let split = 0;
-      switch (units) {
-        case "%":
-          split = 25;
-          break;
-        case "deg":
-          split = 90;
-      }
-      if (split) {
-        let num = parseFloat(value.slice(0, value.length - units.length));
-        if (isNaN(num)) return 0;
-        num = num / split;
-        return num % 1 === 0 ? cleanup(num) : 0;
-      }
-    }
-    return defaultValue;
-  }
-  function iconToHTML(body, attributes) {
-    let renderAttribsHTML = body.indexOf("xlink:") === -1 ? "" : ' xmlns:xlink="http://www.w3.org/1999/xlink"';
-    for (const attr in attributes) renderAttribsHTML += " " + attr + '="' + attributes[attr] + '"';
-    return '<svg xmlns="http://www.w3.org/2000/svg"' + renderAttribsHTML + ">" + body + "</svg>";
-  }
-  function encodeSVGforURL(svg) {
-    return svg.replace(/"/g, "'").replace(/%/g, "%25").replace(/#/g, "%23").replace(/</g, "%3C").replace(/>/g, "%3E").replace(/\s+/g, " ");
-  }
-  function svgToData(svg) {
-    return "data:image/svg+xml," + encodeSVGforURL(svg);
-  }
-  function svgToURL(svg) {
-    return 'url("' + svgToData(svg) + '")';
-  }
-  const defaultExtendedIconCustomisations = {
-    ...defaultIconCustomisations,
-    inline: false
-  };
-  const svgDefaults = {
-    "xmlns": "http://www.w3.org/2000/svg",
-    "xmlns:xlink": "http://www.w3.org/1999/xlink",
-    "aria-hidden": true,
-    "role": "img"
-  };
-  const commonProps = {
-    display: "inline-block"
-  };
-  const monotoneProps = {
-    "background-color": "currentColor"
-  };
-  const coloredProps = {
-    "background-color": "transparent"
-  };
-  const propsToAdd = {
-    image: "var(--svg)",
-    repeat: "no-repeat",
-    size: "100% 100%"
-  };
-  const propsToAddTo = {
-    "-webkit-mask": monotoneProps,
-    "mask": monotoneProps,
-    "background": coloredProps
-  };
-  for (const prefix in propsToAddTo) {
-    const list = propsToAddTo[prefix];
-    for (const prop2 in propsToAdd) {
-      list[prefix + "-" + prop2] = propsToAdd[prop2];
-    }
-  }
-  function fixSize(value) {
-    return value + (value.match(/^[-0-9.]+$/) ? "px" : "");
-  }
-  function render(icon, props) {
-    const customisations = mergeCustomisations(defaultExtendedIconCustomisations, props);
-    const mode = props.mode || "svg";
-    const componentProps = mode === "svg" ? { ...svgDefaults } : {};
-    if (icon.body.indexOf("xlink:") === -1) {
-      delete componentProps["xmlns:xlink"];
-    }
-    let style = typeof props.style === "string" ? props.style : "";
-    for (let key in props) {
-      const value = props[key];
-      if (value === void 0) {
-        continue;
-      }
-      switch (key) {
-case "icon":
-        case "style":
-        case "onLoad":
-        case "mode":
-        case "ssr":
-          break;
-case "inline":
-        case "hFlip":
-        case "vFlip":
-          customisations[key] = value === true || value === "true" || value === 1;
-          break;
-case "flip":
-          if (typeof value === "string") {
-            flipFromString(customisations, value);
-          }
-          break;
-case "color":
-          style = style + (style.length > 0 && style.trim().slice(-1) !== ";" ? ";" : "") + "color: " + value + "; ";
-          break;
-case "rotate":
-          if (typeof value === "string") {
-            customisations[key] = rotateFromString(value);
-          } else if (typeof value === "number") {
-            customisations[key] = value;
-          }
-          break;
-case "ariaHidden":
-        case "aria-hidden":
-          if (value !== true && value !== "true") {
-            delete componentProps["aria-hidden"];
-          }
-          break;
-        default:
-          if (key.slice(0, 3) === "on:") {
-            break;
-          }
-          if (defaultExtendedIconCustomisations[key] === void 0) {
-            componentProps[key] = value;
-          }
-      }
-    }
-    const item = iconToSVG(icon, customisations);
-    const renderAttribs = item.attributes;
-    if (customisations.inline) {
-      style = "vertical-align: -0.125em; " + style;
-    }
-    if (mode === "svg") {
-      Object.assign(componentProps, renderAttribs);
-      if (style !== "") {
-        componentProps.style = style;
-      }
-      return {
-        svg: true,
-        attributes: componentProps,
-        body: replaceIDs(item.body)
-      };
-    }
-    const { body, width, height } = icon;
-    const useMask = mode === "mask" || (mode === "bg" ? false : body.indexOf("currentColor") !== -1);
-    const html2 = iconToHTML(body, {
-      ...renderAttribs,
-      width: width + "",
-      height: height + ""
-    });
-    const url = svgToURL(html2);
-    const styles = {
-      "--svg": url
-    };
-    const size = (prop2) => {
-      const value = renderAttribs[prop2];
-      if (value) {
-        styles[prop2] = fixSize(value);
-      }
-    };
-    size("width");
-    size("height");
-    Object.assign(styles, commonProps, useMask ? monotoneProps : coloredProps);
-    let customStyle = "";
-    for (const key in styles) {
-      customStyle += key + ": " + styles[key] + ";";
-    }
-    componentProps.style = customStyle + style;
-    return {
-      svg: false,
-      attributes: componentProps
-    };
-  }
-  allowSimpleNames(true);
-  setAPIModule("", fetchAPIModule);
-  if (typeof document !== "undefined" && typeof window !== "undefined") {
-    const _window = window;
-    if (_window.IconifyPreload !== void 0) {
-      const preload = _window.IconifyPreload;
-      const err = "Invalid IconifyPreload syntax.";
-      if (typeof preload === "object" && preload !== null) {
-        (preload instanceof Array ? preload : [preload]).forEach((item) => {
-          try {
-            if (
-typeof item !== "object" || item === null || item instanceof Array ||
-typeof item.icons !== "object" || typeof item.prefix !== "string" ||
-!addCollection(item)
-            ) {
-              console.error(err);
-            }
-          } catch (e) {
-            console.error(err);
-          }
-        });
-      }
-    }
-    if (_window.IconifyProviders !== void 0) {
-      const providers = _window.IconifyProviders;
-      if (typeof providers === "object" && providers !== null) {
-        for (let key in providers) {
-          const err = "IconifyProviders[" + key + "] is invalid.";
-          try {
-            const value = providers[key];
-            if (typeof value !== "object" || !value || value.resources === void 0) {
-              continue;
-            }
-            if (!addAPIProvider(key, value)) {
-              console.error(err);
-            }
-          } catch (e) {
-            console.error(err);
-          }
-        }
-      }
-    }
-  }
-  function isSSR() {
-    try {
-      return typeof window !== "object";
-    } catch (err) {
-      return true;
-    }
-  }
-  function checkIconState(icon, state2, callback, onload) {
-    function abortLoading() {
-      if (state2.loading) {
-        state2.loading.abort();
-        state2.loading = null;
-      }
-    }
-    if (typeof icon === "object" && icon !== null && typeof icon.body === "string") {
-      state2.name = "";
-      abortLoading();
-      return { data: { ...defaultIconProps, ...icon } };
-    }
-    let iconName;
-    if (typeof icon !== "string" || (iconName = stringToIcon(icon, false, true)) === null) {
-      abortLoading();
-      return null;
-    }
-    const data = getIconData(iconName);
-    if (!data) {
-      if (!isSSR() && (!state2.loading || state2.loading.name !== icon)) {
-        abortLoading();
-        state2.name = "";
-        state2.loading = {
-          name: icon,
-          abort: loadIcons([iconName], callback)
-        };
-      }
-      return null;
-    }
-    abortLoading();
-    if (state2.name !== icon) {
-      state2.name = icon;
-      if (onload && !state2.destroyed) {
-        setTimeout(() => {
-          onload(icon);
-        });
-      }
-    }
-    const classes = ["iconify"];
-    if (iconName.prefix !== "") {
-      classes.push("iconify--" + iconName.prefix);
-    }
-    if (iconName.provider !== "") {
-      classes.push("iconify--" + iconName.provider);
-    }
-    return { data, classes };
-  }
-  function generateIcon(icon, props) {
-    return icon ? render({
-      ...defaultIconProps,
-      ...icon
-    }, props) : null;
-  }
-  var root_2 = from_svg(`<svg><!></svg>`);
-  var root_3 = from_html(`<span></span>`);
-  function Icon($$anchor, $$props) {
-    push($$props, true);
-    const iconState = {
-name: "",
-loading: null,
-destroyed: false
-    };
-    const props = rest_props($$props, ["$$slots", "$$events", "$$legacy"]);
-    let counter = state(0);
-    let iconData = user_derived(() => {
-      get(counter);
-      return checkIconState($$props.icon, iconState, loaded, $$props.onload);
-    });
-    let data = user_derived(() => {
-      const generatedData = get(iconData) ? generateIcon(get(iconData).data, props) : null;
-      if (generatedData && get(iconData).classes && props["class"] === void 0) {
-        generatedData.attributes["class"] = (typeof props["class"] === "string" ? props["class"] + " " : "") + get(iconData).classes.join(" ");
-      }
-      return generatedData;
-    });
-    function loaded() {
-      update(counter);
-    }
-    onDestroy(() => {
-      iconState.destroyed = true;
-      if (iconState.loading) {
-        iconState.loading.abort();
-        iconState.loading = null;
-      }
-    });
-    var fragment = comment();
-    var node = first_child(fragment);
-    {
-      var consequent_1 = ($$anchor2) => {
-        var fragment_1 = comment();
-        var node_1 = first_child(fragment_1);
-        {
-          var consequent = ($$anchor3) => {
-            var svg = root_2();
-            attribute_effect(svg, () => ({ ...get(data).attributes }));
-            var node_2 = child(svg);
-            html(node_2, () => get(data).body, true);
-            append($$anchor3, svg);
-          };
-          var alternate = ($$anchor3) => {
-            var span = root_3();
-            attribute_effect(span, () => ({ ...get(data).attributes }));
-            append($$anchor3, span);
-          };
-          if_block(node_1, ($$render) => {
-            if (get(data).svg) $$render(consequent);
-            else $$render(alternate, false);
-          });
-        }
-        append($$anchor2, fragment_1);
-      };
-      if_block(node, ($$render) => {
-        if (get(data)) $$render(consequent_1);
-      });
-    }
-    append($$anchor, fragment);
-    pop();
+  var root$1 = from_svg(`<svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" focusable="false" class="svelte-1nzdrgw"><path d="M22 6v16h-16v-16h16zm2-2h-20v20h20v-20zm-24 17v-21h21v2h-19v19h-2zm18-8h-3v-3h-2v3h-3v2h3v3h2v-3h3v-2z"></path></svg>`);
+  function CopyIcon($$anchor) {
+    var svg = root$1();
+    append($$anchor, svg);
   }
   var root = from_html(`<div class="GrabIMBDDetails svelte-1oywuru"><!> <!></div>`);
   function GrabIMBDDetails($$anchor, $$props) {
@@ -4892,13 +2866,7 @@ destroyed: false
       title: "Grab IMDB details",
       onclick,
       children: ($$anchor2, $$slotProps) => {
-        Icon($$anchor2, {
-          icon: "iconamoon:copy-bold",
-          width: "24",
-          height: "24",
-          "aria-hidden": "true",
-          focusable: "false"
-        });
+        CopyIcon($$anchor2);
       }
     });
     var node_1 = sibling(node, 2);
