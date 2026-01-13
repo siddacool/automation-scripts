@@ -124,6 +124,15 @@ importers:
         specifier: ^5.0.0
         version: 5.46.1
 
+  scripts/hotstar-enhancements:
+    dependencies:
+      '@repo/shared':
+        specifier: workspace:*
+        version: link:../../packages/shared
+      '@repo/shared-browser':
+        specifier: workspace:*
+        version: link:../../packages/shared-browser
+
   scripts/imdb-obsidian-base-watchlist:
     dependencies:
       '@repo/shared':

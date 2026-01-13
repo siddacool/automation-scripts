@@ -1,5 +1,11 @@
 # @repo/shared-browser
 
+## 1.3.0
+
+### Minor Changes
+
+- Delay function added
+
 ## 1.2.0
 
 ### Minor Changes
