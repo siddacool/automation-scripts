@@ -17,8 +17,8 @@
 
 <style lang="scss">
   button {
-    width: 35px;
-    height: 35px;
+    width: 40px;
+    height: 40px;
     display: flex;
     background: transparent;
     border: 0;
@@ -28,6 +28,8 @@
     border-radius: 50%;
     transition: all 100ms;
     color: #fff;
+    font-size: 1.2rem;
+    padding: 0;
 
     /* ✅ Visible keyboard focus */
     &:focus-visible {

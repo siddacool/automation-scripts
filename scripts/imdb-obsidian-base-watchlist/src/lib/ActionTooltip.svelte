@@ -44,7 +44,7 @@
 <style lang="scss">
   .ActionTooltip {
     position: absolute;
-    top: 36px;
+    top: 40px;
     left: -7px;
     font-size: 0.8rem;
     width: 55px;

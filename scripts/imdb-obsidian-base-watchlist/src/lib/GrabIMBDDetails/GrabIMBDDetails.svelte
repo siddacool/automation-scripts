@@ -3,7 +3,7 @@
   import ActionTooltip from '../ActionTooltip.svelte';
   import IconButton from '../IconButton.svelte';
   import { getDatabase } from './data';
-  import Icon from '@iconify/svelte';
+  import CopyIcon from '../Icons/CopyIcon.svelte';
 
   let tooltipTrigger = $state(0);
 
@@ -21,7 +21,7 @@
 
 <div class="GrabIMBDDetails">
   <IconButton title="Grab IMDB details" {onclick}>
-    <Icon icon="iconamoon:copy-bold" width="24" height="24" aria-hidden="true" focusable="false" />
+    <CopyIcon />
   </IconButton>
   <ActionTooltip description="Copied!" trigger={tooltipTrigger} />
 </div>
@@ -30,5 +30,6 @@
   .GrabIMBDDetails {
     position: relative;
     display: inline-flex;
+    top: -3px;
   }
 </style>
