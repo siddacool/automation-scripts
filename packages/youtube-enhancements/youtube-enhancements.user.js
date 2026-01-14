@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         YouTube Enhancements
 // @namespace    https://github.com/siddacool/automation-scripts/tree/main/scripts/youtube-enhancements
-// @version      3.4.5
+// @version      3.4.6
 // @author       siddacool
 // @description  a Tampermonkey script to enhance your Youtube viewing experience with features like Enter as play/pause button and more.
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=www.youtube.com/
