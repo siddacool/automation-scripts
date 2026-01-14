@@ -13,8 +13,8 @@ import { convertIsoDurationToReadable } from '../convertIsoDurationToReadable/co
 export function getDatabase(): ImdbDatabase {
   const schema = getImdbSchema();
 
-  const name = cleanText(schema.alternateName || schema.name || '');
-  const originalName = cleanText(schema.name || '');
+  const name = decodeHtmlEntities(cleanText(schema.alternateName || schema.name || ''));
+  const originalName = decodeHtmlEntities(cleanText(schema.name || ''));
   const category = getContentCategory(schema['@type'] || '', schema.genre || []);
   const rating = schema.aggregateRating?.ratingValue?.toString();
   const certification = schema.contentRating;
