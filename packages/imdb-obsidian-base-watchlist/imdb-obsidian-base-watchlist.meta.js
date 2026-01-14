@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Imdb Obsidian Base Watchlist
 // @namespace    https://github.com/siddacool/automation-scripts/tree/main/scripts/imdb-obsidian-base-watchlist
-// @version      2.3.2
+// @version      2.3.3
 // @author       siddacool
 // @description  Copy IMDB data to Markdown for Obsidian base
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=https://www.imdb.com/
