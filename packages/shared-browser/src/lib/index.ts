@@ -4,6 +4,8 @@ export { default as simulateKeyPress } from './keys/simulateKeyPress/simulateKey
 
 export { delay } from './time/delay/delay.ts';
 
+export { retryUntilTrue } from './loops/retryUntilTrue/retryUntilTrue.ts';
+
 export { mountSvelteComponent } from './svelte/mount/mountSvelteComponent.ts';
 
 export { mountSvelteComponents } from './svelte/mount/mountSvelteComponents.ts';

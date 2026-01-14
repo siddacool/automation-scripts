@@ -1,5 +1,12 @@
 # Changelog
 
+## 2.3.4
+
+### Patch Changes
+
+- Updated dependencies
+  - @repo/shared-browser@1.5.0
+
 ## 2.3.3
 
 ### Patch Changes

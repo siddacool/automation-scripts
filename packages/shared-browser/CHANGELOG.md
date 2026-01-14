@@ -1,5 +1,11 @@
 # @repo/shared-browser
 
+## 1.5.0
+
+### Minor Changes
+
+- retryUntilTrue function added
+
 ## 1.4.1
 
 ### Patch Changes
