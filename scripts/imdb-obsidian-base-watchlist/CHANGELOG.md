@@ -1,5 +1,11 @@
 # Changelog
 
+## 2.3.0
+
+### Minor Changes
+
+- Package minification added
+
 ## 2.2.0
 
 ### Minor Changes
