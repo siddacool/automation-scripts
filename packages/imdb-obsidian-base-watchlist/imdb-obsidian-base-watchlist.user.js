@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Imdb Obsidian Base Watchlist
 // @namespace    https://github.com/siddacool/automation-scripts/tree/main/scripts/imdb-obsidian-base-watchlist
-// @version      2.1.3
+// @version      2.2.0
 // @author       siddacool
 // @description  Copy IMDB data to Markdown for Obsidian base
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=https://www.imdb.com/
@@ -18,6 +18,13 @@
 
   t(' @charset "UTF-8";.ActionTooltip.svelte-8g2rx8{position:absolute;top:40px;left:-7px;font-size:.8rem;width:55px;height:30px;background-color:#000;border-radius:4px;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .2s ease}.ActionTooltip.show.svelte-8g2rx8{opacity:1;pointer-events:auto}button.svelte-1z0r1g6{width:40px;height:40px;display:flex;background:transparent;border:0;align-items:center;justify-content:center;cursor:pointer;border-radius:50%;transition:all .1s;color:#fff;font-size:1.2rem;padding:0}button.svelte-1z0r1g6:focus-visible{outline:2px solid #f5c518;outline-offset:2px;background:#00000040}button.svelte-1z0r1g6:hover{color:#f5c518;background:#00000040}svg.svelte-1nzdrgw{position:relative;left:1px}.GrabIMBDDetails.svelte-1oywuru{position:relative;display:inline-flex;top:-3px} ');
 
+  const PUBLIC_VERSION = "5";
+  if (typeof window !== "undefined") {
+    ((window.__svelte ??= {}).v ??= new Set()).add(PUBLIC_VERSION);
+  }
+  const TEMPLATE_USE_IMPORT_NODE = 1 << 1;
+  const UNINITIALIZED = Symbol();
+  const NAMESPACE_HTML = "http://www.w3.org/1999/xhtml";
   const DEV = false;
   var is_array = Array.isArray;
   var index_of = Array.prototype.indexOf;
@@ -120,8 +127,6 @@
       throw new Error(`https://svelte.dev/e/svelte_boundary_reset_onerror`);
     }
   }
-  const UNINITIALIZED = Symbol();
-  const NAMESPACE_HTML = "http://www.w3.org/1999/xhtml";
   function svelte_boundary_reset_noop() {
     {
       console.warn(`https://svelte.dev/e/svelte_boundary_reset_noop`);
@@ -2174,10 +2179,6 @@ dep
   function set_signal_status(signal, status) {
     signal.f = signal.f & STATUS_MASK | status;
   }
-  const PASSIVE_EVENTS = ["touchstart", "touchmove"];
-  function is_passive_event(name) {
-    return PASSIVE_EVENTS.includes(name);
-  }
   const all_registered_events = new Set();
   const root_event_handles = new Set();
   function delegate(events) {
@@ -2285,6 +2286,7 @@ active_effect
     }
   }
 function from_html(content, flags2) {
+    var use_import_node = (flags2 & TEMPLATE_USE_IMPORT_NODE) !== 0;
     var node;
     var has_start = !content.startsWith("<!>");
     return () => {
@@ -2295,7 +2297,7 @@ function from_html(content, flags2) {
 get_first_child(node);
       }
       var clone = (
-is_firefox ? document.importNode(node, true) : node.cloneNode(true)
+use_import_node || is_firefox ? document.importNode(node, true) : node.cloneNode(true)
       );
       {
         assign_nodes(clone, clone);
@@ -2341,6 +2343,10 @@ function from_svg(content, flags2) {
     anchor.before(
 dom
     );
+  }
+  const PASSIVE_EVENTS = ["touchstart", "touchmove"];
+  function is_passive_event(name) {
+    return PASSIVE_EVENTS.includes(name);
   }
   function set_text(text, value) {
     var str = value == null ? "" : typeof value === "object" ? value + "" : value;
@@ -2651,11 +2657,6 @@ props[key]
       return getter;
     }
   }
-  const PUBLIC_VERSION = "5";
-  if (typeof window !== "undefined") {
-    ((window.__svelte ??= {}).v ??= new Set()).add(PUBLIC_VERSION);
-  }
-  enable_legacy_mode_flag();
   async function copyToClipboard(text) {
     if (typeof navigator === "undefined" || !navigator.clipboard) {
       throw new Error("copyToClipboard can only be used in the browser with clipboard support");
@@ -2666,6 +2667,34 @@ props[key]
       console.error("Unable to copy text to clipboard.", err);
       throw err;
     }
+  }
+  function mountSvelteComponent(Component, target, props, styles) {
+    if (!target)
+      return;
+    const key = `svc-${Component.name || "component"}`;
+    if (target.querySelector(`.${key}`))
+      return;
+    const el = document.createElement("div");
+    el.className = key;
+    if (styles) {
+      Object.assign(el.style, styles);
+    }
+    target.append(el);
+    mount(Component, {
+      target: el,
+      props
+    });
+  }
+  function mountSvelteComponents(items) {
+    function remountAll() {
+      for (const item of items) {
+        mountSvelteComponent(item.component, item.target, item.props, item.styles);
+      }
+    }
+    remountAll();
+    const observer = new MutationObserver(remountAll);
+    observer.observe(document.body, { childList: true, subtree: true });
+    return observer;
   }
   var root$3 = from_html(`<span> </span>`);
   function ActionTooltip($$anchor, $$props) {
@@ -2720,6 +2749,7 @@ props[key]
     append($$anchor, button);
   }
   delegate(["click"]);
+  enable_legacy_mode_flag();
   var root$1 = from_svg(`<svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" focusable="false" class="svelte-1nzdrgw"><path d="M22 6v16h-16v-16h16zm2-2h-20v20h20v-20zm-24 17v-21h21v2h-19v19h-2zm18-8h-3v-3h-2v3h-3v2h3v3h2v-3h3v-2z"></path></svg>`);
   function CopyIcon($$anchor) {
     var svg = root$1();
@@ -2819,8 +2849,8 @@ props[key]
   }
   function getDatabase() {
     const schema = getImdbSchema();
-    const name = cleanText(schema.alternateName || schema.name || "");
-    const originalName = cleanText(schema.name || "");
+    const name = decodeHtmlEntities(cleanText(schema.alternateName || schema.name || ""));
+    const originalName = decodeHtmlEntities(cleanText(schema.name || ""));
     const category = getContentCategory(schema["@type"] || "", schema.genre || []);
     const rating = schema.aggregateRating?.ratingValue?.toString();
     const certification = schema.contentRating;
@@ -2937,17 +2967,12 @@ ${zettelId}
     append($$anchor, div);
     pop();
   }
-  function App($$anchor) {
-    GrabIMBDDetails($$anchor, {});
-  }
-  mount(App, {
-    target: (() => {
-      const app2 = document.createElement("div");
-      app2.style.display = "inline-flex";
-      const titleElement = document.querySelector('[data-testid="hero__pageTitle"]');
-      titleElement?.append(app2);
-      return app2;
-    })()
-  });
+  mountSvelteComponents([
+    {
+      component: GrabIMBDDetails,
+      target: document.querySelector('[data-testid="hero__pageTitle"]'),
+      styles: { display: "inline-flex" }
+    }
+  ]);
 
 })();
