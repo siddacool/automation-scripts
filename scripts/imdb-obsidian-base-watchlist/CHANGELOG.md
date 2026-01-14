@@ -1,5 +1,11 @@
 # Changelog
 
+## 2.3.3
+
+### Patch Changes
+
+- Compiler options removed from svelte
+
 ## 2.3.2
 
 ### Patch Changes

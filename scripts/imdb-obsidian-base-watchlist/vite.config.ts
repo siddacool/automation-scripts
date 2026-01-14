@@ -5,12 +5,7 @@ import pkg from './package.json';
 
 export default defineConfig({
   plugins: [
-    svelte({
-      compilerOptions: {
-        runes: true,
-        dev: false,
-      },
-    }),
+    svelte(),
     ...createMonkeyPlugin({
       packageName: 'imdb-obsidian-base-watchlist',
       displayName: 'Imdb Obsidian Base Watchlist',

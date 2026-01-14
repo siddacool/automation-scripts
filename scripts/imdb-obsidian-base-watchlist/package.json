@@ -1,7 +1,7 @@
 {
   "name": "imdb-obsidian-base-watchlist",
   "private": false,
-  "version": "2.3.2",
+  "version": "2.3.3",
   "type": "module",
   "author": "siddacool",
   "description": "Copy IMDB data to Markdown for Obsidian base",
