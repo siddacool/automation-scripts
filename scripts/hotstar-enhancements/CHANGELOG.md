@@ -1,5 +1,13 @@
 # Changelog
 
+## 2.0.5
+
+### Patch Changes
+
+- test configs made external
+- Updated dependencies
+  - @repo/shared-browser@1.4.1
+
 ## 2.0.4
 
 ### Patch Changes
