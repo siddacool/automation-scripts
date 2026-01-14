@@ -1,12 +1,16 @@
-import { defineConfig } from 'vitest/config';
+import { defineConfig } from 'vite';
 import { svelte } from '@sveltejs/vite-plugin-svelte';
 import { createMonkeyPlugin } from '@repo/shared';
-
 import pkg from './package.json';
 
 export default defineConfig({
   plugins: [
-    svelte(),
+    svelte({
+      compilerOptions: {
+        runes: true,
+        dev: false,
+      },
+    }),
     ...createMonkeyPlugin({
       packageName: 'imdb-obsidian-base-watchlist',
       displayName: 'Imdb Obsidian Base Watchlist',
@@ -18,14 +22,16 @@ export default defineConfig({
   ],
   build: {
     minify: 'terser',
-  },
-
-  test: {
-    environment: 'node',
-    globals: true,
-    coverage: {
-      provider: 'v8',
-      reporter: ['text', 'html'],
-    },
+    terserOptions: {
+      compress: {
+        passes: 3,
+        pure_getters: true,
+        unsafe: true,
+        unsafe_math: true,
+      },
+      format: {
+        comments: false,
+      },
+    } as any,
   },
 });
