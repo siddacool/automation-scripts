@@ -1,5 +1,12 @@
 # Changelog
 
+## 3.4.4
+
+### Patch Changes
+
+- Updated dependencies
+  - @repo/shared@2.0.1
+
 ## 3.4.3
 
 ### Patch Changes

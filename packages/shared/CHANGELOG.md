@@ -1,5 +1,11 @@
 # @repo/shared
 
+## 2.0.1
+
+### Patch Changes
+
+- source field added
+
 ## 2.0.0
 
 ### Major Changes

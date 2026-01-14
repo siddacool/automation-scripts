@@ -62,6 +62,7 @@ export function createMonkeyPlugin({
       grant: 'none',
       updateURL: `${baseURL}.meta.js`,
       downloadURL: `${baseURL}.user.js`,
+      source: `https://github.com/${REPO_SLUG}/tree/main/scripts/${packageName}`,
       ...userscriptProps,
     },
     build: {

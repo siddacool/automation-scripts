@@ -1,6 +1,6 @@
 {
   "name": "@repo/shared",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "scripts": {
     "types": "tsc -p tsconfig.types.json",
     "build": "vite build && pnpm run types"
