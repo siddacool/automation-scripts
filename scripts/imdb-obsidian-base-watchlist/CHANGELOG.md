@@ -1,5 +1,17 @@
 # Changelog
 
+## 2.2.0
+
+### Minor Changes
+
+- - Fix: Name with symbols not displaying correctly
+  - New mounting method
+
+### Patch Changes
+
+- Updated dependencies
+  - @repo/shared-browser@1.4.0
+
 ## 2.1.3
 
 ### Patch Changes

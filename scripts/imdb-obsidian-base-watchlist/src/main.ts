@@ -1,17 +1,10 @@
-import { mount } from 'svelte';
-import App from './App.svelte';
+import GrabIMBDDetails from './lib/GrabIMBDDetails/GrabIMBDDetails.svelte';
+import { mountSvelteComponents } from '@repo/shared-browser';
 
-const app = mount(App, {
-  target: (() => {
-    const app = document.createElement('div');
-
-    app.style.display = 'inline-flex';
-
-    const titleElement = document.querySelector('[data-testid="hero__pageTitle"]');
-
-    titleElement?.append(app);
-    return app;
-  })(),
-});
-
-export default app;
+mountSvelteComponents([
+  {
+    component: GrabIMBDDetails,
+    target: document.querySelector('[data-testid="hero__pageTitle"]'),
+    styles: { display: 'inline-flex' },
+  },
+]);

@@ -1,5 +1,11 @@
 # @repo/shared-browser
 
+## 1.4.0
+
+### Minor Changes
+
+- mountSvelteComponent added
+
 ## 1.3.0
 
 ### Minor Changes
