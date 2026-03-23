@@ -1,5 +1,11 @@
 # @repo/shared-browser
 
+## 1.5.1
+
+### Patch Changes
+
+- Fix formatting
+
 ## 1.5.0
 
 ### Minor Changes

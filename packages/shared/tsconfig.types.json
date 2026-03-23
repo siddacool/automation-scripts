@@ -4,8 +4,8 @@
     "declaration": true,
     "emitDeclarationOnly": true,
     "outDir": "dist",
-    "rootDir": "src",
+    "rootDir": "src"
   },
   "include": ["src/**/*"],
-  "exclude": ["**/*.test.ts", "**/*.spec.ts"],
+  "exclude": ["**/*.test.ts", "**/*.spec.ts"]
 }

@@ -1,5 +1,14 @@
 # Changelog
 
+## 2.0.7
+
+### Patch Changes
+
+- Fix formatting
+- Updated dependencies
+  - @repo/shared-browser@1.5.1
+  - @repo/shared@2.0.2
+
 ## 2.0.6
 
 ### Patch Changes

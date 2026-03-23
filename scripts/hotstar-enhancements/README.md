@@ -1,4 +1,3 @@
-
 # Disney+ Hotstar Enhancements
 
 [Tampermonkey](https://www.tampermonkey.net/) script to enhance your [Disney+ Hotstar](https://www.hotstar.com/in) viewing experience with features like better subtitles, Enter as play/pause button and more.
