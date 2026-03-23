@@ -1,7 +1,7 @@
 {
   "name": "goodreads-obsidian-base-readlist",
   "private": false,
-  "version": "1.0.0",
+  "version": "1.1.0",
   "type": "module",
   "author": "siddacool",
   "description": "Copy Goodreads data to Markdown for Obsidian base",

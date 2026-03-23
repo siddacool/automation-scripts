@@ -4,6 +4,7 @@ import { formatLocalDateTime } from '../formatLocalDateTime/formatLocalDateTime'
 import { cleanText } from '../cleanText/cleanText';
 import { getGenres } from './getGenres';
 import type { BookDatabase } from 'src/lib/types';
+import { getPageNumber } from './getPageNo';
 
 export function getDatabase(): BookDatabase {
   const title = decodeHtmlEntities(
@@ -25,6 +26,9 @@ export function getDatabase(): BookDatabase {
 
   const createdAt = formatLocalDateTime(new Date());
   const zettelId = generateZettelIdFromDate(new Date());
+  const rating = document.querySelector('.RatingStatistics__rating')?.textContent || '';
+  const pageNo = getPageNumber();
+  const pageUrl = window.location.href;
 
   return {
     title,
@@ -35,5 +39,8 @@ export function getDatabase(): BookDatabase {
     description,
     createdAt,
     zettelId,
+    rating,
+    pageNo,
+    pageUrl,
   };
 }

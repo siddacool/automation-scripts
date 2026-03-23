@@ -10,6 +10,8 @@ export function convertToMarkdown(data: BookDatabase): string {
     createdAt = '',
     genre = [],
     zettelId = '',
+    rating = '',
+    pageUrl = '',
   } = data || {};
 
   const genreLines = genre.map((item) => `  - ${item}`).join('\n');
@@ -18,9 +20,11 @@ export function convertToMarkdown(data: BookDatabase): string {
 Title: ${title}
 Published on: ${year}
 Author: ${author}
+Goodreads: ${rating}
 tags:
 ${genreLines}
 Poster: ${poster}
+Details: ${pageUrl}
 Created at: ${createdAt}
 ---
 

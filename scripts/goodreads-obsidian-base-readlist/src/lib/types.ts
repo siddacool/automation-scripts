@@ -7,4 +7,7 @@ export interface BookDatabase {
   description: string;
   createdAt: string;
   zettelId: string;
+  rating: string;
+  pageNo: number;
+  pageUrl: string;
 }
