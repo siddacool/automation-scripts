@@ -7,6 +7,7 @@ Make your life easy with automation scripts (currently available for Tampermonke
 - Youtube Enhancements [🔽 Get](scripts/youtube-enhancements/)
 - Imdb Obsidian Base Watchlist [🔽 Get](scripts/imdb-obsidian-base-watchlist/)
 - Disney+ Hotstar Enhancements [🔽 Get](scripts/hotstar-enhancements/)
+- Goodreads Obsidian Base Readlist [🔽 Get](scripts/goodreads-obsidian-base-readlist/)
 
 ---
 
