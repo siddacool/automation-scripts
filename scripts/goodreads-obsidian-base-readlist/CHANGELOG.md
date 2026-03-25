@@ -1,5 +1,11 @@
 # goodreads-obsidian-base-readlist
 
+## 1.2.1
+
+### Patch Changes
+
+- formatting fix
+
 ## 1.2.0
 
 ### Minor Changes
