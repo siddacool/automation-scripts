@@ -40,4 +40,4 @@ We are using [changesets](https://github.com/changesets/changesets) to manage sc
 
 ### Test all scripts
 
-`pnpm -r run test`
+`pnpm test`
