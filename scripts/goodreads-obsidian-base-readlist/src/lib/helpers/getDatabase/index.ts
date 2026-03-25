@@ -1,17 +1,19 @@
-import { generateZettelIdFromDate } from './generateZettelIdFromDate/generateZettelIdFromDate';
-import { decodeHtmlEntities } from '../decodeHtmlEntities/decodeHtmlEntities';
-import { formatLocalDateTime } from '../formatLocalDateTime/formatLocalDateTime';
-import { cleanText } from '../cleanText/cleanText';
-import { getGenres } from './getGenres';
+import { getGenres } from './getGenres/getGenres';
 import type { BookDatabase } from 'src/lib/types';
-import { getPageNumber } from './getPageNo';
+import { getPageNumber } from './getPageNo/getPageNo';
+import {
+  cleanText,
+  decodeHtmlEntities,
+  formatLocalDateTime,
+  generateZettelIdFromDate,
+} from '@repo/shared-browser';
+import { getYear } from './getYear/getYear';
 
 export function getDatabase(): BookDatabase {
   const title = decodeHtmlEntities(
     cleanText(document?.querySelector('[data-testid="bookTitle"]')?.textContent || ''),
   );
-  const publicationInfo = document.querySelector('[data-testid="publicationInfo"]')?.textContent;
-  const year = Number(publicationInfo?.split(',')[1] || '');
+  const year = getYear();
   const author = document?.querySelector('.ContributorLink__name')?.textContent || '';
   const genre = getGenres();
   const description = decodeHtmlEntities(

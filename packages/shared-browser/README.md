@@ -17,4 +17,4 @@ Use it by adding the `@repo/shared-browser` in your script's pacakage.json
 
 ### Test
 
-`pnpm --filter shared-browser test:run`
+`pnpm --filter shared-browser test`

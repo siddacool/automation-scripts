@@ -1,5 +1,16 @@
 # Changelog
 
+## 2.4.0
+
+### Minor Changes
+
+- Sharable packages added
+
+### Patch Changes
+
+- Updated dependencies
+  - @repo/shared-browser@1.6.0
+
 ## 2.3.5
 
 ### Patch Changes

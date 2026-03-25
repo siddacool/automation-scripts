@@ -37,11 +37,5 @@
     &:hover {
       background-color: var(--color-background-wtr-hover);
     }
-
-    &:focus {
-      &:before {
-        content: '✅ ';
-      }
-    }
   }
 </style>

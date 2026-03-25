@@ -30,4 +30,4 @@ Copy Goodreads data to Markdown for Obsidian base.
 
 ### Test
 
-`pnpm --filter goodreads-obsidian-base-readlist test:run`
+`pnpm --filter goodreads-obsidian-base-readlist test`

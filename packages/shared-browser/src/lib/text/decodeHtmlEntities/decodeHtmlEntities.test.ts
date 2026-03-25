@@ -1,6 +1,6 @@
 // @vitest-environment jsdom
 import { describe, it, expect } from 'vitest';
-import { decodeHtmlEntities } from './decodeHtmlEntities';
+import { decodeHtmlEntities } from './decodeHtmlEntities.ts';
 
 describe('decodeHtmlEntities', () => {
   it('decodes common HTML entities', () => {

@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { cleanText } from './cleanText';
+import { cleanText } from './cleanText.ts';
 
 describe('cleanText', () => {
   it('removes single colon', () => {

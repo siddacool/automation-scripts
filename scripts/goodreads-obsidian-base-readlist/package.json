@@ -1,7 +1,7 @@
 {
   "name": "goodreads-obsidian-base-readlist",
   "private": false,
-  "version": "1.1.0",
+  "version": "1.2.0",
   "type": "module",
   "author": "siddacool",
   "description": "Copy Goodreads data to Markdown for Obsidian base",
@@ -14,8 +14,7 @@
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
-    "test": "vitest",
-    "test:run": "vitest run"
+    "test": "vitest run"
   },
   "dependencies": {
     "@repo/shared": "workspace:*",

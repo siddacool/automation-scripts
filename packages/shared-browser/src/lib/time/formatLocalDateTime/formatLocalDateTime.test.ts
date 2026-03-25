@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { formatLocalDateTime } from './formatLocalDateTime';
+import { formatLocalDateTime } from './formatLocalDateTime.ts';
 
 describe('formatLocalDateTime', () => {
   it('formats a full date and time correctly', () => {

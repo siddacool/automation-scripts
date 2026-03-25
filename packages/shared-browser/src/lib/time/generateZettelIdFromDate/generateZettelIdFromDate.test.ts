@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { generateZettelIdFromDate } from './generateZettelIdFromDate';
+import { generateZettelIdFromDate } from './generateZettelIdFromDate.ts';
 
 describe('generateZettelIdFromDate', () => {
   it('generates a valid Zettel ID', () => {

@@ -37,7 +37,3 @@ The brand logo is hidden for an immersive viewing experience.
 ### Run
 
 `pnpm --filter hotstar-enhancements dev`
-
-### Test
-
-`pnpm --filter hotstar-enhancements test:run`

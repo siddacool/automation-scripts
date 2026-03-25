@@ -1,5 +1,11 @@
 # @repo/shared-browser
 
+## 1.6.0
+
+### Minor Changes
+
+- Sharable packages added
+
 ## 1.5.1
 
 ### Patch Changes

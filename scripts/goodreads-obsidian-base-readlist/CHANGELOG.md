@@ -1,5 +1,16 @@
 # goodreads-obsidian-base-readlist
 
+## 1.2.0
+
+### Minor Changes
+
+- Sharable packages added
+
+### Patch Changes
+
+- Updated dependencies
+  - @repo/shared-browser@1.6.0
+
 ## 1.1.0
 
 ### Minor Changes
