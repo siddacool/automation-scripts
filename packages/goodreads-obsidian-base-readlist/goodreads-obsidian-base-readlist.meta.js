@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Copy Goodreads data to Markdown for Obsidian base
 // @namespace    https://github.com/siddacool/automation-scripts/tree/main/scripts/goodreads-obsidian-base-readlist
-// @version      1.1.0
+// @version      1.2.0
 // @author       siddacool
 // @description  Copy Goodreads data to Markdown for Obsidian base
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=https://www.goodreads.com
